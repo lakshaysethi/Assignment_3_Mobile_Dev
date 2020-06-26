@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,7 +83,9 @@ public class ReceiverMainActivity extends MainActivityForAllUsers {
                 getSupportActionBar().setTitle(user.getUsername());
 
                 // Lisnte to parcel notification messages
-                new FirebaseController().listenToMessage(user.getEmail(), new Date().getTime(), new OnSuccessListener<ParcelMessage>() {
+                SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+                long timestamp = preferences.getLong("last_message_update", 0);
+                new FirebaseController().listenToMessage(user.getEmail(), timestamp, new OnSuccessListener<ParcelMessage>() {
                     @Override
                     public void onSuccess(ParcelMessage parcelMessage) {
                         onCreateDialog(parcelMessage);
@@ -99,10 +103,31 @@ public class ReceiverMainActivity extends MainActivityForAllUsers {
         });
     }
 
+    private boolean isRunning;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isRunning = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isRunning = false;
+    }
+
     //Alert Dialog
     public void onCreateDialog(ParcelMessage message) {
+        if (!isRunning) {
+            Log.w("ReceiverMainActivity", "App paused, don't show dialog or it crashes");
+            return;
+        }
+        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+        editor.putLong("last_message_update", new Date().getTime());
+        editor.apply();
         // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(message.title)
                 .setMessage(message.content)
                 .setPositiveButton("Yay!!", new DialogInterface.OnClickListener() {

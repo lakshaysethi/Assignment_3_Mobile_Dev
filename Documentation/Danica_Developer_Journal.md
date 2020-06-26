@@ -414,3 +414,125 @@ startActivity(intent);
 finish();
 ```
 
+## Date: 25/06/2020
+
+**Time Taken**: 1 hour
+
+**Done**: Let the user do not need to login again if not logout
+
+---
+
+### Steps
+
+In the `PermissionActivity`, chenk whether there is a user.
+
+```java
+if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, this.ACCESS_FINE_LOCATION_CODE)) {
+    FirebaseController controller = new FirebaseController();
+    FirebaseUser currentUser = controller.getCurrentFirebaseUserObject();
+    if (currentUser == null) { // Not logged in, go to LoginActivity
+        Intent myIntent = new Intent(PermissionActivity.this, LoginActivity.class);
+        startActivity(myIntent);
+        finish();
+    } else { // Login session still valid, go to activity according to user role
+        controller.updateUIafterLogin(this, true);
+    }
+}
+```
+
+## Date: 25/06/2020
+
+**Time Taken**: 3 hour
+
+**Done**: Login instrumented unit test
+
+---
+
+### Useful Links
+
+[Build instrumented unit tests](https://developer.android.com/training/testing/unit-testing/instrumented-unit-tests)
+
+### Steps
+
+1. In app's module-level build.gradle file, specify these libraries as dependencies:
+
+    ```java
+    dependencies {
+        ...
+        androidTestImplementation 'androidx.test:runner:1.1.0'
+        androidTestImplementation 'androidx.test:rules:1.1.0'
+        }
+    ```
+
+2. Specify AndroidJUnitRunner as the default test instrumentation runner in app's module-level build.gradle file:
+    
+    ```java
+    android {
+        defaultConfig {
+            ...
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        }
+    }
+    ```
+    
+3. Create the login instrumented unit test
+
+```java
+
+public class LoginInstrumentedTest {
+    private static final String EMAIL = "driver@driver.com";
+    private static final String PASSWORD = "12345678";
+    private FirebaseController firebaseController;
+    private Context appContext;
+    @Before
+    public void setup() {
+        firebaseController = new FirebaseController();
+        appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    }
+
+    @Test
+    public void useAppContext() {
+        assertEquals("com.mobileassignment3.parcel_tracking_app", appContext.getPackageName());
+    }
+
+    @Test
+    public void loginTest() {
+        firebaseController.loginUser(EMAIL, PASSWORD, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                assertEquals(true, task.isSuccessful());
+
+                // Should have user after logged in
+                FirebaseUser user = firebaseController.getCurrentFirebaseUserObject();
+                assertNotNull(user);
+                assertEquals(EMAIL, user.getEmail());
+
+                firebaseController.getUser(new OnSuccessListener<User>() {
+                    @Override
+                    public void onSuccess(User user) {
+                        // Check user role type
+                        assertEquals(User.DRIVER, (Object)user.typeArray.get(0));
+                    }
+                });
+
+            }
+        });
+    }
+}
+
+```
+
+## Date: 26/06/2020
+
+**Time Taken**: 4 hour
+
+**Done**: Use Firestore to send message
+
+---
+
+### Useful Links
+
+[Build instrumented unit tests](https://developer.android.com/training/testing/unit-testing/instrumented-unit-tests)
+
+### Steps
+
