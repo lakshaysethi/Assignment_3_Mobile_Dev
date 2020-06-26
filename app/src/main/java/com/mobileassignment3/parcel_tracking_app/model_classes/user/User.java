@@ -2,19 +2,31 @@ package com.mobileassignment3.parcel_tracking_app.model_classes.user;
 
 import android.provider.ContactsContract;
 
+import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class User {
 
-public    final static int DRIVER = 1001;
+    public    final static int DRIVER = 1001;
     public final static int RECIEVER = 1002;
     public final static int ADMIN = 1003;
+    List<DeliveryJob> deliveryJobList;
+
+    public List<DeliveryJob> getDeliveryJobList() {
+        return deliveryJobList;
+    }
+
+    public void setDeliveryJobList(List<DeliveryJob> deliveryJobList) {
+        this.deliveryJobList = deliveryJobList;
+    }
 
     String email;
     String username;
 
-    ArrayList<Integer> typeArray = new ArrayList<Integer>();
+    public ArrayList<Integer> typeArray = new ArrayList<Integer>();
 
 
     public void setTypeArray(ArrayList<Integer> typeArray) {
@@ -24,9 +36,9 @@ public    final static int DRIVER = 1001;
     public ArrayList<Integer> getTypeArray() {
         return typeArray;
     }
-    public int getPrimaryType() {
-            return this.typeArray.get(0);
-    }
+//    public int getPrimaryType() {
+//            return this.typeArray.get(0);
+//    }
     public void setType(int type) {
         if(!this.typeArray.isEmpty()){
             this.typeArray.set(0, type);

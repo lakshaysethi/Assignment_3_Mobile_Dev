@@ -28,7 +28,7 @@ public class PermissionActivity extends AppCompatActivity {
 
         if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, this.ACCESS_FINE_LOCATION_CODE)) {
             FirebaseController controller = new FirebaseController();
-            FirebaseUser currentUser = controller.getCurrentUser();
+            FirebaseUser currentUser = controller.getCurrentFirebaseUserObject();
             if (currentUser == null) { // Not logged in, go to LoginActivity
                 Intent myIntent = new Intent(PermissionActivity.this, LoginActivity.class);
                 startActivity(myIntent);

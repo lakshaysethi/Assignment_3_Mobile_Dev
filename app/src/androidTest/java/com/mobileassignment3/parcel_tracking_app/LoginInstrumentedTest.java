@@ -49,7 +49,7 @@ public class LoginInstrumentedTest {
                 assertEquals(true, task.isSuccessful());
 
                 // Should have user after logged in
-                FirebaseUser user = firebaseController.getCurrentUser();
+                FirebaseUser user = firebaseController.getCurrentFirebaseUserObject();
                 assertNotNull(user);
                 assertEquals(EMAIL, user.getEmail());
 

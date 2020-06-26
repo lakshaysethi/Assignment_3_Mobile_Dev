@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Driver extends User {
 
-    List<DeliveryJob> deliveryJobList;
+
     List<DeliveryJob> listOfCompletedDeliveries;
     Boolean onlineNow;
     Location currentLocation;
@@ -23,13 +23,6 @@ public class Driver extends User {
     }
 
 
-    public List<DeliveryJob> getDeliveryJobList() {
-        return deliveryJobList;
-    }
-
-    public void setDeliveryJobList(List<DeliveryJob> deliveryJobList) {
-        this.deliveryJobList = deliveryJobList;
-    }
 
     public List<DeliveryJob> getListOfCompletedDeliveries() {
         return listOfCompletedDeliveries;

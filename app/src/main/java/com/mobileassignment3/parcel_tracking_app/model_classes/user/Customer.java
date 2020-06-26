@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Customer extends  User{
     Address address;
-    List<DeliveryJob> deliveryJobList;
+
 
     public Customer() {
     }
@@ -22,18 +22,12 @@ public class Customer extends  User{
         this.address = address;
     }
 
-    public List<DeliveryJob> getDeliveryJobList() {
-        return deliveryJobList;
-    }
 
-    public void setDeliveryJobList(List<DeliveryJob> deliveryJobList) {
-        this.deliveryJobList = deliveryJobList;
-    }
 
-    public Customer(String email, String username, Address address, List<DeliveryJob> deliveryJobList) {
+    public Customer(String email, String username, Address address) {
         super(email, username);
         this.address = address;
-        this.deliveryJobList = deliveryJobList;
+
     }
 
 }
