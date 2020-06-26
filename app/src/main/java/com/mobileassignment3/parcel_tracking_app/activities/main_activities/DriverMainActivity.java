@@ -189,11 +189,12 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     public void onCreateDialog(final DeliveryJob deliveryJob) {
         //TODO get the estimate time
         String estimateTime = "10 mins";
-        final String driverSendMessage = "Send Message to Customer:\nYour parcel will be deliveried in "+ estimateTime;
+        final String driverSendMessage = "Your parcel will be deliveried in "+ estimateTime;
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setMessage(driverSendMessage)
+        builder.setTitle("Send Message to Customer:")
+                .setMessage(driverSendMessage)
                 .setPositiveButton("send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String email = "ALL";
@@ -201,7 +202,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
                             email = deliveryJob.getReceiver().getEmail();
                             email = email == null ? "ALL" : email;
                         }
-                        new FirebaseController().sendMessageToReceiver("Delivery notification", driverSendMessage, email,
+                        new FirebaseController().sendMessageToReceiver("Delivery Notification", driverSendMessage, email,
                                 new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
