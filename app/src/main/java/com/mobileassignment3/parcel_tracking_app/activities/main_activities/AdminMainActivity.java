@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -65,7 +66,6 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
     }
 
     private void getDeliveryJobsListfromFirestore() {
-
         try{
             new FirebaseController().db.collection("masterDeliveryJobs")
                     .get()
@@ -94,9 +94,8 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
 
         //new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
-        //Temp implementation to show dialog for input
         btnAssign = findViewById(R.id.btnAssign);
-         btnAssign.setOnClickListener(new View.OnClickListener() {
+        btnAssign.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  assignDialog();
@@ -223,12 +222,14 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Log.d("CLICK", "Parcel clicked: " + deliveryJobArray.get(1).getListOfParcels().get(0).getDescription());
-                int e =  deliveryJobArray.indexOf(vh.textViewTitle.getText());
-                Log.d("INDEX", Integer.toString(e));
-                Log.d("CLICK", "Parcel clicked: " + vh.textViewTitle.getText());
-
-                //                Log.d("CLICK", "Parcel clicked: " + deliveryJobArray.get(0).getTrackingNumber());
+                for (DeliveryJob jobIterator : deliveryJobArray){
+                    if (jobIterator.getListOfParcels().get(0).getDescription().equals(vh.textViewTitle.getText())){
+                        int e = deliveryJobArray.indexOf(jobIterator);
+                        Log.d("CLICK", "Parcel clicked: " + deliveryJobArray.get(e).getTrackingNumber());
+                        FirebaseFirestore.getInstance();
+//                        selectedParcels.add(deliveryJobArray.get(e).getTrackingNumber());
+                    }
+                }
             }
         });
         return vh;
@@ -238,22 +239,6 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewTitle.setText(deliveryJobArray.get(position).getListOfParcels().get(0).getDescription());
         holder.textViewDetail.setText(deliveryJobArray.get(position).getStatusString());
-//        holder.cbAssignOrder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                final boolean isChecked = holder.checkBoxparent.isChecked();
-//                for (int i=0; i<approvePendingDataArrayList.size();i++) {
-//                    if (isChecked) {
-//                        if (!arrayListUser.contains(approvePendingDataArrayList.get(position).getmText1()))
-//                            arrayListUser.add(i, approvePendingDataArrayList.get(position).getmText1());
-//                        arrayData=arrayListUser.toString().replace("[", "").replace("]", "").trim();
-//                    } else {
-//                        arrayListUser.remove(approvePendingDataArrayList.get(position).getmText1());
-//                        arrayData=arrayListUser.toString().replace("[", "").replace("]", "").trim();
-//                    }
-//                }
-//            }
-//        });
     }
 
     @Override

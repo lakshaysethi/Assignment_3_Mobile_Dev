@@ -44,7 +44,7 @@ import static android.content.ContentValues.TAG;
 
 public class FirebaseController {
     public FirebaseAuth mAuth;
-   public  FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
     QueryDocumentSnapshot theDocument;
     ArrayList <User> allUsers = new ArrayList<User>();
     private Object userData;
@@ -153,10 +153,10 @@ public class FirebaseController {
     public void assignParcelToDriver(final String driverUserName, List<String> trackingNumbers){
         //TODO Get which parcels the admin has selected, and use their tracking numbers
         //
-        //Learn/understand how we're displaying parcels
-        //Add on click listener to the tick boxes
-        //Store the list of ticked items in a list in the admin main activity
-        //Pass the lsit to this function
+        //Learn/understand how we're displaying parcels - not done
+        //Add on click listener to the tick boxes - done
+        //Store the list of ticked items in a list in the admin main activity - doing
+        //Pass the lsit to this function - done
         //For each tracking number, assign driver.
         final String trackingNumber = "e73d2193-8c8b-41ff-98c7-c992e6e61372";
 
@@ -638,9 +638,6 @@ public class FirebaseController {
 ////TODO convert above copied code to cunction the if switch
 //    }
 
-
-
-
     public void setArraylistInAdapterOfActivity(RecyclerView rvParcel, ReceiverMainActivity receiverMainActivity) {
         String cuuid = getCurrentFirebaseUserObject().getUid();
         DocumentReference userData = db.collection("users").document(cuuid);
@@ -672,4 +669,5 @@ public class FirebaseController {
         receiverMainActivity.setArraylistInAdapter(rvParcel,(ArrayList<DeliveryJob>) djal[0]);
 
     }
+
 }
