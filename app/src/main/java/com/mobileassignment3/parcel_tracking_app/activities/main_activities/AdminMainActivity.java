@@ -51,15 +51,11 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
 
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
        adminlistviewUpdate();
-
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         setActionBarStuff();
+
     }
+
+
 
     private void adminlistviewUpdate() {
         getLatestDeliveryJobsListfromFirestore();
