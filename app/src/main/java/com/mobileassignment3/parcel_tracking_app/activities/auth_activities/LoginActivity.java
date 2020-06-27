@@ -18,6 +18,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
+
+import com.mobileassignment3.parcel_tracking_app.GoogleStuff;
 import com.mobileassignment3.parcel_tracking_app.SignupActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
@@ -142,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
             // Signed in successfully, show authenticated UI.
             Toast.makeText(this, "Successfully  Signed In WITH GOOGLE", Toast.LENGTH_SHORT).show();
-            new FirebaseController().handleGoogleSignIn(account,this);
+            new GoogleStuff().handleGoogleSignIn(account,this);
 //            updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
