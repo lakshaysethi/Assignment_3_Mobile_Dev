@@ -10,8 +10,9 @@ import java.util.UUID;
 
 
 public class DeliveryJob {
-    final int DELIVERED = 1;
-    final int NOT_DELIVERED = 0;
+    public static final int ON_THE_WAY =2;
+    public static final int DELIVERED = 1;
+    public static final int NOT_DELIVERED = 0;
 
     int status;
     String trackingNumber;
@@ -52,6 +53,8 @@ public class DeliveryJob {
     public String getStatusString() {
         if (status == DELIVERED){
             return "DELIVERED";
+        }else if (status == ON_THE_WAY){
+            return "On the Way";
         }else if (status == NOT_DELIVERED){
             return "Not Delivered";
         }else {
