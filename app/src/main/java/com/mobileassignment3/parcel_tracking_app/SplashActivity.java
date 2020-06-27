@@ -44,8 +44,9 @@ public class SplashActivity extends AppCompatActivity {
         try{
 
 
-            new WriteToFireStore().writeMasterDeliveryJobsToFirestore();
-
+            /* write functions here that you want to happen just once */
+            
+            //new WriteToFireStore().writeMasterDeliveryJobsToFirestore();
 
 
 
