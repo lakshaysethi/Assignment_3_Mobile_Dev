@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -107,6 +108,7 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
     public void assignDialog() {
         AssignDialog dialog = new AssignDialog();
         dialog.show(getSupportFragmentManager(), "Assign dialog");
+        ArrayList<DeliveryJob> jobs = getSelectedJobs();
     }
 
 
@@ -179,6 +181,20 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
 
     }
 
+    // Get selected DeliveryJob in the RecyclerView
+    ArrayList<DeliveryJob> getSelectedJobs() {
+        RecyclerView rvAssignOrder = findViewById(R.id.rvAssignOrder);
+        OrderAdapter adapter = (OrderAdapter) rvAssignOrder.getAdapter();
+        ArrayList<DeliveryJob> jobs = new ArrayList<>();
+        for (int x = 0; x<rvAssignOrder.getChildCount();x++){
+            CheckBox cb = (CheckBox)rvAssignOrder.getChildAt(x).findViewById(R.id.cbAssignOrder);
+            if(cb.isChecked()){
+                jobs.add(adapter.getJobAt(x));
+            }
+        }
+        return jobs;
+    }
+
 }
 
 
@@ -228,6 +244,10 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
     @Override
     public int getItemCount() {
         return deliveryJobArray.size();
+    }
+
+    public DeliveryJob getJobAt(int position) {
+        return deliveryJobArray.get(position);
     }
 }
 
