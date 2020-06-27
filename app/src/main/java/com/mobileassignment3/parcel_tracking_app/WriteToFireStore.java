@@ -54,21 +54,21 @@ public class WriteToFireStore extends FirebaseController{
                         Driver parcelappuser =    doc.toObject(Driver.class);
                         parcelappuser.setDeliveryJobList(djal);
 
-                        updateUser(parcelappuser,uuid);
+                        new FirebaseAuthCustom().updateUser(parcelappuser,uuid);
                         db.collection("users").document(uuid).set(parcelappuser);
 
                     } else if (userType == User.RECIEVER) {
                         Customer parcelappuser    =  doc.toObject(Customer.class);
                         parcelappuser.setDeliveryJobList(djal);
 
-                        updateUser(parcelappuser,uuid);
+                        new FirebaseAuthCustom().updateUser(parcelappuser,uuid);
                         db.collection("users").document(uuid).set(parcelappuser);
 
                     } else {
                         Admin parcelappuser   =  doc.toObject(Admin.class);
                         parcelappuser.setDeliveryJobList(djal);
 
-                        updateUser(parcelappuser,uuid);
+                        new FirebaseAuthCustom().updateUser(parcelappuser,uuid);
                         //db.collection("users").document(uuid).set(parcelappuser);
                     }
 
