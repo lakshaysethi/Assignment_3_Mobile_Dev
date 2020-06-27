@@ -45,6 +45,7 @@ import java.util.Map;
 public class AdminMainActivity extends AppCompatActivity implements AssignDialog.assignDialogListener{
 
     Button btnAssign;
+    FirebaseController mainFirebase = new FirebaseController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +58,7 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
         setActionBarStuff();
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
         getDeliveryJobsListfromFirestore();
-        Map<String, Object> allUsers = new HashMap<>();
-        //allUsers = new FirebaseController().getAllUsers();
-
+        mainFirebase.getAllUsers();
     }
 
     private void getDeliveryJobsListfromFirestore() {
@@ -113,7 +112,7 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
     //TODO Make the assigndriver actually assign to the driver
     public void assignDriver(String driverUsername) {
          Toast.makeText(AdminMainActivity.this, "Driver is " + driverUsername, Toast.LENGTH_SHORT).show();
-         new FirebaseController().assignParcelToDriver(driverUsername);
+         mainFirebase.assignParcelToDriver(driverUsername);
     }
 
 
