@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobileassignment3.parcel_tracking_app.AssignDialog;
@@ -34,24 +38,40 @@ import java.util.List;
 public class AdminMainActivity extends MainActivityForAllUsers implements AssignDialog.assignDialogListener{
 
     Button btnAssign;
+    FloatingActionButton btnRefresh;
+    FirebaseController mainFirebase = new FirebaseController();
+    ArrayList<DeliveryJob> jobs = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         // new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
         setActionBarStuff();
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
         getDeliveryJobsListfromFirestore();
+        mainFirebase.getAllUsers();
 
+        btnAssign = findViewById(R.id.btnAssign);
+        btnAssign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assignDialog();
+            }
+        });
 
+        btnRefresh = findViewById(R.id.btnRefresh);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDeliveryJobsListfromFirestore();
+                Toast.makeText(AdminMainActivity.this, "Refreshing", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getDeliveryJobsListfromFirestore() {
-
         try{
             new FirebaseController().db.collection("masterDeliveryJobs")
                     .get()
@@ -60,11 +80,17 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                    //Log.d("FIREBASE", document.getId() + " => " + document.getData());
                                     if(document.contains("masterList")){
                                         document.get("masterList");
                                         List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
-                                        setRecyclerViewStuff( Djal);
+                                        List<DeliveryJob> jobsWithNoDriver = new ArrayList();
+                                        for (DeliveryJob jobIterator : Djal){
+                                            if (jobIterator.getAssignedDriver() == null){
+                                                jobsWithNoDriver.add(jobIterator);
+                                            }
+                                        }
+                                        setRecyclerViewStuff(jobsWithNoDriver);
                                     }
                                 }
                             } else {
@@ -77,34 +103,20 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
             Log.w("Firebase error", "Error getting documents.");
 
         }
-
         //new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
-
-        //Temp implementation to show dialog for input
-        btnAssign = findViewById(R.id.btnAssign);
-        // btnAssign.setOnClickListener(new View.OnClickListener() {
-        //     @Override
-        //     public void onClick(View v) {
-        //         assignDialog();
-        //     }
-        // });
-
-
     }
-
 
     public void assignDialog() {
         AssignDialog dialog = new AssignDialog();
+        jobs = getSelectedJobs();
         dialog.show(getSupportFragmentManager(), "Assign dialog");
 
     }
-
-
-    //TODO Make the assigndriver actually assign to the driver
     
     public void assignDriver(String driverUsername) {
-        // Toast.makeText(AdminMainActivity.this, "Driver is " + driverUsername, Toast.LENGTH_SHORT).show();
-        // new FirebaseController().assignParcelToDriver(driverUsername);
+         Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
+         Log.d("JOBS", "AssignDriver: "+jobs.toString());
+         mainFirebase.assignParcelToDriver(driverUsername, jobs);
     }
 
 
@@ -165,6 +177,20 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
 
     }
 
+    // Get selected DeliveryJob in the RecyclerView
+    ArrayList<DeliveryJob> getSelectedJobs() {
+        RecyclerView rvAssignOrder = findViewById(R.id.rvAssignOrder);
+        OrderAdapter adapter = (OrderAdapter) rvAssignOrder.getAdapter();
+        ArrayList<DeliveryJob> jobs = new ArrayList<>();
+        for (int x = 0; x<rvAssignOrder.getChildCount();x++){
+            CheckBox cb = (CheckBox)rvAssignOrder.getChildAt(x).findViewById(R.id.cbAssignOrder);
+            if(cb.isChecked()){
+                jobs.add(adapter.getJobAt(x));
+                Log.d("JOBS", "getSelectedJobs: " + jobs.toString());
+            }
+        }
+        return jobs;
+    }
 }
 
 
@@ -198,10 +224,25 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
         // create a new view
         CardView v = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cards_assign_order, parent, false);
-        TextView title = (TextView) v.findViewById(R.id.cardOrderTitle);
+        final TextView title = (TextView) v.findViewById(R.id.cardOrderTitle);
         TextView detail = (TextView) v.findViewById(R.id.cardOrderDetail);
+        CheckBox check = v.findViewById(R.id.cbAssignOrder);
 
-        MyViewHolder vh = new MyViewHolder(v, title, detail);
+        final MyViewHolder vh = new MyViewHolder(v, title, detail);
+
+        //This was never used because it was the wrong way of getting checked parcels
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (DeliveryJob jobIterator : deliveryJobArray){
+                    if (jobIterator.getListOfParcels().get(0).getDescription().equals(vh.textViewTitle.getText())){
+                        int e = deliveryJobArray.indexOf(jobIterator);
+                        Log.d("CLICK", "Parcel clicked: " + deliveryJobArray.get(e).getTrackingNumber());
+//                        selectedParcels.add(deliveryJobArray.get(e).getTrackingNumber());
+                    }
+                }
+            }
+        });
         return vh;
     }
 
@@ -214,6 +255,10 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
     @Override
     public int getItemCount() {
         return deliveryJobArray.size();
+    }
+
+    public DeliveryJob getJobAt(int position) {
+        return deliveryJobArray.get(position);
     }
 }
 
