@@ -28,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        new FirebaseController().getUser(new OnSuccessListener<User>() {
+        new FirebaseAuthCustom().getUser(new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
                 getSupportActionBar().setTitle(user.getUsername());
@@ -39,14 +39,14 @@ public class ProfileActivity extends AppCompatActivity {
         TextView emailTextView = findViewById(R.id.tvMyAccountEmail);
         final TextView usernameTextView = findViewById(R.id.tvMyAccountUsername);
 
-        new FirebaseController().getUser(new OnSuccessListener<User>() {
+        new FirebaseAuthCustom().getUser(new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
                 usernameTextView.setText(user.getUsername());
             }
         });
 
-        FirebaseUser currentuser = new FirebaseController().getCurrentFirebaseUserObject();
+        FirebaseUser currentuser = new FirebaseAuthCustom().getCurrentFirebaseUserObject();
 
         try{
             String emailOfCurrentUser = currentuser.getEmail();
@@ -63,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try{
-                    new FirebaseController().logoutCurrentUser();
+                    new FirebaseAuthCustom().logoutCurrentUser();
                     Toast.makeText(ProfileActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
                     gotoLoginScreen();
 

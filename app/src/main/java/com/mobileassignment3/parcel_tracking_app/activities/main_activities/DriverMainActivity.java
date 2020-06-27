@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.mobileassignment3.parcel_tracking_app.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
@@ -47,7 +48,7 @@ public class DriverMainActivity extends MainActivityForAllUsers {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle(new FirebaseController().getCurrentFirebaseUserObject().getDisplayName());
+        getSupportActionBar().setTitle(new FirebaseAuthCustom().getCurrentFirebaseUserObject().getDisplayName());
 
         // Click the action bar title to open the profile activity
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
@@ -68,7 +69,7 @@ public class DriverMainActivity extends MainActivityForAllUsers {
         layoutManagerMyTask = new LinearLayoutManager(this);
         rvMyTask.setLayoutManager(layoutManagerMyTask);
 
-        new FirebaseController().db.collection("users").document(new FirebaseController().getCurrentFirebaseUserObject().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        new FirebaseController().db.collection("users").document(new FirebaseAuthCustom().getCurrentFirebaseUserObject().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()){

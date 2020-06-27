@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobileassignment3.parcel_tracking_app.AssignDialog;
+import com.mobileassignment3.parcel_tracking_app.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
@@ -132,7 +133,7 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        getSupportActionBar().setTitle(new FirebaseController().getCurrentFirebaseUserObject().getEmail());
+        getSupportActionBar().setTitle(new FirebaseAuthCustom().getCurrentFirebaseUserObject().getEmail());
 
         // Click the action bar title to open the profile activity
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {

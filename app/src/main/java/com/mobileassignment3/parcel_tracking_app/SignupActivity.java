@@ -74,7 +74,7 @@ public class SignupActivity extends AppCompatActivity {
                             type = User.RECIEVER;
                         }
 
-                        new FirebaseController().createNewUser(signupActivityThis,email,password,type,username);
+                        new FirebaseAuthCustom().createNewUser(signupActivityThis,email,password,type,username);
 
 
                     }catch (Exception e) {

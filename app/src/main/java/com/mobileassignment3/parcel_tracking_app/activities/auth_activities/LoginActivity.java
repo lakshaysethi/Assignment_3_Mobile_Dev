@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.mobileassignment3.parcel_tracking_app.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 
 import com.mobileassignment3.parcel_tracking_app.GoogleStuff;
@@ -98,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     //main login function;
     private void loginUserWithEmail(String email, String password) {
 
-       new FirebaseController().loginUser(this,email,password);
+       new FirebaseAuthCustom().loginUser(this,email,password);
 
     }
     //do once
