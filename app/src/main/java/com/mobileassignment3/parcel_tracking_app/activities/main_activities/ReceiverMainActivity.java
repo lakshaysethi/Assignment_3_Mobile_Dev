@@ -158,7 +158,7 @@ public class ReceiverMainActivity extends MainActivityForAllUsers {
 
 class RecieverDeliveryJobAdapter extends RecyclerView.Adapter<RecieverDeliveryJobAdapter.MyViewHolder> {
     private Context mContext;
-    private ArrayList<DeliveryJob> deliveryJobArrayListForReceiverAdapter;
+    private ArrayList<DeliveryJob> mDataset;
 
 
     // Provide a reference to the views for each data item
@@ -221,7 +221,7 @@ class RecieverDeliveryJobAdapter extends RecyclerView.Adapter<RecieverDeliveryJo
 
     @Override
     public int getItemCount() {
-        return deliveryJobArrayListForReceiverAdapter.size();
+        return mDataset.size();
     }
 
 
