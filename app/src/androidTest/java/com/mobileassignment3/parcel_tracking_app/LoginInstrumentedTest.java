@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import org.junit.Before;

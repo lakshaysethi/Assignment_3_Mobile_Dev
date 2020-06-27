@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
 
 public class PermissionActivity extends AppCompatActivity {
     public static final int ACCESS_FINE_LOCATION_CODE = 100;

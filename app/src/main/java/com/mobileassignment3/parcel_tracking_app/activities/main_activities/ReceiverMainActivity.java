@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.mobileassignment3.parcel_tracking_app.FirebaseAuthCustom;
-import com.mobileassignment3.parcel_tracking_app.FirebaseController;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 public class ProfileActivity extends AppCompatActivity {
