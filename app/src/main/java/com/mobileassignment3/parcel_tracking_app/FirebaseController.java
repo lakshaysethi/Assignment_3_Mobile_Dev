@@ -701,7 +701,7 @@ return deliveryJobArrayList;
 
     }
 
-    public void listenToMessage(String receiverEmail, final long timestamp, final OnSuccessListener<ParcelMessage> listener) {
+    public void listenToMessage(String receiverEmail, final long lastReceivedTimestamp, final OnSuccessListener<ParcelMessage> listener) {
         final DocumentReference docRef = db.collection("messages").document(receiverEmail);
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -716,7 +716,7 @@ return deliveryJobArrayList;
 
                     if (listener != null) {
                         ParcelMessage message = snapshot.toObject(ParcelMessage.class);
-                        if (message.timestamp >= timestamp) {
+                        if (message.timestamp >= lastReceivedTimestamp) {
                             listener.onSuccess(message);
                         }
                     }

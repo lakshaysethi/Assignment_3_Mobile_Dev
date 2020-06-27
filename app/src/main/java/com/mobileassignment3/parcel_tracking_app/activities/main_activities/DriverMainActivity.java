@@ -75,8 +75,6 @@ public class DriverMainActivity extends MainActivityForAllUsers {
         layoutManagerMyTask = new LinearLayoutManager(this);
         rvMyTask.setLayoutManager(layoutManagerMyTask);
 
-        //TODO get the assigned delivery job from firestore
-
         new FirebaseController().db.collection("users").document(new FirebaseController().getCurrentFirebaseUserObject().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -193,7 +191,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("Send Message to Customer:")
+        builder.setTitle("Send Message to Customer.")
                 .setMessage(driverSendMessage)
                 .setPositiveButton("send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

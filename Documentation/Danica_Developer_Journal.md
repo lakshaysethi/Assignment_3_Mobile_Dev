@@ -532,7 +532,105 @@ public class LoginInstrumentedTest {
 
 ### Useful Links
 
-[Build instrumented unit tests](https://developer.android.com/training/testing/unit-testing/instrumented-unit-tests)
+[Add data to Cloud Firestore](https://firebase.google.com/docs/firestore/manage-data/add-data)
+
+[Get realtime updates with Cloud Firestore](https://firebase.google.com/docs/firestore/query-data/listen#java)
 
 ### Steps
+
+1. In `FirebaseController`, set the data of a document within a collection, explicitly specifying a document identifier.
+
+    ```java
+    ParcelMessage data = new ParcelMessage(title, message, user.getEmail(), receiverEmail, (new Date()).getTime());
+    db.collection("messages").document(receiverEmail)
+            .set(data)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                    if (listener != null) {
+                        listener.onSuccess(aVoid);
+                    }
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                    if (failureListener != null) {
+                        failureListener.onFailure(e);
+                    }
+                }
+            });
+    ```
+
+2. In `FirebaseController`, listen to realtime update
+
+    ```java
+    public void listenToMessage(String receiverEmail, final long timestamp, final OnSuccessListener<ParcelMessage> listener) {
+        final DocumentReference docRef = db.collection("messages").document(receiverEmail);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+    
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+    
+                    if (listener != null) {
+                        ParcelMessage message = snapshot.toObject(ParcelMessage.class);
+                        if (message.timestamp >= timestamp) {
+                            listener.onSuccess(message);
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
+    }
+    ```
+    
+3. In `DriverMainActivity`, set onClick listener
+
+    ```java
+    new FirebaseController().sendMessageToReceiver("Delivery Notification", driverSendMessage, email,
+        new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(mContext, "Message sent successfully!", Toast.LENGTH_SHORT).show();
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(mContext, "Oops, message sent failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    ```
+    
+4. In `ReceiverMainActivity`, set a create alert dialog function to show the message:
+
+```java
+public void onCreateDialog(ParcelMessage message) {
+        if (!isRunning) {
+            Log.w("ReceiverMainActivity", "App paused, don't show dialog or it crashes");
+            return;
+        }
+        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+        editor.putLong("last_message_update", new Date().getTime());
+        editor.apply();
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(message.title)
+                .setMessage(message.content)
+                .setPositiveButton("Yay!!", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) { }
+                });
+        // Create the AlertDialog object and return it
+        builder.create().show();
+    }
+```
 

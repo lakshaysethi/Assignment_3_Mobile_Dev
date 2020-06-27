@@ -84,10 +84,11 @@ public class ReceiverMainActivity extends MainActivityForAllUsers {
 
                 // Lisnte to parcel notification messages
                 SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-                long timestamp = preferences.getLong("last_message_update", 0);
-                new FirebaseController().listenToMessage(user.getEmail(), timestamp, new OnSuccessListener<ParcelMessage>() {
+                long lastReceiveTimestamp = preferences.getLong("last_message_update", 0);
+                new FirebaseController().listenToMessage(user.getEmail(), lastReceiveTimestamp, new OnSuccessListener<ParcelMessage>() {
                     @Override
                     public void onSuccess(ParcelMessage parcelMessage) {
+                        // Message received from driver
                         onCreateDialog(parcelMessage);
                     }
                 });
@@ -124,7 +125,7 @@ public class ReceiverMainActivity extends MainActivityForAllUsers {
             return;
         }
         SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
-        editor.putLong("last_message_update", new Date().getTime());
+        editor.putLong("last_message_update", new Date().getTime());  //set a timestamp to only get the latest message
         editor.apply();
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
