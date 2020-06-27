@@ -517,6 +517,31 @@ return deliveryJobArrayList;
             }
         });
     }
+    public void updateUIafterLogin_lakshay(final Activity activity, boolean loginSuccess) {
+        FirebaseUser cu = getCurrentFirebaseUserObject();
+
+        DocumentReference userDocRef = db.collection("users").document(cu.getUid());
+        Task<DocumentSnapshot> userTask = userDocRef.get();
+        userTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    User user = task.getResult().toObject(User.class);
+//                    setupUserInDatabase2(user.getUsername(), user.getTypeArray().get(0));
+                    if (user.getDeliveryJobList().isEmpty()) {
+                        setupUserInDatabase2(user.getUsername(), user.getTypeArray().get(0));
+                    }
+                    try {
+                        doIntent(user, activity);
+
+                    } catch (Exception e) {
+                        Toast.makeText(activity, "Still setting you up please login again" + e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
     private void doIntent(User user, Activity activity) {
         Intent myIntent = new Intent(activity, LoginActivity.class);
         if (user.typeArray.get(0) == User.DRIVER) {
