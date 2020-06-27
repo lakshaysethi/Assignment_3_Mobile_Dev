@@ -2,11 +2,13 @@ package com.mobileassignment3.parcel_tracking_app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.Nullable;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -22,20 +24,26 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
+import com.mobileassignment3.parcel_tracking_app.activities.main_activities.MainActivityForAllUsers;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Admin;
+import com.mobileassignment3.parcel_tracking_app.model_classes.ParcelMessage;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,11 +104,12 @@ public class FirebaseController {
                 });
     }
 
+
 //    private void  makeAdminUser(){
 //        createNewUser("admin@parcel.com","12345678",User.ADMIN,"admin");
 //    }
 
-    public void writeMasterDeliveryJobsToFirestore(){
+    public List<DeliveryJob> writeMasterDeliveryJobsToFirestore(){
 
         ArrayList<DeliveryJob> deliveryJobArrayList = new ArrayList<DeliveryJob>();
         String[] senders = {"Danica", "Lakhsay", "John Casey", "Raza", "Obama", "Paul Bartlett", "Dila"};
@@ -129,6 +138,7 @@ public class FirebaseController {
         //Putting the delivery job array list into a hashmap
         masterDeliveryJobs.put("masterList", deliveryJobArrayList);
 
+
         //Get the delivery jobs document which contains all delivery items
         DocumentReference deliveryJobsDocumentRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument");
         //Add the newly created delivery jobs to the masterList
@@ -147,8 +157,9 @@ public class FirebaseController {
                     }
                 });
         //deliveryJobArrayList;
+       // writedeliveryJobsToUser(deliveryJobArrayList,"3XhbnMbM9UT9TvcuC3KvROfR4Q03",User.ADMIN);
+return deliveryJobArrayList;
 
-        writedeliveryJobsToUser(deliveryJobArrayList,"3XhbnMbM9UT9TvcuC3KvROfR4Q03",User.ADMIN);
     }
 
     public void assignParcelToDriver(final String driverUserName, ArrayList<DeliveryJob> trackingNumbers){
@@ -330,6 +341,10 @@ public class FirebaseController {
                             setupUserInDatabase(username,user,type);
                             Intent gotoLoginScreen = new Intent(activity, LoginActivity.class);
                             activity.startActivity(gotoLoginScreen);
+                           //TODO remove this
+                                writedeliveryJobsToUser((ArrayList<DeliveryJob>)writeMasterDeliveryJobsToFirestore(),getCurrentFirebaseUserObject().getUid(),User.RECIEVER);
+
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -338,6 +353,7 @@ public class FirebaseController {
                                Toast.makeText(activity, "That Email is already in use please try another email", Toast.LENGTH_LONG).show();
                            else Toast.makeText(activity, "Could not sign you up :  "+task.getException(), Toast.LENGTH_LONG).show();
                         }
+
                     }
                 });
         return getCurrentFirebaseUserObject();
@@ -382,7 +398,23 @@ public class FirebaseController {
 
         db.collection("users").document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
     }
+    private void setupUserInDatabase2(String username, int usertype) {
+        User parcelAppUser;
+        if (usertype == User.DRIVER) {
+//
+            parcelAppUser = new Driver();
+        } else if (usertype == User.RECIEVER) {
+            parcelAppUser = new Customer();
 
+        } else {
+            parcelAppUser = new Admin();
+        }
+        parcelAppUser.setType(usertype);
+        parcelAppUser.setEmail(getCurrentFirebaseUserObject().getEmail());
+        parcelAppUser.setUsername(username);
+
+        db.collection("users").document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
+    }
 
     public void loginUser(final Activity activity , String email, String password) {
         logoutCurrentUser();
@@ -492,11 +524,20 @@ public class FirebaseController {
         });
     }
 
+
     public void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
         getUser(new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
-                doIntent(user, activity);
+                if (user.getDeliveryJobList().isEmpty()){
+                    setupUserInDatabase2(user.getUsername(),user.getTypeArray().get(0));
+                }
+                try{
+                    doIntent(user, activity);
+
+                }catch(Exception e){
+                    Toast.makeText(activity, "Still setting you up please login again" +e.toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -543,7 +584,7 @@ public class FirebaseController {
 
     private void setDeliveryJobsforAllUsersOnce(final List<Customer> custList) {
         try{
-            new FirebaseController().db.collection("masterDeliveryJobs")
+            db.collection("masterDeliveryJobs")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -578,6 +619,7 @@ public class FirebaseController {
 
         }
     }
+
 /*
 //Usage of getCurrentParcelTrackerUser function:
 //
@@ -635,7 +677,8 @@ public class FirebaseController {
 ////TODO convert above copied code to cunction the if switch
 //    }
 
-    public void setArraylistInAdapterOfActivity(RecyclerView rvParcel, ReceiverMainActivity receiverMainActivity) {
+    public void setArraylistInAdapterOfActivity(final RecyclerView rvParcel, final MainActivityForAllUsers MainActivity) {
+
         String cuuid = getCurrentFirebaseUserObject().getUid();
         DocumentReference userData = db.collection("users").document(cuuid);
         Task<DocumentSnapshot> udataGetTask = userData.get();
@@ -643,28 +686,82 @@ public class FirebaseController {
         udataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot userDataDocumentSnapshot = task.getResult();
 
 
-
-                    User user =userDataDocumentSnapshot.toObject(User.class);
+                    User user = userDataDocumentSnapshot.toObject(User.class);
                     int usertype = user.typeArray.get(0);
                     if (usertype == User.DRIVER) {
 //            user = (Driver)user;
-                        djal[0] =    userDataDocumentSnapshot.toObject(Driver.class).getDeliveryJobList();
+                        djal[0] = userDataDocumentSnapshot.toObject(Driver.class).getDeliveryJobList();
                     } else if (usertype == User.RECIEVER) {
-                       djal[0] =  userDataDocumentSnapshot.toObject(Customer.class).getDeliveryJobList();
+                        djal[0] = userDataDocumentSnapshot.toObject(Customer.class).getDeliveryJobList();
 
                     } else {
-                        djal[0] =  userDataDocumentSnapshot.toObject(Admin.class).getDeliveryJobList();
+                        djal[0] = userDataDocumentSnapshot.toObject(Admin.class).getDeliveryJobList();
                     }
-
+                    MainActivity.setArraylistInAdapter(rvParcel, (ArrayList<DeliveryJob>) djal[0]);
                 }
             }
         });
-        receiverMainActivity.setArraylistInAdapter(rvParcel,(ArrayList<DeliveryJob>) djal[0]);
 
     }
 
+
+    public void sendMessageToReceiver(final String title, final String message, final String receiverEmail, final OnSuccessListener listener, final OnFailureListener failureListener) {
+        getUser(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                ParcelMessage data = new ParcelMessage(title, message, user.getEmail(), receiverEmail, (new Date()).getTime());
+                db.collection("messages").document(receiverEmail)
+                        .set(data)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                if (listener != null) {
+                                    listener.onSuccess(aVoid);
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error writing document", e);
+                                if (failureListener != null) {
+                                    failureListener.onFailure(e);
+                                }
+                            }
+                        });
+            }
+        });
+
+    }
+
+    public void listenToMessage(String receiverEmail, final long lastReceivedTimestamp, final OnSuccessListener<ParcelMessage> listener) {
+        final DocumentReference docRef = db.collection("messages").document(receiverEmail);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+
+                    if (listener != null) {
+                        ParcelMessage message = snapshot.toObject(ParcelMessage.class);
+                        if (message.timestamp >= lastReceivedTimestamp) {
+                            listener.onSuccess(message);
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
+    }
 }

@@ -24,125 +24,106 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="0dp"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="56dp"
         android:layout_marginBottom="56dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMyAccount"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/tvMyAccount">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
             android:orientation="horizontal">
-
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginRight="16dp"
                 android:src="@drawable/ic_person_black_24dp" />
-
             <TextView
                 android:id="@+id/tvMyAccountUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="24sp"
                 android:text="Username"
-                android:textSize="24sp" />
+                />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
             android:orientation="horizontal">
-
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginRight="16dp"
                 android:src="@drawable/ic_email_black_24dp" />
-
             <TextView
                 android:id="@+id/tvMyAccountEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="24sp"
                 android:text="Email Address"
-                android:textSize="24sp" />
+                />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
             android:orientation="horizontal">
-
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginRight="16dp"
                 android:src="@drawable/ic_lock_black_24dp" />
-
             <TextView
                 android:id="@+id/tvMyAccountPassward"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="24sp"
                 android:text="******"
-                android:textSize="24sp" />
+                />
 
         </LinearLayout>
 
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginBottom="24dp"-->
-        <!--            android:layout_marginTop="24dp"-->
-        <!--            android:orientation="horizontal">-->
-        <!--            <ImageView-->
-        <!--                android:layout_width="32dp"-->
-        <!--                android:layout_height="32dp"-->
-        <!--                android:layout_marginRight="16dp"-->
-        <!--                android:src="@drawable/ic_exit_to_app_black_24dp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvMyAccountExit"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:textSize="24sp"-->
-        <!--                android:text="Exit"-->
-        <!--                />-->
-
-        <!--        </LinearLayout>-->
-
-        <Button
-            android:id="@+id/btnLogout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="48dp"
             android:layout_marginBottom="64dp"
-            android:background="@drawable/button_primary"
-            android:enabled="true"
-            android:text="@string/logout"
-            android:textColor="@color/colorTextDark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etLoginPassword"
-            app:layout_constraintVertical_bias="0.2" />
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="48dp"
+                android:background="@drawable/button_primary"
+                android:enabled="true"
+                android:text="@string/logout"
+                android:textColor="@color/colorTextDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etLoginPassword"
+                app:layout_constraintVertical_bias="0.2" />
+        </LinearLayout>
+
+
+
 
 
     </LinearLayout>

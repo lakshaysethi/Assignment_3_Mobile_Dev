@@ -414,3 +414,223 @@ startActivity(intent);
 finish();
 ```
 
+## Date: 25/06/2020
+
+**Time Taken**: 1 hour
+
+**Done**: Let the user do not need to login again if not logout
+
+---
+
+### Steps
+
+In the `PermissionActivity`, chenk whether there is a user.
+
+```java
+if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, this.ACCESS_FINE_LOCATION_CODE)) {
+    FirebaseController controller = new FirebaseController();
+    FirebaseUser currentUser = controller.getCurrentFirebaseUserObject();
+    if (currentUser == null) { // Not logged in, go to LoginActivity
+        Intent myIntent = new Intent(PermissionActivity.this, LoginActivity.class);
+        startActivity(myIntent);
+        finish();
+    } else { // Login session still valid, go to activity according to user role
+        controller.updateUIafterLogin(this, true);
+    }
+}
+```
+
+## Date: 25/06/2020
+
+**Time Taken**: 3 hour
+
+**Done**: Login instrumented unit test
+
+---
+
+### Useful Links
+
+[Build instrumented unit tests](https://developer.android.com/training/testing/unit-testing/instrumented-unit-tests)
+
+### Steps
+
+1. In app's module-level build.gradle file, specify these libraries as dependencies:
+
+    ```java
+    dependencies {
+        ...
+        androidTestImplementation 'androidx.test:runner:1.1.0'
+        androidTestImplementation 'androidx.test:rules:1.1.0'
+        }
+    ```
+
+2. Specify AndroidJUnitRunner as the default test instrumentation runner in app's module-level build.gradle file:
+    
+    ```java
+    android {
+        defaultConfig {
+            ...
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        }
+    }
+    ```
+    
+3. Create the login instrumented unit test
+
+```java
+
+public class LoginInstrumentedTest {
+    private static final String EMAIL = "driver@driver.com";
+    private static final String PASSWORD = "12345678";
+    private FirebaseController firebaseController;
+    private Context appContext;
+    @Before
+    public void setup() {
+        firebaseController = new FirebaseController();
+        appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    }
+
+    @Test
+    public void useAppContext() {
+        assertEquals("com.mobileassignment3.parcel_tracking_app", appContext.getPackageName());
+    }
+
+    @Test
+    public void loginTest() {
+        firebaseController.loginUser(EMAIL, PASSWORD, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                assertEquals(true, task.isSuccessful());
+
+                // Should have user after logged in
+                FirebaseUser user = firebaseController.getCurrentFirebaseUserObject();
+                assertNotNull(user);
+                assertEquals(EMAIL, user.getEmail());
+
+                firebaseController.getUser(new OnSuccessListener<User>() {
+                    @Override
+                    public void onSuccess(User user) {
+                        // Check user role type
+                        assertEquals(User.DRIVER, (Object)user.typeArray.get(0));
+                    }
+                });
+
+            }
+        });
+    }
+}
+
+```
+
+## Date: 26/06/2020
+
+**Time Taken**: 4 hour
+
+**Done**: Use Firestore to send message
+
+---
+
+### Useful Links
+
+[Add data to Cloud Firestore](https://firebase.google.com/docs/firestore/manage-data/add-data)
+
+[Get realtime updates with Cloud Firestore](https://firebase.google.com/docs/firestore/query-data/listen#java)
+
+### Steps
+
+1. In `FirebaseController`, set the data of a document within a collection, explicitly specifying a document identifier.
+
+    ```java
+    ParcelMessage data = new ParcelMessage(title, message, user.getEmail(), receiverEmail, (new Date()).getTime());
+    db.collection("messages").document(receiverEmail)
+            .set(data)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                    if (listener != null) {
+                        listener.onSuccess(aVoid);
+                    }
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                    if (failureListener != null) {
+                        failureListener.onFailure(e);
+                    }
+                }
+            });
+    ```
+
+2. In `FirebaseController`, listen to realtime update
+
+    ```java
+    public void listenToMessage(String receiverEmail, final long timestamp, final OnSuccessListener<ParcelMessage> listener) {
+        final DocumentReference docRef = db.collection("messages").document(receiverEmail);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+    
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+    
+                    if (listener != null) {
+                        ParcelMessage message = snapshot.toObject(ParcelMessage.class);
+                        if (message.timestamp >= timestamp) {
+                            listener.onSuccess(message);
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
+    }
+    ```
+    
+3. In `DriverMainActivity`, set onClick listener
+
+    ```java
+    new FirebaseController().sendMessageToReceiver("Delivery Notification", driverSendMessage, email,
+        new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(mContext, "Message sent successfully!", Toast.LENGTH_SHORT).show();
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(mContext, "Oops, message sent failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    ```
+    
+4. In `ReceiverMainActivity`, set a create alert dialog function to show the message:
+
+```java
+public void onCreateDialog(ParcelMessage message) {
+        if (!isRunning) {
+            Log.w("ReceiverMainActivity", "App paused, don't show dialog or it crashes");
+            return;
+        }
+        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+        editor.putLong("last_message_update", new Date().getTime());
+        editor.apply();
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(message.title)
+                .setMessage(message.content)
+                .setPositiveButton("Yay!!", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) { }
+                });
+        // Create the AlertDialog object and return it
+        builder.create().show();
+    }
+```
+

@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.SignupActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -65,8 +66,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         doOnce();
-        googleSignin();
 
+
+
+       googleSignin();
     }
 
     @Override
@@ -98,8 +101,13 @@ public class LoginActivity extends AppCompatActivity {
     }
     //do once
     private void doOnce() {
-       // new FirebaseController().writeMasterDeliveryJobsToFirestore();
+       // new FirebaseController().createNewUser(this,"receiver2@receiver.com","12345678", User.RECIEVER,"JDoeReceiver");
+        //new FirebaseController().createNewUser(this,"driver2@driver.com","12345678",User.DRIVER,"lakshayDriver");
+
+        // new FirebaseController().writeMasterDeliveryJobsToFirestore();
          //new FirebaseController().setDeliveryJobsforAllUsersOnce();
+
+
     }
 
     //google signin code below

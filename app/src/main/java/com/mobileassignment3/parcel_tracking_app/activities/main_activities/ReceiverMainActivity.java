@@ -1,21 +1,27 @@
 package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
@@ -24,11 +30,13 @@ import com.mobileassignment3.parcel_tracking_app.R;
 import com.mobileassignment3.parcel_tracking_app.ReceiverMapsActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.ParcelMessage;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-public class ReceiverMainActivity extends AppCompatActivity {
+public class ReceiverMainActivity extends MainActivityForAllUsers {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,7 @@ public class ReceiverMainActivity extends AppCompatActivity {
         setActionBarStuff();
        
         setRecyclerViewStuff();
+
      }
 
     // implemented the menu item
@@ -72,6 +81,17 @@ public class ReceiverMainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(User user) {
                 getSupportActionBar().setTitle(user.getUsername());
+
+                // Lisnte to parcel notification messages
+                SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+                long lastReceiveTimestamp = preferences.getLong("last_message_update", 0);
+                new FirebaseController().listenToMessage(user.getEmail(), lastReceiveTimestamp, new OnSuccessListener<ParcelMessage>() {
+                    @Override
+                    public void onSuccess(ParcelMessage parcelMessage) {
+                        // Message received from driver
+                        onCreateDialog(parcelMessage);
+                    }
+                });
             }
         });
     
@@ -83,6 +103,41 @@ public class ReceiverMainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private boolean isRunning;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isRunning = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isRunning = false;
+    }
+
+    //Alert Dialog
+    public void onCreateDialog(ParcelMessage message) {
+        if (!isRunning) {
+            Log.w("ReceiverMainActivity", "App paused, don't show dialog or it crashes");
+            return;
+        }
+        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+        editor.putLong("last_message_update", new Date().getTime());  //set a timestamp to only get the latest message
+        editor.apply();
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(message.title)
+                .setMessage(message.content)
+                .setPositiveButton("Yay!!", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) { }
+                });
+        // Create the AlertDialog object and return it
+        builder.create().show();
+    }
+
     void setRecyclerViewStuff(){
         
         RecyclerView rvParcel = findViewById(R.id.rvMyParcel);
@@ -100,14 +155,6 @@ public class ReceiverMainActivity extends AppCompatActivity {
 
     }
 
-    public void setArraylistInAdapter( RecyclerView rvParcel,ArrayList<DeliveryJob> djal) {
-        ArrayList<DeliveryJob> deliveryJobsAssociatedWithAuthenticatedUser = djal;
-
-
-        RecyclerView.Adapter adapterParcel = new RecieverDeliveryJobAdapter(this,deliveryJobsAssociatedWithAuthenticatedUser);
-        rvParcel.setAdapter(adapterParcel);
-        
-    }
 
 
 
@@ -162,7 +209,7 @@ class RecieverDeliveryJobAdapter extends RecyclerView.Adapter<RecieverDeliveryJo
 
         Parcel firstparcel = mDataset.get(position).getListOfParcels().get(0);
         holder.textViewTitle.setText(firstparcel.getDescription());
-        holder.textViewDetail.setText( firstparcel.getType());
+        holder.textViewDetail.setText(firstparcel.getTypeString());
        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
