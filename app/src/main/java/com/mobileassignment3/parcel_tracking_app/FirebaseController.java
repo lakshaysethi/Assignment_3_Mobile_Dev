@@ -152,8 +152,8 @@ public class FirebaseController {
 
     public void assignParcelToDriver(final String driverUserName){
         //TODO Get which parcels the admin has selected, and use their tracking numbers
-        //TODO INSTEAD OF CREATING A NEW DRIVER, get the list of drivers
-        final String trackingNumber = "3f74af75-5fcd-40ec-a583-031b45c7106b";
+        //
+        final String trackingNumber = "e73d2193-8c8b-41ff-98c7-c992e6e61372";
 
         //Find the driver object the administrator has selected
 
