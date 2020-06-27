@@ -48,11 +48,17 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
         setContentView(R.layout.activity_main);
         // new OldFirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
-        setActionBarStuff();
+
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
        adminlistviewUpdate();
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setActionBarStuff();
     }
 
     private void adminlistviewUpdate() {
@@ -151,7 +157,7 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        getSupportActionBar().setTitle(new FirebaseAuthCustom().getCurrentFirebaseUserObject().getEmail());
+        getSupportActionBar().setTitle(new FirebaseAuthCustom().getCurrentParcelAppUser().get(0).getUsername());
 
         // Click the action bar title to open the profile activity
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
