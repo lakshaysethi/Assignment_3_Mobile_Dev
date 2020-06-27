@@ -464,8 +464,22 @@ return deliveryJobArrayList;
             Toast.makeText(activity, "Please Enter your EMAIL", Toast.LENGTH_LONG).show();
         }
     }
+//
+//    public void getUser(final OnSuccessListener<User> callback) {
+//        FirebaseUser cu = getCurrentFirebaseUserObject();
+//
+//        DocumentReference docRef = db.collection("users").document(cu.getUid());
+//        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                User user = documentSnapshot.toObject(User.class);
+//                if (callback != null) {
+//                    callback.onSuccess(user);
+//                }
+//            }
+//        });
+//    }
 
-    public void getUser(final OnSuccessListener<User> callback) {
         FirebaseUser cu = getCurrentFirebaseUserObject();
 
         DocumentReference docRef = db.collection("users").document(cu.getUid());
