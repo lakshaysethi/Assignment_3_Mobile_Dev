@@ -61,58 +61,6 @@ public class FirebaseController {
 //        createNewUser("admin@parcel.com","12345678",User.ADMIN,"admin");
 //    }
 
-    public List<DeliveryJob> writeMasterDeliveryJobsToFirestore(){
-
-        ArrayList<DeliveryJob> deliveryJobArrayList = new ArrayList<DeliveryJob>();
-        String[] senders = {"Danica", "Lakhsay", "John Casey", "Raza", "Obama", "Paul Bartlett", "Dila"};
-        String[] packages = {"Letter", "Laptop", "Jacket", "Certificate", "Backpack", "Payslip", "Vaccine" };
-        //Writing 7 random delivery jobs to a temp delivery job array list
-        for(int i=0;i<7;i++) {
-            Random rand1 = new Random();
-            Random rand2 = new Random();
-            int n = rand1.nextInt(7);
-            int m = rand2.nextInt(7);
-
-            DeliveryJob nDJ = new DeliveryJob();
-            nDJ.addParcel(new Parcel( packages[n] + " from " + senders[m]));
-//            Customer customer = new Customer();
-//            db.collection("users").document("S6GVxjjGlwhiNoxQfAOJ6Q08S4Z2").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//
-//                }
-//            });
-//            nDJ.setReceiver();
-            deliveryJobArrayList.add(nDJ);
-        }
-
-        Map<String, Object> masterDeliveryJobs = new HashMap<>();
-        //Putting the delivery job array list into a hashmap
-        masterDeliveryJobs.put("masterList", deliveryJobArrayList);
-
-
-        //Get the delivery jobs document which contains all delivery items
-        DocumentReference deliveryJobsDocumentRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument");
-        //Add the newly created delivery jobs to the masterList
-        deliveryJobsDocumentRef
-                .set(masterDeliveryJobs)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("FIREBASE", "Data successfully added!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("FIREBASE", "Error updating document", e);
-                    }
-                });
-        //deliveryJobArrayList;
-       // writedeliveryJobsToUser(deliveryJobArrayList,"3XhbnMbM9UT9TvcuC3KvROfR4Q03",User.ADMIN);
-return deliveryJobArrayList;
-
-    }
 
 //    public void assignParcelToDriver(final String driverUserName){
 //        //TODO Get which parcels the admin has selected, and use their tracking numbers
