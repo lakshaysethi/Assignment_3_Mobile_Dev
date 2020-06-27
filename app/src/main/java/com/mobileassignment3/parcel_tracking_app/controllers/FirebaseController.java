@@ -128,10 +128,6 @@ public class FirebaseController {
     }
 
 
-
-
-/*
-
     public void sendMessageToReceiver_lakshay(final String title, final String message, final String receiverEmail, final OnSuccessListener listener, final OnFailureListener failureListener) {
         FirebaseUser user = new FirebaseAuthCustom().getCurrentFirebaseUserObject();
         ParcelMessage data = new ParcelMessage(title, message, user.getEmail(), receiverEmail, (new Date()).getTime());
@@ -157,7 +153,6 @@ public class FirebaseController {
                 });
 
     }
-*/
 
   /*  public void getUserLakshay_s_function(final OnSuccessListener<User> callback) {
         FirebaseUser FBcu = getCurrentFirebaseUserObject();
