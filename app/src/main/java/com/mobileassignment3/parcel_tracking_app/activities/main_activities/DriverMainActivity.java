@@ -193,7 +193,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
                             email = deliveryJob.getReceiver().getEmail();
                             email = email == null ? "ALL" : email;
                         }
-                        new FirebaseController().sendMessageToReceiverLakshay_s_Function("Delivery Notification", driverSendMessage, email,
+                        new FirebaseController().sendMessageToReceiver("Delivery Notification", driverSendMessage, email,
                                 new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {

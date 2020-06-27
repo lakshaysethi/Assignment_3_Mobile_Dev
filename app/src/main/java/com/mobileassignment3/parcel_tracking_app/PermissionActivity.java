@@ -34,7 +34,7 @@ public class PermissionActivity extends AppCompatActivity {
                 startActivity(myIntent);
                 finish();
             } else { // Login session still valid, go to activity according to user role
-                controller.updateUIafterLogin(this, true);
+                controller.updateUIafterLogin_danica(this, true);
             }
         }
 
