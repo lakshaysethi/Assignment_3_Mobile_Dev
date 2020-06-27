@@ -1,5 +1,18 @@
 package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,7 +135,7 @@ public class AdminMainActivity extends MainActivityForAllUsers {
 
     }
     
-    public void assignDriver(String driverUsername) {
+    public static void assignDriver(String driverUsername) {
          Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
          Log.d("JOBS", "AssignDriver: "+ getSelectedJobs().toString());
          mainFirebase.assignParcelToDriver(driverUsername, getSelectedJobs());
@@ -199,6 +213,52 @@ public class AdminMainActivity extends MainActivityForAllUsers {
         }
         return jobs;
     }
+
+    public static class AssignDialog extends AppCompatDialogFragment {
+        private EditText editDriverUsername;
+
+
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            android.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            LayoutInflater inflater =  getActivity().getLayoutInflater();
+            View view = inflater.inflate(R.layout.layout_dialog, null);
+            builder.setView(view)
+                    .setTitle("Assign to driver")
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setPositiveButton("Assign", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String username = editDriverUsername.getText().toString();
+                            assignDriver(username);
+                        }
+                    });
+
+            editDriverUsername = view.findViewById(R.id.driverUsername);
+
+            return builder.create();
+        }
+
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        try {
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+    }
 }
 
 
@@ -269,4 +329,3 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
         return deliveryJobArray.get(position);
     }
 }
-
