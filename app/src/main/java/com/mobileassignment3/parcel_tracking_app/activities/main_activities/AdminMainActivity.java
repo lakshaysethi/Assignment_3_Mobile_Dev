@@ -132,7 +132,7 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        getSupportActionBar().setTitle(new FirebaseController().getCurrentFirebaseUserObject().getDisplayName());
+        getSupportActionBar().setTitle(new FirebaseController().getCurrentFirebaseUserObject().getEmail());
 
         // Click the action bar title to open the profile activity
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
