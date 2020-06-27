@@ -1,7 +1,18 @@
 package com.mobileassignment3.parcel_tracking_app;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Admin;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,4 +35,54 @@ public class WriteToFireStore extends FirebaseController{
         }
         return djal;
     }
+
+
+
+    public void writedeliveryJobsToUser(ArrayList<DeliveryJob> deliveryJobArrayList, final String uuid, final int userType){
+
+        final ArrayList<DeliveryJob> djal = deliveryJobArrayList;
+        db.collection("users").document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+
+
+
+                    if (userType == User.DRIVER) {
+//            user = (Driver)user;
+                        Driver parcelappuser =    doc.toObject(Driver.class);
+                        parcelappuser.setDeliveryJobList(djal);
+
+                        updateUser(parcelappuser,uuid);
+                        db.collection("users").document(uuid).set(parcelappuser);
+
+                    } else if (userType == User.RECIEVER) {
+                        Customer parcelappuser    =  doc.toObject(Customer.class);
+                        parcelappuser.setDeliveryJobList(djal);
+
+                        updateUser(parcelappuser,uuid);
+                        db.collection("users").document(uuid).set(parcelappuser);
+
+                    } else {
+                        Admin parcelappuser   =  doc.toObject(Admin.class);
+                        parcelappuser.setDeliveryJobList(djal);
+
+                        updateUser(parcelappuser,uuid);
+                        //db.collection("users").document(uuid).set(parcelappuser);
+                    }
+
+
+
+
+                }else{
+                    Log.d("Error","Firebasecontroller error");
+                }
+            }
+        });
+
+    }
+
+
+
 }
