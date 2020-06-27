@@ -98,8 +98,6 @@ public class FirebaseController {
                            // Snackbar.make(mBinding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                            // updateUI(null);
                         }
-
-                        // ...
                     }
                 });
     }

@@ -29,7 +29,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import com.mobileassignment3.parcel_tracking_app.AssignDialog;
 import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
@@ -53,8 +52,6 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         // new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
         setActionBarStuff();
@@ -76,7 +73,13 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
                                     if(document.contains("masterList")){
                                         document.get("masterList");
                                         List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
-                                        setRecyclerViewStuff( Djal);
+                                        List<DeliveryJob> jobsWithNoDriver = new ArrayList();
+                                        for (DeliveryJob jobIterator : Djal){
+                                            if (jobIterator.getAssignedDriver() == null){
+                                                jobsWithNoDriver.add(jobIterator);
+                                            }
+                                        }
+                                        setRecyclerViewStuff(jobsWithNoDriver);
                                     }
                                 }
                             } else {
@@ -192,7 +195,6 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
         }
         return jobs;
     }
-
 }
 
 
