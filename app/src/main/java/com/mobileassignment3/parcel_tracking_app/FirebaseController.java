@@ -199,9 +199,7 @@ public class FirebaseController {
                             setupUserInDatabase(username,user,type);
                             Intent gotoLoginScreen = new Intent(activity, LoginActivity.class);
                             activity.startActivity(gotoLoginScreen);
-                           //TODO remove this
-                                writedeliveryJobsToUser((ArrayList<DeliveryJob>)writeMasterDeliveryJobsToFirestore(),getCurrentFirebaseUserObject().getUid(),User.RECIEVER);
-
+                          
 
 
                         } else {
