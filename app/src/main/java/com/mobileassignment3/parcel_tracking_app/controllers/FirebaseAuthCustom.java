@@ -19,14 +19,19 @@ import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.Logi
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
+import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Admin;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.content.ContentValues.TAG;
 
 public class FirebaseAuthCustom extends FirebaseController {
+    public static List<User> userlist;
     public FirebaseUser getCurrentFirebaseUserObject() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         return currentUser;
@@ -110,11 +115,12 @@ public class FirebaseAuthCustom extends FirebaseController {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null)//TODO need to fix get display name
-                                        Toast.makeText(activity.getApplicationContext(),
-                                                "Welcome! "+ user.getDisplayName(), Toast.LENGTH_LONG).show();
-                                    else Toast.makeText(activity.getApplicationContext(),
-                                            "Failed - user is null", Toast.LENGTH_LONG).show();
+                                    //TODO need to fix get display name
+                                    if (user != null){
+                                        Toast.makeText(activity.getApplicationContext(),"Welcome! " + user.getDisplayName(), Toast.LENGTH_LONG).show();
+                                        setParcelAppUser();
+                                    }
+                                    else Toast.makeText(activity.getApplicationContext(),"Failed - user is null", Toast.LENGTH_LONG).show();
                                     updateUIafterLogin(activity,true);
 
                                 } else {
@@ -197,5 +203,37 @@ public class FirebaseAuthCustom extends FirebaseController {
         FirebaseAuth.getInstance().signOut();
     }
 
+    public void setParcelAppUser(){
+        userlist.clear();
+        String cuuid = getCurrentFirebaseUserObject().getUid();
+        DocumentReference userData = db.collection("users").document(cuuid);
+        Task<DocumentSnapshot> userDataGetTask = userData.get();
 
+        userDataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot userDataDocumentSnapshot = task.getResult();
+                    User user = userDataDocumentSnapshot.toObject(User.class);
+                    int usertype = user.typeArray.get(0);
+
+                    if (usertype == User.DRIVER) {
+                        userlist.add(userDataDocumentSnapshot.toObject(Driver.class));
+                    } else if (usertype == User.RECIEVER) {
+                        userlist.add(userDataDocumentSnapshot.toObject(Customer.class));
+                    } else {
+                        userlist.add( userDataDocumentSnapshot.toObject(Admin.class));
+                    }
+                }else{
+                    Log.d("Firestore Error","reading userdata Failed");
+                }
+            }
+        });
+    }
+
+    private List<User> getCurrentParcelAppUser() {
+
+        return  userlist;
+
+    }
 }

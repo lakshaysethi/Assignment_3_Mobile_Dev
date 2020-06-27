@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,12 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobileassignment3.parcel_tracking_app.AssignDialog;
 import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
-import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
@@ -41,7 +39,7 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
 
     Button btnAssign;
     FloatingActionButton btnRefresh;
-    FirebaseController mainFirebase = new FirebaseAuthCustom();
+    FirebaseController mainFirebase = new FirebaseController();
     ArrayList<DeliveryJob> jobs = new ArrayList();
 
     @Override
@@ -52,14 +50,20 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
 
         setActionBarStuff();
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
-        getDeliveryJobsListfromFirestore();
+       adminlistviewUpdate();
+
+
+    }
+
+    private void adminlistviewUpdate() {
+        getLatestDeliveryJobsListfromFirestore();
         mainFirebase.getAllUsers();
 
         btnAssign = findViewById(R.id.btnAssign);
         btnAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assignDialog();
+                openAssignDialog();
             }
         });
 
@@ -67,13 +71,13 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDeliveryJobsListfromFirestore();
+                getLatestDeliveryJobsListfromFirestore();
                 Toast.makeText(AdminMainActivity.this, "Refreshing", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void getDeliveryJobsListfromFirestore() {
+    private void getLatestDeliveryJobsListfromFirestore() {
         try{
             new FirebaseController().db.collection("masterDeliveryJobs")
                     .get()
@@ -105,10 +109,10 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
             Log.w("Firebase error", "Error getting documents.");
 
         }
-        //new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
+
     }
 
-    public void assignDialog() {
+    public void openAssignDialog() {
         AssignDialog dialog = new AssignDialog();
         jobs = getSelectedJobs();
         dialog.show(getSupportFragmentManager(), "Assign dialog");
