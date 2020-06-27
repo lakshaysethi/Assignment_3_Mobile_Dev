@@ -465,6 +465,7 @@ return deliveryJobArrayList;
         }
     }
 
+    public void getUser(final OnSuccessListener<User> callback) {
         FirebaseUser cu = getCurrentFirebaseUserObject();
 
         DocumentReference docRef = db.collection("users").document(cu.getUid());
@@ -472,6 +473,18 @@ return deliveryJobArrayList;
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
+                if (callback != null) {
+                    callback.onSuccess(user);
+                }
+            }
+        });
+    }
+
+//following was modified - I dont know why
+    public void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
+        getUser(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
                 if (user.getDeliveryJobList().isEmpty()){
                     setupUserInDatabase2(user.getUsername(),user.getTypeArray().get(0));
                 }
