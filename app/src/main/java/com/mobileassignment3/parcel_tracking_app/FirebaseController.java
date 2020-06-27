@@ -387,7 +387,7 @@ return deliveryJobArrayList;
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     if (user != null)//TODO need to fix get display name
                                         Toast.makeText(activity.getApplicationContext(),
-                                                "Welcome! "+ user.getEmail(), Toast.LENGTH_LONG).show();
+                                                "Welcome! "+ user.getDisplayName(), Toast.LENGTH_LONG).show();
                                     else Toast.makeText(activity.getApplicationContext(),
                                             "Failed - user is null", Toast.LENGTH_LONG).show();
                                     updateUIafterLogin(activity,true);
