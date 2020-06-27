@@ -150,9 +150,14 @@ public class FirebaseController {
         writedeliveryJobsToUser(deliveryJobArrayList,"3XhbnMbM9UT9TvcuC3KvROfR4Q03",User.ADMIN);
     }
 
-    public void assignParcelToDriver(final String driverUserName){
+    public void assignParcelToDriver(final String driverUserName, List<String> trackingNumbers){
         //TODO Get which parcels the admin has selected, and use their tracking numbers
         //
+        //Learn/understand how we're displaying parcels
+        //Add on click listener to the tick boxes
+        //Store the list of ticked items in a list in the admin main activity
+        //Pass the lsit to this function
+        //For each tracking number, assign driver.
         final String trackingNumber = "e73d2193-8c8b-41ff-98c7-c992e6e61372";
 
         //Find the driver object the administrator has selected
