@@ -2,16 +2,14 @@ package com.mobileassignment3.parcel_tracking_app;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.annotation.Nullable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,7 +22,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -36,11 +33,12 @@ import com.mobileassignment3.parcel_tracking_app.activities.main_activities.Main
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
-import com.mobileassignment3.parcel_tracking_app.model_classes.user.Admin;
 import com.mobileassignment3.parcel_tracking_app.model_classes.ParcelMessage;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Admin;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
