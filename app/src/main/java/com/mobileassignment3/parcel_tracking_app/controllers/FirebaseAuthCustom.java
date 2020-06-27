@@ -31,7 +31,7 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 public class FirebaseAuthCustom extends FirebaseController {
-    public static List<User> userlist;
+    public static List<User> userlist = new ArrayList<>();
     public FirebaseUser getCurrentFirebaseUserObject() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         return currentUser;
@@ -117,8 +117,8 @@ public class FirebaseAuthCustom extends FirebaseController {
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     //TODO need to fix get display name
                                     if (user != null){
-                                        Toast.makeText(activity.getApplicationContext(),"Welcome! " + user.getDisplayName(), Toast.LENGTH_LONG).show();
-                                        setParcelAppUser();
+                                        setParcelAppUser(activity);
+
                                     }
                                     else Toast.makeText(activity.getApplicationContext(),"Failed - user is null", Toast.LENGTH_LONG).show();
                                     updateUIafterLogin(activity,true);
@@ -203,8 +203,8 @@ public class FirebaseAuthCustom extends FirebaseController {
         FirebaseAuth.getInstance().signOut();
     }
 
-    public void setParcelAppUser(){
-        userlist.clear();
+    public void setParcelAppUser(final Activity activity){
+        if(userlist!=null)userlist.clear();
         String cuuid = getCurrentFirebaseUserObject().getUid();
         DocumentReference userData = db.collection("users").document(cuuid);
         Task<DocumentSnapshot> userDataGetTask = userData.get();
@@ -224,6 +224,8 @@ public class FirebaseAuthCustom extends FirebaseController {
                     } else {
                         userlist.add( userDataDocumentSnapshot.toObject(Admin.class));
                     }
+                    parcelAppUserOnCreate(activity);
+
                 }else{
                     Log.d("Firestore Error","reading userdata Failed");
                 }
@@ -231,7 +233,12 @@ public class FirebaseAuthCustom extends FirebaseController {
         });
     }
 
-    private List<User> getCurrentParcelAppUser() {
+    private void parcelAppUserOnCreate(Activity activity) {
+        Toast.makeText(activity.getApplicationContext(),"Welcome! " + getCurrentParcelAppUser().get(0).getUsername(), Toast.LENGTH_LONG).show();
+
+    }
+
+    public List<User> getCurrentParcelAppUser() {
 
         return  userlist;
 
