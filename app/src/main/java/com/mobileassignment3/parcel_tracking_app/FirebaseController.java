@@ -385,7 +385,7 @@ return deliveryJobArrayList;
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null)
+                                    if (user != null)//TODO need to fix get display name
                                         Toast.makeText(activity.getApplicationContext(),
                                                 "Welcome! "+ user.getEmail(), Toast.LENGTH_LONG).show();
                                     else Toast.makeText(activity.getApplicationContext(),
@@ -686,6 +686,18 @@ return deliveryJobArrayList;
         });
 
     }
+
+
+    public void getUserLakshay_s_function(final OnSuccessListener<User> callback) {
+        FirebaseUser FBcu = getCurrentFirebaseUserObject();
+
+         db.collection("users").document(FBcu.getUid()).get();
+       // User user = documentSnapshot.toObject(User.class);
+        if (callback != null) {
+          //  callback.onSuccess(user);
+        }
+    }
+
 
 
     public void getUserDanica_s_function(final OnSuccessListener<User> callback) {
