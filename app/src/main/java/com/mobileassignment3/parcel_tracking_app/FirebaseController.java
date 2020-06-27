@@ -717,6 +717,34 @@ return deliveryJobArrayList;
         });
 
     }
+    
+
+    public void sendMessageToReceiverLakshay_s_Function(final String title, final String message, final String receiverEmail, final OnSuccessListener listener, final OnFailureListener failureListener) {
+        FirebaseUser user = new FirebaseController().getCurrentFirebaseUserObject();
+        ParcelMessage data = new ParcelMessage(title, message, user.getEmail(), receiverEmail, (new Date()).getTime());
+        db.collection("messages").document(receiverEmail)
+                .set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        if (listener != null) {
+                            listener.onSuccess(aVoid);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                        if (failureListener != null) {
+                            failureListener.onFailure(e);
+                        }
+                    }
+                });  }
+
+
+
 
     public void listenToMessage(String receiverEmail, final long lastReceivedTimestamp, final OnSuccessListener<ParcelMessage> listener) {
         final DocumentReference docRef = db.collection("messages").document(receiverEmail);
