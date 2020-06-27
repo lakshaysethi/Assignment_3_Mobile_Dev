@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -45,6 +46,7 @@ import java.util.List;
 public class AdminMainActivity extends MainActivityForAllUsers implements AssignDialog.assignDialogListener{
 
     Button btnAssign;
+    FloatingActionButton btnRefresh;
     FirebaseController mainFirebase = new FirebaseController();
     ArrayList<DeliveryJob> jobs = new ArrayList();
 
@@ -58,6 +60,23 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
         getDeliveryJobsListfromFirestore();
         mainFirebase.getAllUsers();
+
+        btnAssign = findViewById(R.id.btnAssign);
+        btnAssign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assignDialog();
+            }
+        });
+
+        btnRefresh = findViewById(R.id.btnRefresh);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDeliveryJobsListfromFirestore();
+                Toast.makeText(AdminMainActivity.this, "Refreshing", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getDeliveryJobsListfromFirestore() {
@@ -92,17 +111,7 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
             Log.w("Firebase error", "Error getting documents.");
 
         }
-
         //new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
-
-        btnAssign = findViewById(R.id.btnAssign);
-        btnAssign.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 assignDialog();
-             }
-         });
-
     }
 
     public void assignDialog() {
