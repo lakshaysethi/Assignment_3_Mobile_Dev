@@ -49,7 +49,7 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
 
     Button btnAssign;
     FirebaseController mainFirebase = new FirebaseController();
-    List<String> selectedParcels = new ArrayList();
+    ArrayList<DeliveryJob> jobs = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,13 +106,12 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
 
     public void assignDialog() {
         AssignDialog dialog = new AssignDialog();
+        jobs = getSelectedJobs();
         dialog.show(getSupportFragmentManager(), "Assign dialog");
     }
-
-    //TODO Make the assigndriver actually assign to the driver
+    
     public void assignDriver(String driverUsername) {
          Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
-         ArrayList<DeliveryJob> jobs = getSelectedJobs();
          Log.d("JOBS", "AssignDriver: "+jobs.toString());
          mainFirebase.assignParcelToDriver(driverUsername, jobs);
     }
