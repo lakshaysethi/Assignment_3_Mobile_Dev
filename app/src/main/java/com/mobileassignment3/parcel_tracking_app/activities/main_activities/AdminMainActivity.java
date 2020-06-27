@@ -74,7 +74,7 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                    //Log.d("FIREBASE", document.getId() + " => " + document.getData());
                                     if(document.contains("masterList")){
                                         document.get("masterList");
                                         List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
@@ -104,18 +104,17 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
 
     }
 
-
     public void assignDialog() {
         AssignDialog dialog = new AssignDialog();
         dialog.show(getSupportFragmentManager(), "Assign dialog");
-        ArrayList<DeliveryJob> jobs = getSelectedJobs();
     }
-
 
     //TODO Make the assigndriver actually assign to the driver
     public void assignDriver(String driverUsername) {
-         Toast.makeText(AdminMainActivity.this, "Driver is " + driverUsername, Toast.LENGTH_SHORT).show();
-         mainFirebase.assignParcelToDriver(driverUsername, selectedParcels);
+         Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
+         ArrayList<DeliveryJob> jobs = getSelectedJobs();
+         Log.d("JOBS", "AssignDriver: "+jobs.toString());
+         mainFirebase.assignParcelToDriver(driverUsername, jobs);
     }
 
 
@@ -190,6 +189,7 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
             CheckBox cb = (CheckBox)rvAssignOrder.getChildAt(x).findViewById(R.id.cbAssignOrder);
             if(cb.isChecked()){
                 jobs.add(adapter.getJobAt(x));
+                Log.d("JOBS", "getSelectedJobs: " + jobs.toString());
             }
         }
         return jobs;
@@ -234,6 +234,7 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
         final MyViewHolder vh = new MyViewHolder(v, title, detail);
 
+        //This was never used because it was the wrong way of getting checked parcels
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,7 +242,6 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
                     if (jobIterator.getListOfParcels().get(0).getDescription().equals(vh.textViewTitle.getText())){
                         int e = deliveryJobArray.indexOf(jobIterator);
                         Log.d("CLICK", "Parcel clicked: " + deliveryJobArray.get(e).getTrackingNumber());
-                        FirebaseFirestore.getInstance();
 //                        selectedParcels.add(deliveryJobArray.get(e).getTrackingNumber());
                     }
                 }
