@@ -114,24 +114,24 @@ public class FirebaseController {
         String[] senders = {"Danica", "Lakhsay", "John Casey", "Raza", "Obama", "Paul Bartlett", "Dila"};
         String[] packages = {"Letter", "Laptop", "Jacket", "Certificate", "Backpack", "Payslip", "Vaccine" };
         //Writing 7 random delivery jobs to a temp delivery job array list
-        for(int i=0;i<7;i++) {
-            Random rand1 = new Random();
-            Random rand2 = new Random();
-            int n = rand1.nextInt(7);
-            int m = rand2.nextInt(7);
+            for(int i=0;i<7;i++) {
+                Random rand1 = new Random();
+                Random rand2 = new Random();
+                int n = rand1.nextInt(7);
+                int m = rand2.nextInt(7);
 
-            DeliveryJob nDJ = new DeliveryJob();
-            nDJ.addParcel(new Parcel( packages[n] + " from " + senders[m]));
-//            Customer customer = new Customer();
-//            db.collection("users").document("S6GVxjjGlwhiNoxQfAOJ6Q08S4Z2").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//
-//                }
-//            });
-//            nDJ.setReceiver();
-            deliveryJobArrayList.add(nDJ);
-        }
+                DeliveryJob nDJ = new DeliveryJob();
+                nDJ.addParcel(new Parcel( packages[n] + " from " + senders[m]));
+        //            Customer customer = new Customer();
+        //            db.collection("users").document("S6GVxjjGlwhiNoxQfAOJ6Q08S4Z2").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        //                @Override
+        //                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        //
+        //                }
+        //            });
+        //            nDJ.setReceiver();
+                deliveryJobArrayList.add(nDJ);
+            }
 
         Map<String, Object> masterDeliveryJobs = new HashMap<>();
         //Putting the delivery job array list into a hashmap
@@ -157,7 +157,7 @@ public class FirebaseController {
                 });
         //deliveryJobArrayList;
        // writedeliveryJobsToUser(deliveryJobArrayList,"3XhbnMbM9UT9TvcuC3KvROfR4Q03",User.ADMIN);
-return deliveryJobArrayList;
+        return deliveryJobArrayList;
 
     }
 
@@ -174,28 +174,35 @@ return deliveryJobArrayList;
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            public void onComplete(@NonNull final Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
-//                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                      DocumentSnapshot document  = task.getResult().getDocuments().get(0);
-//                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
-                                        if(document.contains("masterList")){
-                                            document.get("masterList");
-                                            Djal = document.toObject(MasterListDocument.class).masterList;
-                                            for (DeliveryJob deliveryJob : Djal) {
-                                                if (deliveryJob.getTrackingNumber().equals(trackingNumber)){                    //Find the delivery job you want to update
-                                                    for (User thisUser : allUsers) {
-                                                        if (thisUser.getUsername().equals(driverUserName)){                     //Find the driver object you want to assign to the job
-                                                            Driver driverToAssign = (Driver)thisUser;
-                                                            deliveryJob.setAssignedDriver(driverToAssign);                      //and assign the entered driver to it
+                                    new Thread(new Runnable() {
+                                        public void run() {
+                                            //Do whatever
+                                            //                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                            DocumentSnapshot document  = task.getResult().getDocuments().get(0);
+        //                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                            if(document.contains("masterList")){
+                                                document.get("masterList");
+
+                                                Djal = document.toObject(MasterListDocument.class).masterList;
+                                                for (DeliveryJob deliveryJob : Djal) {
+                                                    if (deliveryJob.getTrackingNumber().equals(trackingNumber)){                    //Find the delivery job you want to update
+                                                        for (User thisUser : allUsers) {
+                                                            if (thisUser.getUsername().equals(driverUserName)){                     //Find the driver object you want to assign to the job
+                                                                Driver driverToAssign = (Driver)thisUser;
+                                                                deliveryJob.setAssignedDriver(driverToAssign);                      //and assign the entered driver to it
+                                                            }
                                                         }
                                                     }
-                                                }
-                                                else{
-                                                    Log.d("Firebase error", "Entered driver not found");
+                                                    else{
+                                                        Log.d("Firebase error", "Entered driver not found");
+                                                    }
                                                 }
                                             }
                                         }
+                                    }).start();
+
 
                                 } else {
                                     Log.w("Firebase error", "Error getting documents.", task.getException());
