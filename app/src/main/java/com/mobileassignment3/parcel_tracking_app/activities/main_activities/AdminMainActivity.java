@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -33,13 +34,14 @@ import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminMainActivity extends MainActivityForAllUsers implements AssignDialog.assignDialogListener{
 
     Button btnAssign;
     FloatingActionButton btnRefresh;
-    FirebaseController mainFirebase = new FirebaseController();
+    FirebaseController mainFirebase = new FirebaseAuthCustom();
     ArrayList<DeliveryJob> jobs = new ArrayList();
 
     @Override
