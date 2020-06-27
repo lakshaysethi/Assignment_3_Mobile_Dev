@@ -70,7 +70,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
                     }catch (Exception e) {
-                        Toast.makeText(SignupActivity.this, "Error!!!!!! create new user in FirebaseController", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Error!!!!!! create new user in OldFirebaseController", Toast.LENGTH_SHORT).show();
                         Toast.makeText(SignupActivity.this, e.toString(), Toast.LENGTH_LONG).show();
                     }
 

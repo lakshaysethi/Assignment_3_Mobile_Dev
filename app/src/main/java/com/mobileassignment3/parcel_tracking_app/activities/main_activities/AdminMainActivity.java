@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mobileassignment3.parcel_tracking_app.FirebaseController;
+import com.mobileassignment3.parcel_tracking_app.OldFirebaseController;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobileassignment3.parcel_tracking_app.AssignDialog;
@@ -39,14 +39,14 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
 
     Button btnAssign;
     FloatingActionButton btnRefresh;
-    FirebaseController mainFirebase = new FirebaseController();
+    OldFirebaseController mainFirebase = new OldFirebaseController();
     ArrayList<DeliveryJob> jobs = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
+        // new OldFirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
         setActionBarStuff();
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
@@ -79,7 +79,7 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
 
     private void getLatestDeliveryJobsListfromFirestore() {
         try{
-            new FirebaseController().db.collection("masterDeliveryJobs")
+            new OldFirebaseController().db.collection("masterDeliveryJobs")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override

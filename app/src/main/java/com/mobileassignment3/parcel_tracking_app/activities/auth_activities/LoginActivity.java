@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        //new FirebaseController().writeMasterDeliveryJobsToFirestore();
+        //new OldFirebaseController().writeMasterDeliveryJobsToFirestore();
         //will hide the title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //hide the title bar
@@ -102,11 +102,11 @@ public class LoginActivity extends AppCompatActivity {
     }
     //do once
     private void doOnce() {
-       // new FirebaseController().createNewUser(this,"receiver2@receiver.com","12345678", User.RECIEVER,"JDoeReceiver");
-        //new FirebaseController().createNewUser(this,"driver2@driver.com","12345678",User.DRIVER,"lakshayDriver");
+       // new OldFirebaseController().createNewUser(this,"receiver2@receiver.com","12345678", User.RECIEVER,"JDoeReceiver");
+        //new OldFirebaseController().createNewUser(this,"driver2@driver.com","12345678",User.DRIVER,"lakshayDriver");
 
-        // new FirebaseController().writeMasterDeliveryJobsToFirestore();
-         //new FirebaseController().setDeliveryJobsforAllUsersOnce();
+        // new OldFirebaseController().writeMasterDeliveryJobsToFirestore();
+         //new OldFirebaseController().setDeliveryJobsforAllUsersOnce();
 
 
     }
