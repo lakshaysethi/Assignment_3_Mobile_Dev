@@ -52,7 +52,7 @@ public class LoginInstrumentedTest {
                 assertNotNull(user);
                 assertEquals(EMAIL, user.getEmail());
 
-                firebaseController.getUserDanica_s_function(new OnSuccessListener<User>() {
+                firebaseController.getUser(new OnSuccessListener<User>() {
                     @Override
                     public void onSuccess(User user) {
                         // Check user role type

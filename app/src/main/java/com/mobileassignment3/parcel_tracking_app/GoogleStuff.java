@@ -27,7 +27,7 @@ public  class GoogleStuff extends FirebaseController{
             if(cu!=null){
                 Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_SHORT).show();
             }
-            updateUIafterLogin_danica(activity,true);
+            updateUIafterLogin(activity,true);
 
 
 

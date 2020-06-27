@@ -84,7 +84,7 @@ public class ReceiverMainActivity extends MainActivityForAllUsers {
         });
     }
         void makeDialogue(){
-            new FirebaseController().getUserDanica_s_function(new OnSuccessListener<User>() {
+            new FirebaseController().getUser(new OnSuccessListener<User>() {
                 @Override
                 public void onSuccess(User user) {
                     getSupportActionBar().setTitle(user.getUsername());

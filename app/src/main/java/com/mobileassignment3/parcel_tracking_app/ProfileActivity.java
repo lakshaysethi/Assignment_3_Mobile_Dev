@@ -28,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        new FirebaseController().getUserDanica_s_function(new OnSuccessListener<User>() {
+        new FirebaseController().getUser(new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
                 getSupportActionBar().setTitle(user.getUsername());
@@ -39,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
         TextView emailTextView = findViewById(R.id.tvMyAccountEmail);
         final TextView usernameTextView = findViewById(R.id.tvMyAccountUsername);
 
-        new FirebaseController().getUserDanica_s_function(new OnSuccessListener<User>() {
+        new FirebaseController().getUser(new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
                 usernameTextView.setText(user.getUsername());
