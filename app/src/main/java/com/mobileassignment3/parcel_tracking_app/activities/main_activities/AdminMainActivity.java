@@ -35,13 +35,12 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminMainActivity extends MainActivityForAllUsers implements AssignDialog.assignDialogListener{
+public class AdminMainActivity extends MainActivityForAllUsers {
 
     Button btnAssign;
     FloatingActionButton btnRefresh;
     OldFirebaseController mainFirebase = new OldFirebaseController();
-    ArrayList<DeliveryJob> jobs = new ArrayList();
-
+    RecyclerView rvAssignOrder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +49,8 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
 
 
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
-       adminlistviewUpdate();
+        getLatestDeliveryJobsListfromFirestore();
+        adminlistviewUpdate();
         setActionBarStuff();
 
     }
@@ -58,7 +58,7 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
 
 
     private void adminlistviewUpdate() {
-        getLatestDeliveryJobsListfromFirestore();
+
         mainFirebase.getAllUsers();
 
         btnAssign = findViewById(R.id.btnAssign);
@@ -116,15 +116,15 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
 
     public void openAssignDialog() {
         AssignDialog dialog = new AssignDialog();
-        jobs = getSelectedJobs();
+
         dialog.show(getSupportFragmentManager(), "Assign dialog");
 
     }
     
     public void assignDriver(String driverUsername) {
          Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
-         Log.d("JOBS", "AssignDriver: "+jobs.toString());
-         mainFirebase.assignParcelToDriver(driverUsername, jobs);
+         Log.d("JOBS", "AssignDriver: "+ getSelectedJobs().toString());
+         mainFirebase.assignParcelToDriver(driverUsername, getSelectedJobs());
     }
 
 
