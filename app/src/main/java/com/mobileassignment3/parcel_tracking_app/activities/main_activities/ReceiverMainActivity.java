@@ -209,7 +209,7 @@ class RecieverDeliveryJobAdapter extends RecyclerView.Adapter<RecieverDeliveryJo
 
         Parcel firstparcel = mDataset.get(position).getListOfParcels().get(0);
         holder.textViewTitle.setText(firstparcel.getDescription());
-        holder.textViewDetail.setText( firstparcel.getType());
+        holder.textViewDetail.setText(firstparcel.getTypeString());
        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

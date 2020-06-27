@@ -639,7 +639,7 @@ return deliveryJobArrayList;
 
 
 
-    public void setArraylistInAdapterOfActivity(RecyclerView rvParcel, MainActivityForAllUsers MainActivity) {
+    public void setArraylistInAdapterOfActivity(final RecyclerView rvParcel, final MainActivityForAllUsers MainActivity) {
 
         String cuuid = getCurrentFirebaseUserObject().getUid();
         DocumentReference userData = db.collection("users").document(cuuid);
@@ -663,11 +663,11 @@ return deliveryJobArrayList;
                     } else {
                         djal[0] = userDataDocumentSnapshot.toObject(Admin.class).getDeliveryJobList();
                     }
-
+                    MainActivity.setArraylistInAdapter(rvParcel, (ArrayList<DeliveryJob>) djal[0]);
                 }
             }
         });
-        MainActivity.setArraylistInAdapter(rvParcel, (ArrayList<DeliveryJob>) djal[0]);
+
     }
 
 
