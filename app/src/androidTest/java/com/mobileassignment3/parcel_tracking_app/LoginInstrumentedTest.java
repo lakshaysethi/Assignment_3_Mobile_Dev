@@ -1,7 +1,6 @@
 package com.mobileassignment3.parcel_tracking_app;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -53,7 +52,7 @@ public class LoginInstrumentedTest {
                 assertNotNull(user);
                 assertEquals(EMAIL, user.getEmail());
 
-                firebaseController.getUser(new OnSuccessListener<User>() {
+                firebaseController.getUserDanica_s_function(new OnSuccessListener<User>() {
                     @Override
                     public void onSuccess(User user) {
                         // Check user role type

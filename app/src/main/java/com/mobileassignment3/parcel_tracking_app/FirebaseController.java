@@ -688,8 +688,23 @@ return deliveryJobArrayList;
     }
 
 
+    public void getUserDanica_s_function(final OnSuccessListener<User> callback) {
+        FirebaseUser cu = getCurrentFirebaseUserObject();
+
+        DocumentReference docRef = db.collection("users").document(cu.getUid());
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User user = documentSnapshot.toObject(User.class);
+                if (callback != null) {
+                    callback.onSuccess(user);
+                }
+            }
+        });
+    }
+
     public void sendMessageToReceiver(final String title, final String message, final String receiverEmail, final OnSuccessListener listener, final OnFailureListener failureListener) {
-        getUser(new OnSuccessListener<User>() {
+        getUserDanica_s_function(new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
                 ParcelMessage data = new ParcelMessage(title, message, user.getEmail(), receiverEmail, (new Date()).getTime());

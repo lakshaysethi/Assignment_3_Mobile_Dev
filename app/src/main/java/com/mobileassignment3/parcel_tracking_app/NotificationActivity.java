@@ -29,7 +29,7 @@ public class NotificationActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        new FirebaseController().getUser(new OnSuccessListener<User>() {
+        new FirebaseController().getUserDanica_s_function(new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
                 getSupportActionBar().setTitle(user.getUsername());
