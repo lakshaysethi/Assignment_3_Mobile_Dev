@@ -175,9 +175,10 @@ public class FirebaseAuthCustom extends FirebaseController {
         getUser(new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
-                if (user.getDeliveryJobList().isEmpty()){
+                if(user.getDeliveryJobList()==null){
                     setupUserInDatabase2(user.getUsername(),user.getTypeArray().get(0));
                 }
+
                 try{
                     doIntent(user, activity);
 

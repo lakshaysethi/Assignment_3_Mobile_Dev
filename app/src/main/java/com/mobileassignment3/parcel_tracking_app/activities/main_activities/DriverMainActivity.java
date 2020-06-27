@@ -48,7 +48,7 @@ public class DriverMainActivity extends MainActivityForAllUsers {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle(new FirebaseAuthCustom().getCurrentFirebaseUserObject().getDisplayName());
+        getSupportActionBar().setTitle(FirebaseAuthCustom.userlist.get(0).getUsername());
 
         // Click the action bar title to open the profile activity
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
