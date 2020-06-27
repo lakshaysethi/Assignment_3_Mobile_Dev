@@ -1,9 +1,6 @@
-package com.mobileassignment3.parcel_tracking_app;
+package com.mobileassignment3.parcel_tracking_app.controllers;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +10,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -21,13 +17,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
-import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
-import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.MainActivityForAllUsers;
-import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
-import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.ParcelMessage;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Admin;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
@@ -37,7 +29,6 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import static android.content.ContentValues.TAG;
 

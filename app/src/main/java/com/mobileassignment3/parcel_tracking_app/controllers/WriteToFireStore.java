@@ -1,4 +1,4 @@
-package com.mobileassignment3.parcel_tracking_app;
+package com.mobileassignment3.parcel_tracking_app.controllers;
 
 import android.util.Log;
 
@@ -7,6 +7,9 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Admin;
@@ -15,16 +18,19 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class WriteToFireStore extends FirebaseController{
+public class WriteToFireStore extends FirebaseController {
     public void  writeMasterDeliveryJobsToFirestore(){
         //TODO make this function redundent - we should not create random delivery jobs in production
-        db.collection("masterDeliveryJobs").document("lakshay_test_deliveryJobsDoc").update("masterList",returnrandomDeliveryJobs());
+        MasterListDocument masterlist = new MasterListDocument();
+        masterlist.setMasterList(returnrandomDeliveryJobs());
+        db.collection("masterDeliveryJobs").document("lakshay_test_deliveryJobsDoc").set(masterlist);
     }
 
-    private ArrayList<DeliveryJob> returnrandomDeliveryJobs() {
-        ArrayList<DeliveryJob> djal  = new ArrayList<DeliveryJob>();
+    private List<DeliveryJob> returnrandomDeliveryJobs() {
+        List<DeliveryJob> djal  = new ArrayList<DeliveryJob>();
         String[]  senders = {"Danica", "Lakhsay", "John Casey", "Raza", "Obama", "Paul Bartlett", "Dila"};
         String[]  packages = {"Letter", "Laptop", "Jacket", "Certificate", "Backpack", "Payslip", "Vaccine" };
         for(int i=0;i<7;i++) {

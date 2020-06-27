@@ -1,4 +1,4 @@
-package com.mobileassignment3.parcel_tracking_app;
+package com.mobileassignment3.parcel_tracking_app.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,7 +26,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import static android.content.ContentValues.TAG;
 
-public class FirebaseAuthCustom extends  FirebaseController{
+public class FirebaseAuthCustom extends FirebaseController {
     public FirebaseUser getCurrentFirebaseUserObject() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         return currentUser;

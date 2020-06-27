@@ -1,4 +1,4 @@
-package com.mobileassignment3.parcel_tracking_app;
+package com.mobileassignment3.parcel_tracking_app.controllers;
 
 import android.app.Activity;
 import android.util.Log;
@@ -13,10 +13,12 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseController;
 
 import static android.content.ContentValues.TAG;
 
-public  class GoogleStuff extends FirebaseController{
+public  class GoogleStuff extends FirebaseController {
 
     public void handleGoogleSignIn(GoogleSignInAccount account, Activity activity) {
         try{
