@@ -24,8 +24,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
@@ -41,9 +39,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import static android.content.ContentValues.TAG;
@@ -51,12 +47,10 @@ import static android.content.ContentValues.TAG;
 public class FirebaseController {
     public FirebaseAuth mAuth;
    public  FirebaseFirestore db = FirebaseFirestore.getInstance();
-    QueryDocumentSnapshot theDocument;
 
     // Initialize Firebase Auth
     public FirebaseController() {
         mAuth = FirebaseAuth.getInstance();
-      //makeAdminUser();
     }
 
 
