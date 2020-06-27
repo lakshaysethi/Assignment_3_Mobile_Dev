@@ -73,23 +73,7 @@ public class ReceiverMainActivity extends MainActivityForAllUsers {
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        new FirebaseController().getUser(new OnSuccessListener<User>() {
-            @Override
-            public void onSuccess(User user) {
-                getSupportActionBar().setTitle(user.getUsername());
-
-                // Lisnte to parcel notification messages
-                SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-                long lastReceiveTimestamp = preferences.getLong("last_message_update", 0);
-                new FirebaseController().listenToMessage(user.getEmail(), lastReceiveTimestamp, new OnSuccessListener<ParcelMessage>() {
-                    @Override
-                    public void onSuccess(ParcelMessage parcelMessage) {
-                        // Message received from driver
-                        onCreateDialog(parcelMessage);
-                    }
-                });
-            }
-        });
+        makeDialogue();
     
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +83,26 @@ public class ReceiverMainActivity extends MainActivityForAllUsers {
             }
         });
     }
+        void makeDialogue(){
+            new FirebaseController().getUserDanica_s_function(new OnSuccessListener<User>() {
+                @Override
+                public void onSuccess(User user) {
+                    getSupportActionBar().setTitle(user.getUsername());
+
+                    // Lisnte to parcel notification messages
+                    SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+                    long lastReceiveTimestamp = preferences.getLong("last_message_update", 0);
+                    new FirebaseController().listenToMessage(user.getEmail(), lastReceiveTimestamp, new OnSuccessListener<ParcelMessage>() {
+                        @Override
+                        public void onSuccess(ParcelMessage parcelMessage) {
+                            // Message received from driver
+                            onCreateDialog(parcelMessage);
+                        }
+                    });
+                }
+            });
+        }
+
 
     private boolean isRunning;
 
