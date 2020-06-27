@@ -213,9 +213,9 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
         public TextView textViewTitle;
         public TextView textViewDetail;
 
-        public MyViewHolder(CardView v, TextView tv1, TextView tv2) {
-            super(v);
-            cardView = v;
+        public MyViewHolder(CardView cardview, TextView tv1, TextView tv2) {
+            super(cardview);
+            cardView = cardview;
             textViewTitle = tv1;
             textViewDetail = tv2;
         }
