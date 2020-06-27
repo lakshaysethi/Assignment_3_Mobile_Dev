@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.controllers.WriteToFireStore;
 
 public class SplashActivity extends AppCompatActivity {
@@ -36,8 +37,17 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 3000); //means 3 seconds
 
+        doEverytime();
+
         doOnce();
 
+    }
+
+    private void doEverytime() {
+        FirebaseAuthCustom controller = new FirebaseAuthCustom();
+        if(controller.getCurrentFirebaseUserObject()!=null){
+            controller.setParcelAppUser(this);
+        }
     }
 
     public void doOnce(){
