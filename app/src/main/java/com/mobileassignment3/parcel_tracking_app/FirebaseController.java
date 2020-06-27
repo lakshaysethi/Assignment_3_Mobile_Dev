@@ -480,6 +480,24 @@ return deliveryJobArrayList;
 //        });
 //    }
 
+//following was modified - I dont know why
+//    public void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
+////        getUser(new OnSuccessListener<User>() {
+////            @Override
+////            public void onSuccess(User user) {
+////                if (user.getDeliveryJobList().isEmpty()){
+////                    setupUserInDatabase2(user.getUsername(),user.getTypeArray().get(0));
+////                }
+////                try{
+////                    doIntent(user, activity);
+////
+////                }catch(Exception e){
+////                    Toast.makeText(activity, "Still setting you up please login again" +e.toString(), Toast.LENGTH_SHORT).show();
+////                }
+////            }
+////        });
+//    }
+    public void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
         FirebaseUser cu = getCurrentFirebaseUserObject();
 
         DocumentReference docRef = db.collection("users").document(cu.getUid());
@@ -487,18 +505,6 @@ return deliveryJobArrayList;
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
-                if (callback != null) {
-                    callback.onSuccess(user);
-                }
-            }
-        });
-    }
-
-
-    public void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
-        getUser(new OnSuccessListener<User>() {
-            @Override
-            public void onSuccess(User user) {
                 if (user.getDeliveryJobList().isEmpty()){
                     setupUserInDatabase2(user.getUsername(),user.getTypeArray().get(0));
                 }
@@ -511,7 +517,6 @@ return deliveryJobArrayList;
             }
         });
     }
-
     private void doIntent(User user, Activity activity) {
         Intent myIntent = new Intent(activity, LoginActivity.class);
         if (user.typeArray.get(0) == User.DRIVER) {
