@@ -46,7 +46,7 @@ public class FirebaseController {
     public FirebaseAuth mAuth;
    public  FirebaseFirestore db = FirebaseFirestore.getInstance();
     QueryDocumentSnapshot theDocument;
-    final Map<String, Object> finalAllUsers = new HashMap<>();
+    ArrayList <User> allUsers = new ArrayList<User>();
     private Object userData;
 
     // Initialize Firebase Auth
@@ -54,7 +54,6 @@ public class FirebaseController {
         mAuth = FirebaseAuth.getInstance();
       //makeAdminUser();
     }
-
 
     public void handleGoogleSignIn(GoogleSignInAccount account,Activity activity) {
         try{
@@ -66,8 +65,6 @@ public class FirebaseController {
                 Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_SHORT).show();
             }
             updateUIafterLogin(activity,true);
-
-      
 
         }catch (Exception e){
             Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_SHORT).show();
@@ -153,84 +150,93 @@ public class FirebaseController {
         writedeliveryJobsToUser(deliveryJobArrayList,"3XhbnMbM9UT9TvcuC3KvROfR4Q03",User.ADMIN);
     }
 
-//    public void assignParcelToDriver(final String driverUserName){
-//        //TODO Get which parcels the admin has selected, and use their tracking numbers
-//        //TODO INSTEAD OF CREATING A NEW DRIVER, get the list of drivers
-//        final String trackingNumber = "3f74af75-5fcd-40ec-a583-031b45c7106b";
-//        //drivertwo
-//
-//        //Find the driver object the administrator has selected
-//        for (Map.Entry<String, Object> entry : finalAllUsers.entrySet()) {
-//            userData  = entry.getValue();
-//            if (userData == driverUserName){
-//                Log.d("USER", "UUID = "+ entry.getKey());
-//            }
-//            Log.d("TEMP2",entry.getKey() + "/" + entry.getValue());
-//        }
-//        final Driver temp = new Driver();
-//        temp.setUsername(driverUserName);
-//
-//        //Get the current list of delivery jobs
-//        try{
-//            db.collection("masterDeliveryJobs")
-//                    .get()
-//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                            if (task.isSuccessful()) {
-//                                for (QueryDocumentSnapshot document : task.getResult()) {
-//                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
-//                                    if(document.contains("masterList")){
-//                                        document.get("masterList");
-//                                        List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
-//                                        //Find the delivery job you want to update and update it
-//                                        for (DeliveryJob deliveryJob : Djal) {
-//                                            if (deliveryJob.getTrackingNumber().equals(trackingNumber)){
-//                                                //and assign this to that driver object
-//                                                deliveryJob.setAssignedDriver(temp);
-//                                            }
-//                                        }
-//                                        Map<String, Object> masterDeliveryJobs = new HashMap<>();
-//                                        //Putting the delivery job array list into a hashmap
-//                                        masterDeliveryJobs.put("masterList", Djal);
-//                                        //setDeliveryJobsDocumentData(masterDeliveryJobs);
-//                                    }
-//                                }
-//                            } else {
-//                                Log.w("Firebase error", "Error getting documents.", task.getException());
-//                            }
-//                        }
-//                    });
-//
-//        }catch (Exception e){
-//            Log.w("Firebase error", "Error getting documents.");
-//        }
-//    }
+    public void assignParcelToDriver(final String driverUserName, List<String> trackingNumbers){
+        //TODO Get which parcels the admin has selected, and use their tracking numbers
+        //
+        //Learn/understand how we're displaying parcels
+        //Add on click listener to the tick boxes
+        //Store the list of ticked items in a list in the admin main activity
+        //Pass the lsit to this function
+        //For each tracking number, assign driver.
+        final String trackingNumber = "e73d2193-8c8b-41ff-98c7-c992e6e61372";
 
-//    public Map<String, Object> getAllUsers(){
-//
-//        try {
-//            db.collection("users")
-//                    .get()
-//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                            if (task.isSuccessful()) {
-//                                for (QueryDocumentSnapshot document : task.getResult()) {
-//                                    //put the UUId of the user and the user data into the allUsers hashmap
-//                                    finalAllUsers.put(document.getId(), document.getData());
-//                                }
-//                                Log.d("Temp", finalAllUsers.toString());
-//                            } else {
-//                                Log.d(TAG, "Error getting documents: ", task.getException());
-//                            }
-//                        }
-//                    });
-//        } catch (Exception e) {
-//            Log.w("Firebase error", "Error getting documents.");
-//        }
-//        return finalAllUsers;
-//    }
+        //Find the driver object the administrator has selected
+
+        //Get the current list of delivery jobs
+        try{
+            db.collection("masterDeliveryJobs")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                    if(document.contains("masterList")){
+                                        document.get("masterList");
+                                        List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
+                                        //Find the delivery job you want to update and update it
+                                        for (DeliveryJob deliveryJob : Djal) {
+                                            if (deliveryJob.getTrackingNumber().equals(trackingNumber)){
+                                                //and assign this to that driver object
+                                                for (User thisUser : allUsers) {
+                                                    if (thisUser.getUsername().equals(driverUserName)){
+                                                        Driver driverToAssign = (Driver)thisUser;
+                                                        deliveryJob.setAssignedDriver(driverToAssign);
+                                                        updateMasterDeliveryJobList(Djal);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        Map<String, Object> masterDeliveryJobs = new HashMap<>();
+                                        //Putting the delivery job array list into a hashmap
+                                        masterDeliveryJobs.put("masterList", Djal);
+                                        //setDeliveryJobsDocumentData(masterDeliveryJobs);
+                                    }
+                                }
+                            } else {
+                                Log.w("Firebase error", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+
+        }catch (Exception e){
+            Log.w("Firebase error", "Error getting documents.");
+        }
+    }
+
+    private void updateMasterDeliveryJobList(List<DeliveryJob> updatedDeliveryJobList) {
+        //This function will take a list of delivery jobs
+        //And overwrite the existing devieryJobsDocument
+        db.collection("masterDeliveryJobs").document("deliveryJobsDocument")
+                .update("masterList", updatedDeliveryJobList);
+    }
+
+    public void getAllUsers(){
+        try {
+            db.collection("users")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    //put the UUId of the user and the user data into the allUsers hashmap
+                                    Driver tempDriver = new Driver();
+                                    tempDriver = document.toObject(Driver.class);
+                                    allUsers.add(tempDriver);
+                                }
+                                Log.d("Temp", allUsers.toString());
+                            }
+                            else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            Log.w("Firebase error", "Error getting documents.");
+        }
+    }
 
     public void writedeliveryJobsToUser(ArrayList<DeliveryJob> deliveryJobArrayList, final String uuid, final int userType){
 
@@ -258,7 +264,6 @@ public class FirebaseController {
 
 //     //Assign a delivery job list to a driver
 //     public void writedeliveryJobsToDriver(   ArrayList<DeliveryJob> deliveryJobArrayList){
-// >>>>>>> assign2
 
         final ArrayList<DeliveryJob> djal = deliveryJobArrayList;
         db.collection("users").document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

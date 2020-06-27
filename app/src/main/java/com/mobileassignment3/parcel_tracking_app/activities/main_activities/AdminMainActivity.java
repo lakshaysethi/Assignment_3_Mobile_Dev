@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -46,6 +47,8 @@ import java.util.Map;
 public class AdminMainActivity extends AppCompatActivity implements AssignDialog.assignDialogListener{
 
     Button btnAssign;
+    FirebaseController mainFirebase = new FirebaseController();
+    List<String> selectedParcels = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +61,7 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
         setActionBarStuff();
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
         getDeliveryJobsListfromFirestore();
-        Map<String, Object> allUsers = new HashMap<>();
-        //allUsers = new FirebaseController().getAllUsers();
-
+        mainFirebase.getAllUsers();
     }
 
     private void getDeliveryJobsListfromFirestore() {
@@ -115,7 +116,7 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
     //TODO Make the assigndriver actually assign to the driver
     public void assignDriver(String driverUsername) {
          Toast.makeText(AdminMainActivity.this, "Driver is " + driverUsername, Toast.LENGTH_SHORT).show();
-         new FirebaseController().assignParcelToDriver(driverUsername);
+         mainFirebase.assignParcelToDriver(driverUsername, selectedParcels);
     }
 
 
@@ -228,10 +229,23 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
         // create a new view
         CardView v = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cards_assign_order, parent, false);
-        TextView title = (TextView) v.findViewById(R.id.cardOrderTitle);
+        final TextView title = (TextView) v.findViewById(R.id.cardOrderTitle);
         TextView detail = (TextView) v.findViewById(R.id.cardOrderDetail);
+        CheckBox check = v.findViewById(R.id.cbAssignOrder);
 
-        MyViewHolder vh = new MyViewHolder(v, title, detail);
+        final MyViewHolder vh = new MyViewHolder(v, title, detail);
+
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // Log.d("CLICK", "Parcel clicked: " + deliveryJobArray.get(1).getListOfParcels().get(0).getDescription());
+                int e =  deliveryJobArray.indexOf(vh.textViewTitle.getText());
+                Log.d("INDEX", Integer.toString(e));
+                Log.d("CLICK", "Parcel clicked: " + vh.textViewTitle.getText());
+
+                //                Log.d("CLICK", "Parcel clicked: " + deliveryJobArray.get(0).getTrackingNumber());
+            }
+        });
         return vh;
     }
 
@@ -239,6 +253,22 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewTitle.setText(deliveryJobArray.get(position).getListOfParcels().get(0).getDescription());
         holder.textViewDetail.setText(deliveryJobArray.get(position).getStatusString());
+//        holder.cbAssignOrder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View arg0) {
+//                final boolean isChecked = holder.checkBoxparent.isChecked();
+//                for (int i=0; i<approvePendingDataArrayList.size();i++) {
+//                    if (isChecked) {
+//                        if (!arrayListUser.contains(approvePendingDataArrayList.get(position).getmText1()))
+//                            arrayListUser.add(i, approvePendingDataArrayList.get(position).getmText1());
+//                        arrayData=arrayListUser.toString().replace("[", "").replace("]", "").trim();
+//                    } else {
+//                        arrayListUser.remove(approvePendingDataArrayList.get(position).getmText1());
+//                        arrayData=arrayListUser.toString().replace("[", "").replace("]", "").trim();
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
