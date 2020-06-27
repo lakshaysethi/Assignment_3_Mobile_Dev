@@ -342,22 +342,22 @@ Click on `File >>>> New >>>> Vector Asset`, can select the icon and it will be a
 
 1.3 delivery attribute(basic, necessary): delivery address, receiver, status, assugned driver, tracking number
 
-1.4 delivery status(the name used is only for explanation, you can change the better name): ready_to_delivery_today, out_for_delivery, on_the_way, delivered
+1.4 delivery status: `ready_to_delivery_today`, `out_for_delivery`, `on_the_way`, `delivered`
 
-2.1 administrator function: get(delivery.ready_to_delivery_today), assign(delivery.ready_to_delivery_today)
+2.1 administrator function: `get(delivery.ready_to_delivery_today)`, `assign(delivery.ready_to_delivery_today)`
 
-2.2 after the administrator assign the delivery, the delivery status change to 'out_for_delivery'
+2.2 after the administrator assign the delivery, the delivery status change to `out_for_delivery`
 
-3.1 driver function: get(delivery.assigned_to_me), sendMessage(delivery_of_the_receiver,receiver, estimated_time)
+3.1 driver function: `get(delivery.assigned_to_me)`, `sendMessage(delivery_of_the_receiver,receiver, estimated_time)`
 
-3.2 after the driver send the delivery message to the receiver, the delivery status change to 'on_the_way'
+3.2 after the driver send the delivery message to the receiver, the delivery status change to `on_the_way`
 
-4.1 receiver function: get(delivery.receiver_is_me),
-receiveMessage(when mine delivery will come to me),
-view(tracking_delivery),
-confirm(receive_the_delivery)
+4.1 receiver function: `get(delivery.receiver_is_me)`,
+`receiveMessage(when mine delivery will come to me)`,
+`view(tracking_delivery)`,
+`confirm(receive_the_delivery)`
 
-4.2 after the receiver confirm the delivery, the delivery status change to 'delivered'
+4.2 after the receiver confirm the delivery, the delivery status change to `delivered`
 
 
 ## Date: 19/06/2020
@@ -613,24 +613,89 @@ public class LoginInstrumentedTest {
     
 4. In `ReceiverMainActivity`, set a create alert dialog function to show the message:
 
-```java
-public void onCreateDialog(ParcelMessage message) {
-        if (!isRunning) {
-            Log.w("ReceiverMainActivity", "App paused, don't show dialog or it crashes");
-            return;
+    ```java
+    public void onCreateDialog(ParcelMessage message) {
+            if (!isRunning) {
+                Log.w("ReceiverMainActivity", "App paused, don't show dialog or it crashes");
+                return;
+            }
+            SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+            editor.putLong("last_message_update", new Date().getTime());
+            editor.apply();
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(message.title)
+                    .setMessage(message.content)
+                    .setPositiveButton("Yay!!", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) { }
+                    });
+            // Create the AlertDialog object and return it
+            builder.create().show();
         }
-        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
-        editor.putLong("last_message_update", new Date().getTime());
-        editor.apply();
-        // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(message.title)
-                .setMessage(message.content)
-                .setPositiveButton("Yay!!", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) { }
+    ```
+
+## Date: 27/06/2020
+
+**Time Taken**: 2 hour
+
+**Done**: Update deliveryJob status after driver sent the message
+
+---
+
+### Useful Links
+
+[Add data to Cloud Firestore](https://firebase.google.com/docs/firestore/manage-data/add-data#update-data)
+
+### Steps
+
+1. Follow the documation to create a updat function
+
+    ```java
+    public void updateDeliveryJobStatus(){
+        DocumentReference document = new FirebaseController().db.collection("users").document(new FirebaseController().getCurrentFirebaseUserObject().getUid());
+        document.update("deliveryJobList", deliveryJobArray) // No way to update an item in array, have to update all
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.w("Driver", "updateDeliveryJobStatus OK");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Driver", "Error updating document", e);
+                    }
                 });
-        // Create the AlertDialog object and return it
-        builder.create().show();
     }
-```
+    ```
+
+2. In the sendMessageToReceiver function, update the deliveryJob status and use `notifyItemChanged` to tell the adapter to update the list item view
+    
+    ```java
+    
+    new FirebaseController().sendMessageToReceiver("Delivery Notification", driverSendMessage, email,
+            new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(mContext, "Message sent successfully!", Toast.LENGTH_SHORT).show();
+                    deliveryJob.setStatus(DeliveryJob.ON_THE_WAY);
+                    deliveryJobArray.set(position, deliveryJob);
+                    notifyItemChanged(position); // notify to refresh view, to change background color
+                    updateDeliveryJobStatus();
+                }
+            }, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(mContext, "Oops, message sent failed!", Toast.LENGTH_SHORT).show();
+                }
+            })
+    ```    
+
+3. In the `onBindViewHolder`, check the deliveryJob status and change the background color
+
+    ```java
+    if (deliveryJobArray.get(position).getStatus() == DeliveryJob.ON_THE_WAY){
+                holder.cardView.setCardBackgroundColor(Color.LTGRAY);
+    }
+    ```
 
