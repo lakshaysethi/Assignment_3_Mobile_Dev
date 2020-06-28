@@ -51,7 +51,7 @@ import java.util.Random;
 
 import static android.content.ContentValues.TAG;
 
-public class FirebaseController {
+public class OldFirebaseController {
     public FirebaseAuth mAuth;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     QueryDocumentSnapshot theDocument;
@@ -59,7 +59,7 @@ public class FirebaseController {
     private Object userData;
 
     // Initialize Firebase Auth
-    public FirebaseController() {
+    public OldFirebaseController() {
         mAuth = FirebaseAuth.getInstance();
       //makeAdminUser();
     }

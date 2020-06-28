@@ -1,7 +1,6 @@
 package com.mobileassignment3.parcel_tracking_app;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -27,12 +26,12 @@ public class LoginInstrumentedTest {
 
     private static final String EMAIL = "driver@driver.com";
     private static final String PASSWORD = "12345678";
-    private FirebaseController firebaseController;
+    private OldFirebaseController oldFirebaseController;
     private Context appContext;
 
     @Before
     public void setup() {
-        firebaseController = new FirebaseController();
+        oldFirebaseController = new OldFirebaseController();
         appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
@@ -43,17 +42,17 @@ public class LoginInstrumentedTest {
 
     @Test
     public void loginTest() {
-        firebaseController.loginUser(EMAIL, PASSWORD, new OnCompleteListener<AuthResult>() {
+        oldFirebaseController.loginUser(EMAIL, PASSWORD, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 assertEquals(true, task.isSuccessful());
 
                 // Should have user after logged in
-                FirebaseUser user = firebaseController.getCurrentFirebaseUserObject();
+                FirebaseUser user = oldFirebaseController.getCurrentFirebaseUserObject();
                 assertNotNull(user);
                 assertEquals(EMAIL, user.getEmail());
 
-                firebaseController.getUser(new OnSuccessListener<User>() {
+                oldFirebaseController.getUser(new OnSuccessListener<User>() {
                     @Override
                     public void onSuccess(User user) {
                         // Check user role type

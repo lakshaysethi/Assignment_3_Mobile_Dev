@@ -17,10 +17,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.mobileassignment3.parcel_tracking_app.FirebaseController;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
+
+import com.mobileassignment3.parcel_tracking_app.controllers.GoogleStuff;
 import com.mobileassignment3.parcel_tracking_app.SignupActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
-import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        //new FirebaseController().writeMasterDeliveryJobsToFirestore();
+        //new OldFirebaseController().writeMasterDeliveryJobsToFirestore();
         //will hide the title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //hide the title bar
@@ -96,16 +97,16 @@ public class LoginActivity extends AppCompatActivity {
     //main login function;
     private void loginUserWithEmail(String email, String password) {
 
-       new FirebaseController().loginUser(this,email,password);
+       new FirebaseAuthCustom().loginUser(this,email,password);
 
     }
     //do once
     private void doOnce() {
-       // new FirebaseController().createNewUser(this,"receiver2@receiver.com","12345678", User.RECIEVER,"JDoeReceiver");
-        //new FirebaseController().createNewUser(this,"driver2@driver.com","12345678",User.DRIVER,"lakshayDriver");
+       // new OldFirebaseController().createNewUser(this,"receiver2@receiver.com","12345678", User.RECIEVER,"JDoeReceiver");
+        //new OldFirebaseController().createNewUser(this,"driver2@driver.com","12345678",User.DRIVER,"lakshayDriver");
 
-        // new FirebaseController().writeMasterDeliveryJobsToFirestore();
-         //new FirebaseController().setDeliveryJobsforAllUsersOnce();
+        // new OldFirebaseController().writeMasterDeliveryJobsToFirestore();
+         //new OldFirebaseController().setDeliveryJobsforAllUsersOnce();
 
 
     }
@@ -142,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
 
             // Signed in successfully, show authenticated UI.
             Toast.makeText(this, "Successfully  Signed In WITH GOOGLE", Toast.LENGTH_SHORT).show();
-            new FirebaseController().handleGoogleSignIn(account,this);
+            new GoogleStuff().handleGoogleSignIn(account,this);
 //            updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.

@@ -7,11 +7,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
+import com.mobileassignment3.parcel_tracking_app.controllers.ReadFromFireStore;
+import com.mobileassignment3.parcel_tracking_app.controllers.WriteToFireStore;
+
+import static com.mobileassignment3.parcel_tracking_app.MyStaticClass.addStaticObject;
 
 public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         // requestFeature() must be called before adding content
         // will hide the title
@@ -20,8 +28,6 @@ public class SplashActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         // show the activity in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // change activity background color
-//        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         setContentView(R.layout.activity_splash);
 
@@ -33,5 +39,38 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }, 3000); //means 3 seconds
+
+        doEverytime();
+
+        doOnce();
+
     }
+
+    private void doEverytime() {
+        FirebaseAuthCustom controller = new FirebaseAuthCustom();
+
+        if(controller.getCurrentFirebaseUserObject()!=null){
+            controller.setParcelAppUser(this);
+        }
+        MasterListDocument mlObj = new MasterListDocument();
+        new ReadFromFireStore().getAndSetLatestDeliveryMasterJobsListfromFirestore(mlObj);
+        addStaticObject(mlObj);
+
+    }
+
+    public void doOnce(){
+        try{
+
+
+            /* write functions here that you want to happen just once */
+            
+            new WriteToFireStore().writeMasterDeliveryJobsToFirestore();
+
+
+
+        }catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

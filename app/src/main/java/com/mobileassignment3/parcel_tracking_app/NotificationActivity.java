@@ -15,7 +15,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
+
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
+
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 public class NotificationActivity extends AppCompatActivity {
@@ -32,7 +36,7 @@ public class NotificationActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        new FirebaseController().getUser(new OnSuccessListener<User>() {
+        new FirebaseAuthCustom().getUser(new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
                 getSupportActionBar().setTitle(user.getUsername());

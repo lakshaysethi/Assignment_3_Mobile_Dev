@@ -41,6 +41,26 @@ public class Parcel {
 
     }
 
+    public int getDELIVERED() {
+        return DELIVERED;
+    }
+
+    public int getNOT_DELIVERED() {
+        return NOT_DELIVERED;
+    }
+
+    public int getBOX() {
+        return BOX;
+    }
+
+    public int getLETTER() {
+        return LETTER;
+    }
+
+    public int getOTHER() {
+        return OTHER;
+    }
+
     public void setType(int type) {
         this.type = type;
     }

@@ -21,6 +21,17 @@ public class DeliveryJob {
     Customer receiver;
     Date targetDeliveryTime;
 
+    public int getDELIVERED() {
+        return DELIVERED;
+    }
+
+    public int getNOT_DELIVERED() {
+        return NOT_DELIVERED;
+    }
+
+    public void setListOfParcels(ArrayList<Parcel> listOfParcels) {
+        this.listOfParcels = listOfParcels;
+    }
 
     public DeliveryJob() {
         this.status = NOT_DELIVERED;
