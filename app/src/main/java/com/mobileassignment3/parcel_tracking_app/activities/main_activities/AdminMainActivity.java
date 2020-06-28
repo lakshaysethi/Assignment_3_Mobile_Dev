@@ -58,6 +58,7 @@ public class AdminMainActivity extends MainActivityForAllUsers {
     FloatingActionButton btnRefresh;
     static OldFirebaseController mainFirebase = new OldFirebaseController();
     static RecyclerView rvAssignOrder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +72,6 @@ public class AdminMainActivity extends MainActivityForAllUsers {
         setActionBarStuff();
 
     }
-
     private void adminlistviewUpdate() {
 
         mainFirebase.getAllUsers();
@@ -101,17 +101,12 @@ public class AdminMainActivity extends MainActivityForAllUsers {
             }
         });
     }
-
-
     public void openAssignDialog() {
         AssignDialog dialog = new AssignDialog();
 
         dialog.show(getSupportFragmentManager(), "Assign dialog");
 
     }
-    
-
-
     // public void assignDriver(String driverUsername) {
     //      Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
     //      Log.d("JOBS", "AssignDriver: "+jobs.toString());
@@ -137,10 +132,6 @@ public class AdminMainActivity extends MainActivityForAllUsers {
          }
          return jobs;
      }
-
-
-
-
     void setRecyclerViewStuff(List<DeliveryJob> Djal){
 
          rvAssignOrder = findViewById(R.id.rvAssignOrder);
@@ -159,15 +150,12 @@ public class AdminMainActivity extends MainActivityForAllUsers {
         rvAssignOrder.setAdapter(adapterAssignOrder);
 
     }
-
     @Override
     // Inflate the menu; this adds items to the action bar if it is present.
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
-
     @Override
     // implemented the menu item  STARTS - notification activity :
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
@@ -178,7 +166,6 @@ public class AdminMainActivity extends MainActivityForAllUsers {
     }
         return(super.onOptionsItemSelected(item));
     }
-
     void setActionBarStuff(){
         // Change the actionbar title and icon
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -199,8 +186,6 @@ public class AdminMainActivity extends MainActivityForAllUsers {
     }
     public static class AssignDialog extends AppCompatDialogFragment {
         private EditText editDriverUsername;
-
-
 
         @NonNull
         @Override
