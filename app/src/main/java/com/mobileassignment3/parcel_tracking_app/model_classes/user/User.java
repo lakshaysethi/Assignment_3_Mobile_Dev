@@ -13,10 +13,10 @@ public class User {
     public    final static int DRIVER = 1001;
     public final static int RECIEVER = 1002;
     public final static int ADMIN = 1003;
-    List<DeliveryJob> deliveryJobList;
+    private List<DeliveryJob> deliveryJobList;
 
     public List<DeliveryJob> getDeliveryJobList() {
-        return deliveryJobList;
+        return deliveryJobList == null ? new ArrayList<DeliveryJob>() : deliveryJobList;
     }
 
     public void setDeliveryJobList(List<DeliveryJob> deliveryJobList) {
