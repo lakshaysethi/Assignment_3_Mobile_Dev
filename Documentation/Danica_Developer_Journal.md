@@ -652,7 +652,7 @@ public class LoginInstrumentedTest {
 
     ```java
     public void updateDeliveryJobStatus(){
-        DocumentReference document = new FirebaseController().db.collection("users").document(new FirebaseController().getCurrentFirebaseUserObject().getUid());
+        DocumentReference document = new FirebaseController().db.collection(FirebaseAuthCustom.userDatabaseToUse).document(new FirebaseController().getCurrentFirebaseUserObject().getUid());
         document.update("deliveryJobList", deliveryJobArray) // No way to update an item in array, have to update all
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

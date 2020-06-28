@@ -9,6 +9,15 @@ import java.util.List;
 
 
 public class User {
+    String UID;
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
 
     public    final static int DRIVER = 1001;
     public final static int RECIEVER = 1002;

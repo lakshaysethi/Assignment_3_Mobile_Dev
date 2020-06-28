@@ -54,10 +54,10 @@ public class ProfileActivity extends AppCompatActivity {
             emailTextView.setText(emailOfCurrentUser);
         }catch (Exception e){
             if(currentuser==null){
-                Toast.makeText(this, "Authentication error- please login again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Authentication error- please login again", Toast.LENGTH_LONG).show();
                 gotoLoginScreen();
             }
-            Toast.makeText(ProfileActivity.this, "Error Setting Tvs"+e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ProfileActivity.this, "Error Setting Tvs"+e.toString(), Toast.LENGTH_LONG).show();
         }
 
         logOutBtn.setOnClickListener(new View.OnClickListener() {
@@ -65,11 +65,11 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try{
                     new FirebaseAuthCustom().logoutCurrentUser();
-                    Toast.makeText(ProfileActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this, "Logged Out Successfully", Toast.LENGTH_LONG).show();
                     gotoLoginScreen();
 
                 }catch (Exception e){
-                    Toast.makeText(ProfileActivity.this, "Error LoggingOut"+e.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this, "Error LoggingOut"+e.toString(), Toast.LENGTH_LONG).show();
                 }
 
 

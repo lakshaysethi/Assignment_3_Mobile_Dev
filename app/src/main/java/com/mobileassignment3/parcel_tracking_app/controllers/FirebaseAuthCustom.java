@@ -15,11 +15,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
-import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Admin;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
@@ -29,14 +29,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static com.google.firebase.firestore.SetOptions.merge;
 
 public class FirebaseAuthCustom extends FirebaseController {
     public static List<User> userlist = new ArrayList<>();
+    public static String userDatabaseToUse = "userTestDebug";
+
     public FirebaseUser getCurrentFirebaseUserObject() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         return currentUser;
     }
-    public FirebaseUser createNewUser(final Activity activity, String email, String password, final int type, final String username) {
+    public FirebaseUser createNewUserWithEmail(final Activity activity, String email, String password, final int type, final String username) {
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
@@ -66,7 +69,15 @@ public class FirebaseAuthCustom extends FirebaseController {
         return getCurrentFirebaseUserObject();
     }
     public void updateUser(Object user, String uuid) {
-        db.collection("users").document(uuid).set(user);
+        Task<Void> task = db.collection(FirebaseAuthCustom.userDatabaseToUse).document(uuid).set(user);
+        FirebaseAuthCustom.userlist.remove(user);
+        /* task.addOnCompleteListener( new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });*/
+
     }
     private void setupUserInDatabase(String username,FirebaseUser user, int usertype) {
         User parcelAppUser;
@@ -82,10 +93,10 @@ public class FirebaseAuthCustom extends FirebaseController {
         parcelAppUser.setType(usertype);
         parcelAppUser.setEmail(getCurrentFirebaseUserObject().getEmail());
         parcelAppUser.setUsername(username);
-
-        db.collection("users").document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
+        parcelAppUser.setUID(user.getUid());
+        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
     }
-    private void setupUserInDatabase2(String username, int usertype) {
+    private void setupCURRENTUserInDatabase(String username, int usertype) {
         User parcelAppUser;
         if (usertype == User.DRIVER) {
 //
@@ -99,10 +110,11 @@ public class FirebaseAuthCustom extends FirebaseController {
         parcelAppUser.setType(usertype);
         parcelAppUser.setEmail(getCurrentFirebaseUserObject().getEmail());
         parcelAppUser.setUsername(username);
+        parcelAppUser.setUID(getCurrentFirebaseUserObject().getUid());
 
-        db.collection("users").document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
+        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
     }
-    public void loginUser(final Activity activity , String email, String password) {
+    public void loginUserWithEmail(final Activity activity , String email, String password) {
         logoutCurrentUser();
         if (email !=null&&!email.equals("")){
             if(password!=null&&!password.equals("")){
@@ -112,13 +124,11 @@ public class FirebaseAuthCustom extends FirebaseController {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     //TODO need to fix get display name
                                     if (user != null){
                                         setParcelAppUser(activity);
-
                                     }
                                     else Toast.makeText(activity.getApplicationContext(),"Failed - user is null", Toast.LENGTH_LONG).show();
                                     updateUIafterLogin(activity,true);
@@ -145,7 +155,8 @@ public class FirebaseAuthCustom extends FirebaseController {
             Toast.makeText(activity, "Please Enter your EMAIL", Toast.LENGTH_LONG).show();
         }
     }
-    public void loginUser(String email, String password, final OnCompleteListener<AuthResult> callback) {
+   /*
+   public void loginUserWithEmail(String email, String password, final OnCompleteListener<AuthResult> callback) {
         logoutCurrentUser();
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -157,16 +168,19 @@ public class FirebaseAuthCustom extends FirebaseController {
                     }
                 });
     }
-    public void getUser(final OnSuccessListener<User> callback) {
+    */
+   public void getUser(final OnSuccessListener<User> callback) {
         FirebaseUser cu = getCurrentFirebaseUserObject();
 
-        DocumentReference docRef = db.collection("users").document(cu.getUid());
+        DocumentReference docRef = db.collection(FirebaseAuthCustom.userDatabaseToUse).document(cu.getUid());
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
-                if (callback != null) {
+                if (callback != null && user!=null) {
                     callback.onSuccess(user);
+                }else{
+
                 }
             }
         });
@@ -176,14 +190,14 @@ public class FirebaseAuthCustom extends FirebaseController {
             @Override
             public void onSuccess(User user) {
                 if(user.getDeliveryJobList()==null){
-                    setupUserInDatabase2(user.getUsername(),user.getTypeArray().get(0));
+                    setupCURRENTUserInDatabase(user.getUsername(),user.getTypeArray().get(0));
                 }
 
                 try{
                     doIntent(user, activity);
 
                 }catch(Exception e){
-                    Toast.makeText(activity, "Still setting you up please login again" +e.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Still setting you up please login again" +e.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -205,9 +219,11 @@ public class FirebaseAuthCustom extends FirebaseController {
     }
 
     public void setParcelAppUser(final Activity activity){
-        if(userlist!=null)userlist.clear();
+
+
+       if(userlist!=null)userlist.clear();
         String cuuid = getCurrentFirebaseUserObject().getUid();
-        DocumentReference userData = db.collection("users").document(cuuid);
+        DocumentReference userData = db.collection(FirebaseAuthCustom.userDatabaseToUse).document(cuuid);
         Task<DocumentSnapshot> userDataGetTask = userData.get();
 
         userDataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -216,22 +232,35 @@ public class FirebaseAuthCustom extends FirebaseController {
                 if (task.isSuccessful()) {
                     DocumentSnapshot userDataDocumentSnapshot = task.getResult();
                     User user = userDataDocumentSnapshot.toObject(User.class);
-                    int usertype = user.typeArray.get(0);
+                    try {
+                        int usertype = user.typeArray.get(0);
+                        if (usertype == User.DRIVER) {
+                            userlist.add(userDataDocumentSnapshot.toObject(Driver.class));
+                        } else if (usertype == User.RECIEVER) {
+                            userlist.add(userDataDocumentSnapshot.toObject(Customer.class));
+                        } else {
+                            userlist.add( userDataDocumentSnapshot.toObject(Admin.class));
+                        }
+                        parcelAppUserOnCreate(activity);
 
-                    if (usertype == User.DRIVER) {
-                        userlist.add(userDataDocumentSnapshot.toObject(Driver.class));
-                    } else if (usertype == User.RECIEVER) {
-                        userlist.add(userDataDocumentSnapshot.toObject(Customer.class));
-                    } else {
-                        userlist.add( userDataDocumentSnapshot.toObject(Admin.class));
+                    }catch(NullPointerException e){
+                        openSignUpActivity(activity);
                     }
-                    parcelAppUserOnCreate(activity);
+                    catch (Exception e){
+                        Toast.makeText(activity,"in setParcelAppUser in firebaseauthcustom \n"+ e.toString(), Toast.LENGTH_LONG).show();
+                    }
 
                 }else{
                     Log.d("Firestore Error","reading userdata Failed");
                 }
             }
         });
+    }
+
+    private void openSignUpActivity(Activity activity) {
+       Intent signup = new Intent();
+        activity.startActivity(signup);
+        Toast.makeText(activity, "Your DATA was DELETED please Signup Again", Toast.LENGTH_SHORT).show();
     }
 
     private void parcelAppUserOnCreate(Activity activity) {
@@ -244,4 +273,17 @@ public class FirebaseAuthCustom extends FirebaseController {
         return  userlist;
 
     }
+
+    public void addCurrentUser_s_Uid_toDatabase() {
+        User user = new User();
+        user.setUID(getCurrentFirebaseUserObject().getUid());
+
+        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(getCurrentFirebaseUserObject().getUid()).set(user,merge());
+    }
+
+
+    public void  makeAdminUser(Activity activity,String email, String password, String username){
+        createNewUserWithEmail(activity ,email,password,User.ADMIN,username);
+    }
+
 }

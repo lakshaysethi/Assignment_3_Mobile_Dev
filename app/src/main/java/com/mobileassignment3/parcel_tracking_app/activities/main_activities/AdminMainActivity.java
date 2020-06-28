@@ -44,6 +44,7 @@ import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.controllers.ReadFromFireStore;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 
@@ -58,7 +59,7 @@ public class AdminMainActivity extends MainActivityForAllUsers {
     FloatingActionButton btnRefresh;
     static OldFirebaseController mainFirebase = new OldFirebaseController();
     static RecyclerView rvAssignOrder;
-
+    ArrayList<DeliveryJob> jobs = new ArrayList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +91,7 @@ public class AdminMainActivity extends MainActivityForAllUsers {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(AdminMainActivity.this, "Refresing...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminMainActivity.this, "Refresing...", Toast.LENGTH_LONG).show();
                  if(mlObj.updateMasterList(AdminMainActivity.this,mlObj)){
                      setRecyclerViewStuff(mlObj.getMasterList());
 
@@ -107,19 +108,59 @@ public class AdminMainActivity extends MainActivityForAllUsers {
         dialog.show(getSupportFragmentManager(), "Assign dialog");
 
     }
-    // public void assignDriver(String driverUsername) {
-    //      Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
-    //      Log.d("JOBS", "AssignDriver: "+jobs.toString());
-    //      mainFirebase.assignParcelToDriver(driverUsername, jobs);
-    //     final Handler handler = new Handler();
-    //     handler.postDelayed(new Runnable() {
-    //         @Override
-    //         public void run() {
-    //             getDeliveryJobsListfromFirestore();
-    //         }
-    //     }, 1000);
-    // }
-     public static ArrayList<DeliveryJob> getSelectedJobs() {
+     public static void assignDriver(String driverUsername, ArrayList<DeliveryJob> selectedJobs) {
+
+          Log.d("JOBS", "AssignDriver: "+selectedJobs.toString());
+          mainFirebase.assignParcelToDriver(driverUsername, selectedJobs);
+         final Handler handler = new Handler();
+         handler.postDelayed(new Runnable() {
+             @Override
+             public void run() {
+                 getDeliveryJobsListfromFirestore();
+             }
+         }, 1000);
+         if(FirebaseAuthCustom.userlist.get(1).getUsername().equals(driverUsername))
+         FirebaseAuthCustom.userlist.get(1).setDeliveryJobList(selectedJobs);
+         new FirebaseAuthCustom().updateUser(FirebaseAuthCustom.userlist.get(1),FirebaseAuthCustom.userlist.get(1).getUID());
+     }
+
+    private static void getDeliveryJobsListfromFirestore() {
+        try{
+            new FirebaseController().db.collection("masterDeliveryJobs")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    //Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                    if(document.contains("masterList")){
+                                        document.get("masterList");
+                                        List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
+                                        List<DeliveryJob> jobsWithNoDriver = new ArrayList();
+                                        for (DeliveryJob jobIterator : Djal){
+                                            if (jobIterator.getAssignedDriver() == null){
+                                                jobsWithNoDriver.add(jobIterator);
+                                            }
+                                        }
+
+                                    }
+                                }
+                            } else {
+                                Log.w("Firebase error", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+
+        }catch (Exception e){
+            Log.w("Firebase error", "Error getting documents.");
+
+        }
+        //new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
+    }
+
+
+    public static ArrayList<DeliveryJob> getSelectedJobs() {
 
          OrderAdapter adapter = (OrderAdapter) rvAssignOrder.getAdapter();
          ArrayList<DeliveryJob> jobs = new ArrayList<>();
@@ -208,7 +249,7 @@ public class AdminMainActivity extends MainActivityForAllUsers {
                             String driverUsername = editDriverUsername.getText().toString();
 
                             Log.d("JOBS", "AssignDriver: "+ getSelectedJobs().toString());
-                            mainFirebase.assignParcelToDriver(driverUsername, getSelectedJobs());
+                            assignDriver(driverUsername, getSelectedJobs());
 
                         }
                     });

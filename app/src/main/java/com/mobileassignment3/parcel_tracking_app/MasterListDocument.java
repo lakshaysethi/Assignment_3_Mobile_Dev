@@ -26,11 +26,11 @@ public class MasterListDocument {
 
         if(mlObj.getMasterList()==null){
             new ReadFromFireStore().getAndSetLatestDeliveryMasterJobsListfromFirestore(mlObj);
-            Toast.makeText(activity, "Please wait getting list from DB", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Please wait getting list from DB", Toast.LENGTH_LONG).show();
             return false;
         }else{
 
-            Toast.makeText(activity, "MasterList Update Complete", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "MasterList Update Complete", Toast.LENGTH_LONG).show();
             return true;
         }
 

@@ -72,20 +72,20 @@ public class DriverMainActivity extends MainActivityForAllUsers {
         layoutManagerMyTask = new LinearLayoutManager(this);
         rvMyTask.setLayoutManager(layoutManagerMyTask);
 
-        new FirebaseController().db.collection("users").document(new FirebaseAuthCustom().getCurrentFirebaseUserObject().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        new FirebaseController().db.collection(FirebaseAuthCustom.userDatabaseToUse).document(new FirebaseAuthCustom().getCurrentFirebaseUserObject().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()){
                     DocumentSnapshot doc = task.getResult();
                     try{
                      Driver driver = doc.toObject(Driver.class);
-                     List<DeliveryJob> parcelDataset = driver.getDeliveryJobList(); // Can be null if no job is assigned yet
-                     parcelDataset = parcelDataset == null ? new ArrayList<DeliveryJob>() : parcelDataset;
+                     List<DeliveryJob> deliveryJobsAssignedToThisDriver = driver.getDeliveryJobList(); // Can be null if no job is assigned yet
+                     deliveryJobsAssignedToThisDriver = deliveryJobsAssignedToThisDriver == null ? new ArrayList<DeliveryJob>() : deliveryJobsAssignedToThisDriver;
 
                      // specify an adapter
-                    setAdapterStuff(parcelDataset);
+                    setAdapterStuff(deliveryJobsAssignedToThisDriver);
                     }catch (Exception e){
-                        Toast.makeText(DriverMainActivity.this, "Error"+e.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DriverMainActivity.this, "Error"+e.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -93,8 +93,8 @@ public class DriverMainActivity extends MainActivityForAllUsers {
 
     }
 
-    private void setAdapterStuff(List<DeliveryJob> parcelDataset) {
-        adapterMyTask = new TaskAdapter(this, (ArrayList<DeliveryJob>)parcelDataset);
+    private void setAdapterStuff(List<DeliveryJob> deliveryJobsAssignedToThisDriver) {
+        adapterMyTask = new TaskAdapter(this, (ArrayList<DeliveryJob>)deliveryJobsAssignedToThisDriver);
         rvMyTask.setAdapter(adapterMyTask);
     }
 
@@ -205,7 +205,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
                                 new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Toast.makeText(mContext, "Message sent successfully!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "Message sent successfully!", Toast.LENGTH_LONG).show();
                                         deliveryJob.setStatus(DeliveryJob.ON_THE_WAY);
                                         deliveryJobArray.set(position, deliveryJob);
                                         notifyItemChanged(position); // notify to refresh view, to change background color
@@ -215,7 +215,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
                                 }, new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(mContext, "Oops, message sent failed!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "Oops, message sent failed!", Toast.LENGTH_LONG).show();
                                     }
                                 });
                     }
@@ -230,7 +230,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     }
 
     public void updateDeliveryJobStatus(){
-        DocumentReference document = new FirebaseController().db.collection("users").document(new FirebaseAuthCustom().getCurrentFirebaseUserObject().getUid());
+        DocumentReference document = new FirebaseController().db.collection(FirebaseAuthCustom.userDatabaseToUse).document(new FirebaseAuthCustom().getCurrentFirebaseUserObject().getUid());
         document.update("deliveryJobList", deliveryJobArray) // No way to update an item in array, have to update all
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

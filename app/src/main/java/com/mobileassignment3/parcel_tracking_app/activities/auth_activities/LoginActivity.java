@@ -61,8 +61,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-
-                loginUserWithEmail(username,password);
+                String email = username;
+                new FirebaseAuthCustom().loginUserWithEmail(LoginActivity.this,email,password);
 
             }
         });
@@ -95,11 +95,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //main login function;
-    private void loginUserWithEmail(String email, String password) {
 
-       new FirebaseAuthCustom().loginUser(this,email,password);
-
-    }
     //do once
     private void doOnce() {
        // new OldFirebaseController().createNewUser(this,"receiver2@receiver.com","12345678", User.RECIEVER,"JDoeReceiver");
@@ -142,14 +138,14 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             // Signed in successfully, show authenticated UI.
-            Toast.makeText(this, "Successfully  Signed In WITH GOOGLE", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Successfully  Signed In WITH GOOGLE", Toast.LENGTH_LONG).show();
             new GoogleStuff().handleGoogleSignIn(account,this);
 //            updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("GOOGLE SIGN IN", "signInResult:failed code=" + e.getStatusCode());
-            Toast.makeText(this, "FAILED TO SIGNIN WITH GOOGLE", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "FAILED TO SIGNIN WITH GOOGLE", Toast.LENGTH_LONG).show();
         }
     }
 

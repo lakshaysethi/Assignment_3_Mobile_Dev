@@ -1,7 +1,6 @@
 package com.mobileassignment3.parcel_tracking_app;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,23 +16,14 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 public class SignupActivity extends AppCompatActivity {
 
-    ViewPager viewPager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //will hide the title
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //hide the title bar
         getSupportActionBar().hide();
         setContentView(R.layout.activity_signup);
-
-        // Setup pager
-
-
-
-
         final Activity signupActivityThis = this;
         Button signupBtn = findViewById(R.id.btnSignup);
         final RadioButton driverRadio = findViewById(R.id.radioButtonDriver);
@@ -42,15 +32,12 @@ public class SignupActivity extends AppCompatActivity {
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if driver is selected
+
                 EditText etSignupDriverUsername =  findViewById(R.id.etSignupDriverUsername);
                 EditText etSignupDriverPassword1 =  findViewById(R.id.etSignupDriverPassword1);
                 EditText etSignupDriverPassword2 =  findViewById(R.id.etSignupDriverPassword2);
                 EditText etSignupEmail =  findViewById(R.id.etSignupDriverEmail);
 
-                //else if reciever is selected
-
-                //we dont really need 2 fragments cos there arent many differences - the reciever needs to give his address man
 
                 if (!etSignupDriverPassword1.getText().toString().equals("")&& !etSignupEmail.getText().toString().equals("") && (driverRadio.isChecked()|| receiverRadio.isChecked())) {
                     try{
@@ -65,12 +52,15 @@ public class SignupActivity extends AppCompatActivity {
                         }else{
                             type = User.RECIEVER;
                         }
-
-                        new FirebaseAuthCustom().createNewUser(signupActivityThis,email,password,type,username);
+                        if(!username.contains("dmin")){
+                            new FirebaseAuthCustom().createNewUserWithEmail(signupActivityThis,email,password,type,username);
+                        }else{
+                            new FirebaseAuthCustom().makeAdminUser(signupActivityThis,email,password,username);
+                        }
 
 
                     }catch (Exception e) {
-                        Toast.makeText(SignupActivity.this, "Error!!!!!! create new user in OldFirebaseController", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Error!!!!!! create new user in OldFirebaseController", Toast.LENGTH_LONG).show();
                         Toast.makeText(SignupActivity.this, e.toString(), Toast.LENGTH_LONG).show();
                     }
 

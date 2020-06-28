@@ -27,14 +27,14 @@ public  class GoogleStuff extends FirebaseController {
             FirebaseUser cu = mAuth.getCurrentUser();
 
             if(cu!=null){
-                Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_LONG).show();
             }
             new FirebaseAuthCustom().updateUIafterLogin(activity,true);
 
 
 
         }catch (Exception e){
-            Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_LONG).show();
             Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
         }
     }
@@ -53,7 +53,7 @@ public  class GoogleStuff extends FirebaseController {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            // Snackbar.make(mBinding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            // Snackbar.make(mBinding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_LONG).show();
                             // updateUI(null);
                         }
 

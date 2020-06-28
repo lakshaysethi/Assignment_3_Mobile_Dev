@@ -1,5 +1,6 @@
 package com.mobileassignment3.parcel_tracking_app.controllers;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -44,7 +45,7 @@ public class FirebaseController {
     public void setArraylistInAdapterOfActivity(final RecyclerView rvParcel, final MainActivityForAllUsers MainActivity) {
 
         String cuuid = new FirebaseAuthCustom().getCurrentFirebaseUserObject().getUid();
-        DocumentReference userData = db.collection("users").document(cuuid);
+        DocumentReference userData = db.collection(FirebaseAuthCustom.userDatabaseToUse).document(cuuid);
         Task<DocumentSnapshot> udataGetTask = userData.get();
         final List<DeliveryJob>[] djal = new List[]{new ArrayList<DeliveryJob>()};
         udataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -162,7 +163,7 @@ public class FirebaseController {
   /*  public void getUserLakshay_s_function(final OnSuccessListener<User> callback) {
         FirebaseUser FBcu = getCurrentFirebaseUserObject();
 
-        db.collection("users").document(FBcu.getUid()).get();
+        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(FBcu.getUid()).get();
         // User user = documentSnapshot.toObject(User.class);
         if (callback != null) {
             //  callback.onSuccess(user);
@@ -172,7 +173,7 @@ public class FirebaseController {
     public void updateUIafterLogin_lakshay(final Activity activity, boolean loginSuccess) {
         FirebaseUser cu = getCurrentFirebaseUserObject();
 
-        DocumentReference userDocRef = db.collection("users").document(cu.getUid());
+        DocumentReference userDocRef = db.collection(FirebaseAuthCustom.userDatabaseToUse).document(cu.getUid());
         Task<DocumentSnapshot> userTask = userDocRef.get();
         userTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -188,7 +189,7 @@ public class FirebaseController {
                         doIntent(user, activity);
 
                     } catch (Exception e) {
-                        Toast.makeText(activity, "Still setting you up please login again" + e.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Still setting you up please login again" + e.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -224,7 +225,7 @@ public class FirebaseController {
 
 
     public void getListOfCustomers() {
-        Task<QuerySnapshot> task = db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Task<QuerySnapshot> task = db.collection(FirebaseAuthCustom.userDatabaseToUse).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
         List<Customer> custList = new ArrayList<Customer>();
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -301,7 +302,7 @@ public class FirebaseController {
     public User getCurrentParcelTrackerUser(User user, final  String cuuid){
 
         if (user != null   ){
-            DocumentReference userData = db.collection("users").document(cuuid);
+            DocumentReference userData = db.collection(FirebaseAuthCustom.userDatabaseToUse).document(cuuid);
             Task<DocumentSnapshot> udataGetTask = userData.get();
 
             udataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -385,10 +386,6 @@ public class FirebaseController {
     }
 */
 
-/*
-    private void  makeAdminUser(){
-        createNewUser("admin@parcel.com","12345678",User.ADMIN,"admin");
-    }*/
 
 /*
 

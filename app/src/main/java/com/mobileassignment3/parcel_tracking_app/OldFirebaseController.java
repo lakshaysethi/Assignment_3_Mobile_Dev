@@ -35,6 +35,7 @@ import com.mobileassignment3.parcel_tracking_app.activities.main_activities.Admi
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.MainActivityForAllUsers;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Admin;
@@ -72,13 +73,13 @@ public class OldFirebaseController {
             FirebaseUser cu = mAuth.getCurrentUser();
 
             if(cu!=null){
-                Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_LONG).show();
             }
             updateUIafterLogin(activity,true);
 
         }catch (Exception e){
-            Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_SHORT).show();
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(activity,"in handleGoogleSignIn "+ e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -96,7 +97,7 @@ public class OldFirebaseController {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                           // Snackbar.make(mBinding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                           // Snackbar.make(mBinding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_LONG).show();
                            // updateUI(null);
                         }
                     }
@@ -123,7 +124,7 @@ public class OldFirebaseController {
                 DeliveryJob nDJ = new DeliveryJob();
                 nDJ.addParcel(new Parcel( packages[n] + " from " + senders[m]));
         //            Customer customer = new Customer();
-        //            db.collection("users").document("S6GVxjjGlwhiNoxQfAOJ6Q08S4Z2").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        //            db.collection(FirebaseAuthCustom.userDatabaseToUse).document("S6GVxjjGlwhiNoxQfAOJ6Q08S4Z2").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
         //                @Override
         //                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
         //
@@ -166,6 +167,7 @@ public class OldFirebaseController {
         for (User thisUser : allUsers) {
             if (thisUser.getUsername().equals(driverUserName)){                //Find the driver object you want to assign to the job
                 driverToAssign = (Driver)thisUser;
+                FirebaseAuthCustom.userlist.add(driverToAssign);
             }
         }
 
@@ -218,7 +220,7 @@ public class OldFirebaseController {
 
     public void getAllUsers(){
         try {
-            db.collection("users")
+            db.collection(FirebaseAuthCustom.userDatabaseToUse)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -228,6 +230,7 @@ public class OldFirebaseController {
                                 //put the UUId of the user and the user data into the allUsers hashmap
                                 Driver tempDriver = new Driver();
                                 tempDriver = document.toObject(Driver.class);
+
                                 allUsers.add(tempDriver);
                             }
                             Log.d("Temp", allUsers.toString());
@@ -269,7 +272,7 @@ public class OldFirebaseController {
 //     public void writedeliveryJobsToDriver(   ArrayList<DeliveryJob> deliveryJobArrayList){
 
         final ArrayList<DeliveryJob> djal = deliveryJobArrayList;
-        db.collection("users").document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -283,21 +286,21 @@ public class OldFirebaseController {
                         parcelappuser.setDeliveryJobList(djal);
 
                         updateUser(parcelappuser,uuid);
-                        db.collection("users").document(uuid).set(parcelappuser);
+                        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(uuid).set(parcelappuser);
 
                     } else if (userType == User.RECIEVER) {
                       Customer  parcelappuser    =  doc.toObject(Customer.class);
                         parcelappuser.setDeliveryJobList(djal);
 
                         updateUser(parcelappuser,uuid);
-                        db.collection("users").document(uuid).set(parcelappuser);
+                        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(uuid).set(parcelappuser);
 
                     } else {
                       Admin  parcelappuser   =  doc.toObject(Admin.class);
                         parcelappuser.setDeliveryJobList(djal);
 
                         updateUser(parcelappuser,uuid);
-                        //db.collection("users").document(uuid).set(parcelappuser);
+                        //db.collection(FirebaseAuthCustom.userDatabaseToUse).document(uuid).set(parcelappuser);
                     }
                 }else{
                     Log.d("Error","Firebasecontroller error");
@@ -308,7 +311,7 @@ public class OldFirebaseController {
     }
 
     public void updateUser(Object user, String uuid) {
-        db.collection("users").document(uuid).set(user);
+        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(uuid).set(user);
     }
 
     public FirebaseUser getCurrentFirebaseUserObject() {
@@ -384,7 +387,7 @@ public class OldFirebaseController {
         parcelAppUser.setEmail(getCurrentFirebaseUserObject().getEmail());
         parcelAppUser.setUsername(username);
 
-        db.collection("users").document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
+        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
     }
     private void setupUserInDatabase2(String username, int usertype) {
         User parcelAppUser;
@@ -400,8 +403,8 @@ public class OldFirebaseController {
         parcelAppUser.setType(usertype);
         parcelAppUser.setEmail(getCurrentFirebaseUserObject().getEmail());
         parcelAppUser.setUsername(username);
-
-        db.collection("users").document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
+        parcelAppUser.setUID(getCurrentFirebaseUserObject().getUid());
+        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
     }
 
     public void loginUser(final Activity activity , String email, String password) {
@@ -500,7 +503,7 @@ public class OldFirebaseController {
     public void getUser(final OnSuccessListener<User> callback) {
         FirebaseUser cu = getCurrentFirebaseUserObject();
 
-        DocumentReference docRef = db.collection("users").document(cu.getUid());
+        DocumentReference docRef = db.collection(FirebaseAuthCustom.userDatabaseToUse).document(cu.getUid());
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -524,7 +527,7 @@ public class OldFirebaseController {
                     doIntent(user, activity);
 
                 }catch(Exception e){
-                    Toast.makeText(activity, "Still setting you up please login again" +e.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Still setting you up please login again" +e.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -549,7 +552,7 @@ public class OldFirebaseController {
 
 
     public void getListOfCustomers() {
-        Task<QuerySnapshot> task = db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Task<QuerySnapshot> task = db.collection(FirebaseAuthCustom.userDatabaseToUse).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
         List<Customer> custList = new ArrayList<Customer>();
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -618,7 +621,7 @@ public class OldFirebaseController {
 //    public User getCurrentParcelTrackerUser(User user, final  String cuuid){
 //
 //        if (user != null   ){
-//            DocumentReference userData = db.collection("users").document(cuuid);
+//            DocumentReference userData = db.collection(FirebaseAuthCustom.userDatabaseToUse).document(cuuid);
 //            Task<DocumentSnapshot> udataGetTask = userData.get();
 //
 //            udataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -668,7 +671,7 @@ public class OldFirebaseController {
     public void setArraylistInAdapterOfActivity(final RecyclerView rvParcel, final MainActivityForAllUsers MainActivity) {
 
         String cuuid = getCurrentFirebaseUserObject().getUid();
-        DocumentReference userData = db.collection("users").document(cuuid);
+        DocumentReference userData = db.collection(FirebaseAuthCustom.userDatabaseToUse).document(cuuid);
         Task<DocumentSnapshot> udataGetTask = userData.get();
         final List<DeliveryJob>[] djal = new List[]{new ArrayList<DeliveryJob>()};
         udataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

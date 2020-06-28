@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.controllers.ReadFromFireStore;
 import com.mobileassignment3.parcel_tracking_app.controllers.WriteToFireStore;
@@ -47,14 +48,21 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void doEverytime() {
-        FirebaseAuthCustom controller = new FirebaseAuthCustom();
+        try{
+            FirebaseAuthCustom controller = new FirebaseAuthCustom();
 
-        if(controller.getCurrentFirebaseUserObject()!=null){
-            controller.setParcelAppUser(this);
+            if(controller.getCurrentFirebaseUserObject()!=null){
+                controller.setParcelAppUser(this);
+            }
+            MasterListDocument mlObj = new MasterListDocument();
+            new ReadFromFireStore().getAndSetLatestDeliveryMasterJobsListfromFirestore(mlObj);
+            addStaticObject(mlObj);
+
+
+
+        }catch (Exception e){
+            Toast.makeText(this,"in doEverytme in splash "+ e.toString(), Toast.LENGTH_LONG).show();
         }
-        MasterListDocument mlObj = new MasterListDocument();
-        new ReadFromFireStore().getAndSetLatestDeliveryMasterJobsListfromFirestore(mlObj);
-        addStaticObject(mlObj);
 
     }
 
@@ -69,7 +77,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         }catch (Exception e){
-            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "in doOnce in splash activity "+ e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 

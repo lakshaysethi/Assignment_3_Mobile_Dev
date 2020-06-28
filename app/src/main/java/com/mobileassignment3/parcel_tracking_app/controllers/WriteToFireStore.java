@@ -69,7 +69,7 @@ public class WriteToFireStore extends FirebaseController {
     public void writedeliveryJobsToUser(ArrayList<DeliveryJob> deliveryJobArrayList, final String uuid, final int userType){
 
         final ArrayList<DeliveryJob> djal = deliveryJobArrayList;
-        db.collection("users").document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -83,21 +83,21 @@ public class WriteToFireStore extends FirebaseController {
                         parcelappuser.setDeliveryJobList(djal);
 
                         new FirebaseAuthCustom().updateUser(parcelappuser,uuid);
-                        db.collection("users").document(uuid).set(parcelappuser);
+                        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(uuid).set(parcelappuser);
 
                     } else if (userType == User.RECIEVER) {
                         Customer parcelappuser    =  doc.toObject(Customer.class);
                         parcelappuser.setDeliveryJobList(djal);
 
                         new FirebaseAuthCustom().updateUser(parcelappuser,uuid);
-                        db.collection("users").document(uuid).set(parcelappuser);
+                        db.collection(FirebaseAuthCustom.userDatabaseToUse).document(uuid).set(parcelappuser);
 
                     } else {
                         Admin parcelappuser   =  doc.toObject(Admin.class);
                         parcelappuser.setDeliveryJobList(djal);
 
                         new FirebaseAuthCustom().updateUser(parcelappuser,uuid);
-                        //db.collection("users").document(uuid).set(parcelappuser);
+                        //db.collection(FirebaseAuthCustom.userDatabaseToUse).document(uuid).set(parcelappuser);
                     }
 
 

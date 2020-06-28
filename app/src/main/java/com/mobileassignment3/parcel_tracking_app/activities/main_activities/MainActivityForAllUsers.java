@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobileassignment3.parcel_tracking_app.R;
+import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 
@@ -17,7 +18,15 @@ import java.util.ArrayList;
 
 public class MainActivityForAllUsers extends AppCompatActivity {
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        doOnce();
+    }
 
+    private void doOnce() {
+        new FirebaseAuthCustom().addCurrentUser_s_Uid_toDatabase();
+    }
 
     public void setArraylistInAdapter(RecyclerView rvParcel, ArrayList<DeliveryJob> djal) {
         ArrayList<DeliveryJob> deliveryJobsAssociatedWithAuthenticatedUser = djal;
