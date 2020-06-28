@@ -16,9 +16,8 @@
         android:textColor="@color/colorTextDark"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnRefresh"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0" />
@@ -105,11 +104,10 @@
         android:id="@+id/btnRefresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
         android:clickable="true"
         app:backgroundTint="#ffc75f"
-        app:layout_constraintBottom_toTopOf="@+id/btnAssign"
+        app:layout_constraintBottom_toTopOf="@+id/rvAssignOrder"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/stat_notify_sync" />
 

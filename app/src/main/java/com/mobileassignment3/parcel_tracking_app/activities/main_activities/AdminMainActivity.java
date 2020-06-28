@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -61,9 +62,9 @@ public class AdminMainActivity extends MainActivityForAllUsers {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // new OldFirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
-
-
+        // new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
+        //mainFirebase.writeMasterDeliveryJobsToFirestore();
+       
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
 
         adminlistviewUpdate();
@@ -111,19 +112,31 @@ public class AdminMainActivity extends MainActivityForAllUsers {
     
 
 
-    public static ArrayList<DeliveryJob> getSelectedJobs() {
+    // public static ArrayList<DeliveryJob> getSelectedJobs() {
 
-        OrderAdapter adapter = (OrderAdapter) rvAssignOrder.getAdapter();
-        ArrayList<DeliveryJob> jobs = new ArrayList<>();
-        for (int x = 0; x<rvAssignOrder.getChildCount();x++){
-            CheckBox cb = (CheckBox)rvAssignOrder.getChildAt(x).findViewById(R.id.cbAssignOrder);
-            if(cb.isChecked()){
-                jobs.add(adapter.getJobAt(x));
-                Log.d("JOBS", "getSelectedJobs: " + jobs.toString());
-            }
-        }
-        return jobs;
-    }
+    //     OrderAdapter adapter = (OrderAdapter) rvAssignOrder.getAdapter();
+    //     ArrayList<DeliveryJob> jobs = new ArrayList<>();
+    //     for (int x = 0; x<rvAssignOrder.getChildCount();x++){
+    //         CheckBox cb = (CheckBox)rvAssignOrder.getChildAt(x).findViewById(R.id.cbAssignOrder);
+    //         if(cb.isChecked()){
+    //             jobs.add(adapter.getJobAt(x));
+    //             Log.d("JOBS", "getSelectedJobs: " + jobs.toString());
+    //         }
+    //     }
+    //     return jobs;
+    // }
+    // public void assignDriver(String driverUsername) {
+    //      Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
+    //      Log.d("JOBS", "AssignDriver: "+jobs.toString());
+    //      mainFirebase.assignParcelToDriver(driverUsername, jobs);
+    //     final Handler handler = new Handler();
+    //     handler.postDelayed(new Runnable() {
+    //         @Override
+    //         public void run() {
+    //             getDeliveryJobsListfromFirestore();
+    //         }
+    //     }, 1000);
+    // }
 
 
 
