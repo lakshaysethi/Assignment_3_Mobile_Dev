@@ -55,7 +55,7 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
-
+        //mainFirebase.writeMasterDeliveryJobsToFirestore();
         setActionBarStuff();
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
         getDeliveryJobsListfromFirestore();

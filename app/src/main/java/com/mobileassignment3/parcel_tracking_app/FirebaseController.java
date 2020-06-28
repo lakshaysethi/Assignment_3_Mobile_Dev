@@ -57,7 +57,8 @@ public class FirebaseController {
     QueryDocumentSnapshot theDocument;
     ArrayList <User> allUsers = new ArrayList<User>();
     private Object userData;
-
+    private List<DeliveryJob> Djal;
+    private Driver driverToAssign;
     // Initialize Firebase Auth
     public FirebaseController() {
         mAuth = FirebaseAuth.getInstance();
@@ -113,24 +114,24 @@ public class FirebaseController {
         String[] senders = {"Danica", "Lakhsay", "John Casey", "Raza", "Obama", "Paul Bartlett", "Dila"};
         String[] packages = {"Letter", "Laptop", "Jacket", "Certificate", "Backpack", "Payslip", "Vaccine" };
         //Writing 7 random delivery jobs to a temp delivery job array list
-        for(int i=0;i<7;i++) {
-            Random rand1 = new Random();
-            Random rand2 = new Random();
-            int n = rand1.nextInt(7);
-            int m = rand2.nextInt(7);
+            for(int i=0;i<7;i++) {
+                Random rand1 = new Random();
+                Random rand2 = new Random();
+                int n = rand1.nextInt(7);
+                int m = rand2.nextInt(7);
 
-            DeliveryJob nDJ = new DeliveryJob();
-            nDJ.addParcel(new Parcel( packages[n] + " from " + senders[m]));
-//            Customer customer = new Customer();
-//            db.collection("users").document("S6GVxjjGlwhiNoxQfAOJ6Q08S4Z2").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//
-//                }
-//            });
-//            nDJ.setReceiver();
-            deliveryJobArrayList.add(nDJ);
-        }
+                DeliveryJob nDJ = new DeliveryJob();
+                nDJ.addParcel(new Parcel( packages[n] + " from " + senders[m]));
+        //            Customer customer = new Customer();
+        //            db.collection("users").document("S6GVxjjGlwhiNoxQfAOJ6Q08S4Z2").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        //                @Override
+        //                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        //
+        //                }
+        //            });
+        //            nDJ.setReceiver();
+                deliveryJobArrayList.add(nDJ);
+            }
 
         Map<String, Object> masterDeliveryJobs = new HashMap<>();
         //Putting the delivery job array list into a hashmap
@@ -156,59 +157,55 @@ public class FirebaseController {
                 });
         //deliveryJobArrayList;
        // writedeliveryJobsToUser(deliveryJobArrayList,"3XhbnMbM9UT9TvcuC3KvROfR4Q03",User.ADMIN);
-return deliveryJobArrayList;
+        return deliveryJobArrayList;
 
     }
 
-    public void assignParcelToDriver(final String driverUserName, ArrayList<DeliveryJob> trackingNumbers){
-        //TODO Get which parcels the admin has selected, and use their tracking numbers
-        Log.d("JOBS","assignParcelToDriver: "+ trackingNumbers.toString());
-        //For each tracking number, assign driver.
-        for (DeliveryJob jobIterator : trackingNumbers){
-            //Set the tracking number for the job we want to update
-            final String trackingNumber = jobIterator.getTrackingNumber();
-            //Get the current list of delivery jobs
-            try{
-                db.collection("masterDeliveryJobs")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+    public void assignParcelToDriver(final String driverUserName, final ArrayList<DeliveryJob> jobsSelected){
+        //Find the driver object the admin wants using the username they input
+        for (User thisUser : allUsers) {
+            if (thisUser.getUsername().equals(driverUserName)){                //Find the driver object you want to assign to the job
+                driverToAssign = (Driver)thisUser;
+            }
+        }
+
+        //Get the latest list of delivery jobs from Firestore
+        try{
+            db.collection("masterDeliveryJobs")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull final Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                new Thread(new Runnable() {
+                                    public void run() {
+                                        DocumentSnapshot document  = task.getResult().getDocuments().get(0);
                                         if(document.contains("masterList")){
                                             document.get("masterList");
-                                            List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
-                                            for (DeliveryJob deliveryJob : Djal) {
-                                                if (deliveryJob.getTrackingNumber().equals(trackingNumber)){                    //Find the delivery job you want to update
-                                                    for (User thisUser : allUsers) {
-                                                        if (thisUser.getUsername().equals(driverUserName)){                     //Find the driver object you want to assign to the job
-                                                            Driver driverToAssign = (Driver)thisUser;
-                                                            deliveryJob.setAssignedDriver(driverToAssign);                      //and assign the entered driver to it
-                                                            updateMasterDeliveryJobList(Djal);                                  //update the masterDeliveryJobList
-                                                        }
+                                            Djal = document.toObject(MasterListDocument.class).masterList;
+                                            for (DeliveryJob jobIterator : jobsSelected){                                      //For each job the user has selected
+                                                final String trackingNumber = jobIterator.getTrackingNumber();                 //Set the tracking number for the job we want to update
+                                                for (DeliveryJob deliveryJob : Djal) {                                         //For all jobs in list of delivery jobs we got from Firestore
+                                                    if (deliveryJob.getTrackingNumber().equals(trackingNumber)){               //Check if this is the job the user selected by comparing tracking numbers
+                                                            deliveryJob.setAssignedDriver(driverToAssign);                     //Assign the entered driver to this job
+                                                            updateMasterDeliveryJobList(Djal);                                 //Send updated list of jobs to Firestore
+                                                        break;                                                                 //Break out of parent for loop because the package has been found
+                                                    }
+                                                    else{
+                                                        Log.d("Firebase error", "Entered driver not found");
                                                     }
                                                 }
-                                                else{
-                                                    Log.d("Firebase error", "Entered driver not found");
-                                                }
                                             }
-                                            Map<String, Object> masterDeliveryJobs = new HashMap<>();
-                                            //Putting the delivery job array list into a hashmap
-                                            masterDeliveryJobs.put("masterList", Djal);
-                                            //setDeliveryJobsDocumentData(masterDeliveryJobs);
                                         }
                                     }
-                                } else {
-                                    Log.w("Firebase error", "Error getting documents.", task.getException());
-                                }
+                                }).start();
+                            } else {
+                                Log.w("Firebase error", "Error getting documents.", task.getException());
                             }
-                        });
-
-            }catch (Exception e){
-                Log.w("Firebase error", "Error getting documents.");
-            }
+                        }
+                    });
+        }catch (Exception e){
+            Log.w("Firebase error", "Error getting documents.");
         }
     }
 
@@ -226,18 +223,18 @@ return deliveryJobArrayList;
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    //put the UUId of the user and the user data into the allUsers hashmap
-                                    Driver tempDriver = new Driver();
-                                    tempDriver = document.toObject(Driver.class);
-                                    allUsers.add(tempDriver);
-                                }
-                                Log.d("Temp", allUsers.toString());
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //put the UUId of the user and the user data into the allUsers hashmap
+                                Driver tempDriver = new Driver();
+                                tempDriver = document.toObject(Driver.class);
+                                allUsers.add(tempDriver);
                             }
-                            else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
-                            }
+                            Log.d("Temp", allUsers.toString());
+                        }
+                        else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
                         }
                     });
         } catch (Exception e) {
@@ -245,29 +242,28 @@ return deliveryJobArrayList;
         }
     }
 
+     public void setDeliveryJobsDocumentData(Map data) {
+     //Get the delivery jobs document which contains all delivery items
+     DocumentReference deliveryJobsDocumentRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument");
+     //set the data to a map that's passed into this function
+     deliveryJobsDocumentRef
+             .set(data)
+             .addOnSuccessListener(new OnSuccessListener<Void>() {
+                 @Override
+                 public void onSuccess(Void aVoid) {
+                     Log.d("FIREBASE", "Data successfully added!");
+                 }
+             })
+             .addOnFailureListener(new OnFailureListener() {
+                 @Override
+                 public void onFailure(@NonNull Exception e) {
+                     Log.w("FIREBASE", "Error updating document", e);
+                 }
+             });
+     }
+
+
     public void writedeliveryJobsToUser(ArrayList<DeliveryJob> deliveryJobArrayList, final String uuid, final int userType){
-
-
-//     public void setDeliveryJobsDocumentData(Map data) {
-//         //Get the delivery jobs document which contains all delivery items
-//         DocumentReference deliveryJobsDocumentRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument");
-//         //set the data to a map that's passed into this function
-//         deliveryJobsDocumentRef
-//                 .set(data)
-//                 .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                     @Override
-//                     public void onSuccess(Void aVoid) {
-//                         Log.d("FIREBASE", "Data successfully added!");
-//                     }
-//                 })
-//                 .addOnFailureListener(new OnFailureListener() {
-//                     @Override
-//                     public void onFailure(@NonNull Exception e) {
-//                         Log.w("FIREBASE", "Error updating document", e);
-//                     }
-//                 });
-// //        writedeliveryJobsToDriver( deliveryJobArrayList);
-//     }
 
 //     //Assign a delivery job list to a driver
 //     public void writedeliveryJobsToDriver(   ArrayList<DeliveryJob> deliveryJobArrayList){
@@ -303,10 +299,6 @@ return deliveryJobArrayList;
                         updateUser(parcelappuser,uuid);
                         //db.collection("users").document(uuid).set(parcelappuser);
                     }
-
-
-
-
                 }else{
                     Log.d("Error","Firebasecontroller error");
                 }
@@ -340,9 +332,7 @@ return deliveryJobArrayList;
                             Intent gotoLoginScreen = new Intent(activity, LoginActivity.class);
                             activity.startActivity(gotoLoginScreen);
                            //TODO remove this
-                                writedeliveryJobsToUser((ArrayList<DeliveryJob>)writeMasterDeliveryJobsToFirestore(),getCurrentFirebaseUserObject().getUid(),User.RECIEVER);
-
-
+                                //writedeliveryJobsToUser((ArrayList<DeliveryJob>)writeMasterDeliveryJobsToFirestore(),getCurrentFirebaseUserObject().getUid(),User.RECIEVER);
 
                         } else {
                             // If sign in fails, display a message to the user.
