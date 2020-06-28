@@ -230,7 +230,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     }
 
     public void updateDeliveryJobStatus(){
-        DocumentReference document = new FirebaseController().db.collection("users").document(new FirebaseController().getCurrentFirebaseUserObject().getUid());
+        DocumentReference document = new FirebaseController().db.collection("users").document(new FirebaseAuthCustom().getCurrentFirebaseUserObject().getUid());
         document.update("deliveryJobList", deliveryJobArray) // No way to update an item in array, have to update all
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
