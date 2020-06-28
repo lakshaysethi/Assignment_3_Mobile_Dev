@@ -161,40 +161,34 @@ public class FirebaseController {
 
     }
 
-    public void assignParcelToDriver(final String driverUserName, ArrayList<DeliveryJob> jobsToUpdate){
-        //TODO Get which parcels the admin has selected, and use their tracking numbers
-        Log.d("JOBS","assignParcelToDriver: "+ jobsToUpdate.toString());
-
+    public void assignParcelToDriver(final String driverUserName, final ArrayList<DeliveryJob> jobsSelected){
         //Find the driver object the admin wants using the username they input
         for (User thisUser : allUsers) {
             if (thisUser.getUsername().equals(driverUserName)){                //Find the driver object you want to assign to the job
                 driverToAssign = (Driver)thisUser;
             }
         }
-        final int jobCount = jobsToUpdate.size();
 
-        //For each tracking number, assign driver.
-        for (DeliveryJob jobIterator : jobsToUpdate){
-            //Set the tracking number for the job we want to update
-            final String trackingNumber = jobIterator.getTrackingNumber();
-            //Get the current list of delivery jobs
-            try{
-                db.collection("masterDeliveryJobs")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull final Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    new Thread(new Runnable() {
-                                        public void run() {
-                                            DocumentSnapshot document  = task.getResult().getDocuments().get(0);
-                                            if(document.contains("masterList")){
-                                                document.get("masterList");
-                                                Djal = document.toObject(MasterListDocument.class).masterList;
-                                                for (DeliveryJob deliveryJob : Djal) {                                         //For all jobs in list of delivery jobs
-                                                    if (deliveryJob.getTrackingNumber().equals(trackingNumber)){               //Check if this is the job the user use selected by comparing tracking numbers
+        //Get the latest list of delivery jobs from Firestore
+        try{
+            db.collection("masterDeliveryJobs")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull final Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                new Thread(new Runnable() {
+                                    public void run() {
+                                        DocumentSnapshot document  = task.getResult().getDocuments().get(0);
+                                        if(document.contains("masterList")){
+                                            document.get("masterList");
+                                            Djal = document.toObject(MasterListDocument.class).masterList;
+                                            for (DeliveryJob jobIterator : jobsSelected){                                      //For each job the user has selected
+                                                final String trackingNumber = jobIterator.getTrackingNumber();                 //Set the tracking number for the job we want to update
+                                                for (DeliveryJob deliveryJob : Djal) {                                         //For all jobs in list of delivery jobs we got from Firestore
+                                                    if (deliveryJob.getTrackingNumber().equals(trackingNumber)){               //Check if this is the job the user selected by comparing tracking numbers
                                                             deliveryJob.setAssignedDriver(driverToAssign);                     //Assign the entered driver to this job
-                                                           // assignMultipleJobs(jobCount, deliveryJob);
+                                                            updateMasterDeliveryJobList(Djal);                                 //Send updated list of jobs to Firestore
                                                         break;                                                                 //Break out of parent for loop because the package has been found
                                                     }
                                                     else{
@@ -203,21 +197,16 @@ public class FirebaseController {
                                                 }
                                             }
                                         }
-                                    }).start();
-                                } else {
-                                    Log.w("Firebase error", "Error getting documents.", task.getException());
-                                }
+                                    }
+                                }).start();
+                            } else {
+                                Log.w("Firebase error", "Error getting documents.", task.getException());
                             }
-                        });
-            }catch (Exception e){
-                Log.w("Firebase error", "Error getting documents.");
-            }
+                        }
+                    });
+        }catch (Exception e){
+            Log.w("Firebase error", "Error getting documents.");
         }
-       //                                                                                   //update the masterDeliveryJobList
-    }
-
-    private void assignMultipleJobs(int jobCount, List<DeliveryJob> updatedDeliveryJobList){
-
     }
 
     private void updateMasterDeliveryJobList(List<DeliveryJob> updatedDeliveryJobList) {
