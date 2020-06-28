@@ -3,7 +3,9 @@ package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseController;
@@ -159,14 +162,18 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        if (deliveryJobArray.get(position).getStatus() == DeliveryJob.ON_THE_WAY){
+            holder.cardView.setCardBackgroundColor(Color.LTGRAY);
+        }
+
         holder.textViewTitle.setText(deliveryJobArray.get(position).getListOfParcels().get(0).getDescription());
         holder.textViewDetail.setText(deliveryJobArray.get(position).getStatusString());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCreateDialog(deliveryJobArray.get(position));
+                onCreateDialog(deliveryJobArray.get(position), position);
             }
         });
     }
@@ -178,7 +185,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
 
 
     //Alert Dialog
-    public void onCreateDialog(final DeliveryJob deliveryJob) {
+    public void onCreateDialog(final DeliveryJob deliveryJob, final int position) {
         //TODO get the estimate time
         String estimateTime = "10 mins";
         final String driverSendMessage = "Your parcel will be deliveried in "+ estimateTime;
@@ -199,6 +206,11 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(mContext, "Message sent successfully!", Toast.LENGTH_SHORT).show();
+                                        deliveryJob.setStatus(DeliveryJob.ON_THE_WAY);
+                                        deliveryJobArray.set(position, deliveryJob);
+                                        notifyItemChanged(position); // notify to refresh view, to change background color
+
+                                        updateDeliveryJobStatus();
                                     }
                                 }, new OnFailureListener() {
                                     @Override
@@ -215,7 +227,24 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
                 });
         // Create the AlertDialog object and return it
         builder.create().show();
-
     }
+
+    public void updateDeliveryJobStatus(){
+        DocumentReference document = new FirebaseController().db.collection("users").document(new FirebaseController().getCurrentFirebaseUserObject().getUid());
+        document.update("deliveryJobList", deliveryJobArray) // No way to update an item in array, have to update all
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.w("Driver", "updateDeliveryJobStatus OK");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Driver", "Error updating document", e);
+                    }
+                });
+    }
+
 }
 

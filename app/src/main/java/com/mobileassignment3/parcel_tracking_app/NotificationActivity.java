@@ -5,15 +5,21 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
+
+import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
+
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 public class NotificationActivity extends AppCompatActivity {
@@ -36,6 +42,16 @@ public class NotificationActivity extends AppCompatActivity {
                 getSupportActionBar().setTitle(user.getUsername());
             }
         });
+
+        // Click the action bar title to open the profile activity
+        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(NotificationActivity.this, ProfileActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
 
         rvNotification = findViewById(R.id.rvNotification);
         // use this setting to improve performance if you know that changes
