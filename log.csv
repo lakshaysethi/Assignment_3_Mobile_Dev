@@ -1,245 +1,246 @@
-e02d2622a7f7f787b1769a3bba66699177bd0df7 Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-ccbc502448b773913271b52e3ee3dba552a53de0 Added timesheets PDf
-e687f992db660c3da9f3c63a40e8749051be26a2 Update .project and org.eclipse.buildship.core.prefs
-99f7663dc59d5f2357752abb41a66f7954c2404e Workaround for manual refresh issue on assign
-2713d7e2f97c5baaddc78e1470c3495672bc41dc Merge pull request #71 from lakshaysethi/assign-fix
-a1da9f33349b734097bc1e9a7fc982f7663bcd2b Adjusted position of refresh button so its not blocking anything
-f7744a189885fb960a11da0d39af46e30619c70d Optimised assign function, fixed multiple job assing bug #70
-c2b1e9c3794c64b1487b151ded004b468c577869 Overwrite issue persists, backing up before overhaul
-40493832912bf365510a4781e92a0f3f2babdcf8 Resetting Firebase data every launch for testing purposes
-3367989c7007ad9c1ebf6c43342f715fa59736d7 update dev journal
-77e6e7ced8e5f674eb6dfa8cad2b76e041cd510c Broken fix
-6fc6801b1388f01476770664b5d96d35fd799bf4 Merge remote-tracking branch 'origin/master-test'
-be0ab2c9bb46e212a6fdefd27a2e9e906a70f216 update notification ui
-07f12e349bfc68888acb0251b6d171d86338d2f3 driver: change card background color after message send
-4fc9b5587a1f20b38e95306ed3d75c2ea1b2513b Added a refresh button on admin activity to get rid of assigned packages
-15751bfb41c2e18c93c3c15fa066a9cf2eee2eab Checking if driver is null before adding to recyclerview #62
-45094f17b3de4f643b092b6808ff8b65133c1333 Merge branch 'master' into master-test
-f2c440eb84831aca2aea9d31e0f9c16a3730ea6e Moved getSelectedJobs to assign button on admin activity from dialog
-1a3da700a6aa3b98f6efa400cd1d6cda5089a00b Compelted iterating over selected jobs
-bfd533f8315dabeef4a65b3ae10921c0af7cc8e5 Merge branch 'assign2' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev into assign2
-67b3eec3ee909faaad925a138873c27b6f58aa3e Push to merge
-86ef23cbd60360f82b3a3b7f72e46c7e2ccd6ad3 Merge branch 'assign2' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev into assign2
-e8486794e83eb3839da5551a320a1d78d5b0d967 add get job in list
-941cf994f714e38be7677006277f8ca61c789733 Broken get index of recyclerview item clicked
-619f08e00b51f4605b19285cfd4d40831ac9469b Fix receiver not show list issue
-c8849cb794c55159d104ce5e7567aaf1d0b3a9f8 update dev journal
-368c659e6d6fde2727584bad21e89f2d8be85566 Tested assigning driver to static tracking number package
-c87a57d500e56442b4f3f75b06270d4d30962da7 Completed first iteration of update parcel list
-6360707aa3f565eea20ece38573a373142abd62a Delivery message, fix crash in background
-4ad8dfafb8633709f9a47d1e29fa10c2a4634ebf upload presentation slide
-b5a065727deeb9c2bfc5b08735683a9419f28c7d Merge branch 'firebase-message'
-8606928d250b1054b1adec46ee7c20628a111edb Added delivery message, can show dialog
-0435b45454870d03d761d111c53e172d944decee Merge pull request #59 from lakshaysethi/parcel-view-work-on--#5
-1ab932a6f33463e43418957a9e10076001b80ba6 Merge pull request #58 from lakshaysethi/#5-backup--lakshay
-016f478a1feb131db23c3fbfb00ca2711adcd786 new code for setting up user in data base
-aa7c0032ea3184fd05a954896186e93246b26bcb new activity main activityfor all
-68af96feee388d4e0f386e3cfe0be8015404ed02 do oonce
-6d4f32a7ba67e46304905b8ded49b383598cc48f updates to firebase controller
-8ba0c45024ed6722444b57a174eb82339f193cd5 Revert "Merge branch 'assign2' into parcel-view-work-on--#5"
-1977fb003bff4ef3ef425dea52572a2bb0dc6c67 Merge pull request #57 from lakshaysethi/parcel-view-work-on--#5
-55aac5198344ed82de72ffe2ebfb594bd733d48f Merge branch 'assign2' into parcel-view-work-on--#5
-ad08afc5fb2573f8a6ce50848644d803763ecb3b Update User.java
-84a35927d2d80720e9b95d54fa95a48b9f677a56 new functions
-9beecef637072b911e6a7d677f78df06b19f82ac just class changes
-bfff55e90ce82c53be1cffd2ef399484d9012016 Commented out code
-ce1628a671ba1a627616220940a0b9bf2c107ddd Added allUsers call in Admin activity
-ce5430a3e0edee2763995c6b78634bc5d87300f5 Finished getAllUsers function
-6bc8967b40a66cc8f5a5168d137de01d57f74243 Broken code stash
-7e88a887228e1c01713ab842905826fb45c7b777 new code made for update recycler view
-116645802d11114aaead780076da7dfe32ae7f7b commented old code 2
-bbf72ef4ef97c984b4b4182dd24d1f47f1597fee commented old code
-edc16c4737fa52d1c8fc9b419a015234da4fbeb9 Update ReceiverMainActivity.java
-8d16a8b923d15bcad3723ec0fba7a87ba55f31f5 Update ReceiverMainActivity.java
-73ad03001975da902c6866468c2a4be0143798c8 imports fix
-14d888e62e829f1f8b665512c5143e2023273cbc updated getcurrent Parcel user function
-76da99820a3bc49404ccce4d917a08963d1c8e91 added todo
-57a277bac6052d70e490643acf69451cd9f552a8 added main function for #5
-65f27e55d5c8aa92ff00061bb7ecd8d34fcd623c rewrote the fucntion
-ec7ac25c6e4a7b4e93f056a33a3fcb80cf539b09 Update Admin.java
-ff18c47258cb6da6c0c9e1b0058c12cb4502245b added good get current user function
-a76f3e034315a2b0bbc33614fc1dd9bec2a1b954 updated name
-d28d93a951b7048d7f8727b64753ab811b076f0d fix my account ui
-5c825131ed7af73df187de8e2c91e134f730f0f7 fix my account ui
-fa340fcdf780c348eb8be3914cb619897b62dc91 added to with issue #5
-f268296c9b7d4189673e72f223b1e7460d4e6440 views also needed to be moved
-37217291b98b52e9708b5d2c546cc553bb7fcb44 fix master bug crash on start
-24403a57f90e7bb23e998d7bbb744b670c350240 Update FirebaseController.java
-285ab9dfa041e9baebccdcf7996a857505fada3a added old code back temporarily
-0957413924d70e9185b8ca6d36d0e3988bba5341 Merge branch 'master' into Latest-code---1348-pm-26-june--all-mergerd-
-538551b12d3b9db4f72e5e262e0ebe02566aa34a text in login only email for login
-d238ce2e0f0c5837c555d52435682cf39409bf0c fix bug 47 master branch crash
-1292bbf400757ccbc681ddbee4999b3c9efc5c5e add doc
-580bbfd3d1ecc20fb79b11663cf0d1aa00fe7cbf Merge remote-tracking branch 'origin/assign' into myreciever-work-backup
-b04672bb3b2016ec43cb3db20c79c7572c312a74 Merge branch 'master-backup-2--lakshay---please-stay-calm-' into myreciever-work-backup
-8586e4a4bb0a34c987dd8511f533d044d4156aac Merge branch 'master' into myreciever-work-backup
-9ea962b508fecc7785df7dfead51996390cadcc7 added whitespace
-c6c31ec6d74fe96deef822110fe824d7571b733b added more googe signin code
-c2b07cce7b60e33d438359f8d0b50ca5c0e11678 added googleSignin()
-4516a850f2c24ba7c50bf7bee3613880d5d756e1 paused set delivery jobs for all users
-8614e560ded50119b570a325e829300c9811ae6b added login with email function
-d7b11918143bd93a5be9af32ea380694c77eb49a deleted some fucntions
-e47d25772720e4b22316c40341761219146285c1 added doOnce () function
-92386c2ea8da9f3f5ec2dbd41f5decd37d88befb moved views
-0b929b1d6d501d113059daff5ebfa4b0cb6b5c14 moved set content
-fc58bac2c379336cd6e7ce5d32853aad197a0282 moved  class views
-3e24eb86f60713995a69ad77033737848c5d0631 customer class updated + setDeliveryJobsforAllUsersOnce, getListOfCustomers()
-e85bab127010f53b633ec710613c3b703959501d show the username
-b1edb55f5203417ad32cc43c8c2213aa71b2a9e5 Added login unit test case and passed.
-e469d6d6bb87b3cf18a2b23614e3de5520871b08 text size
-207b60d598a4abcbe881d039aa9bfeb2cd6a6e1a text size
-b85f806c015474f14e8a96702836da3e1f3f1af0 Added partial assign code, needs two TODOs to complete
-7a9334d41bf7e6d7e3fac1030c7c8054e84544fb login and signup UI
-f942616e61738c29a793c19f0f6f89d27b4d342e change the launcher png
-ba131cf799ebab5f8b1c718c4ce35d600954c253 dead code
-404bb81bf3229001afc7a998a5e2d27ed35d6a25 not need to loging again and back not go back to login
-62a8329a796997ca7c4ace61aadd32fb6bc951f1 Stable build backup
-7b22e27d30fe7bedac46d862960418c5655fcaba Getting users' input and showing it in a toast in the admin main activity
-659aa2732f62c190eb63c8d8662355f267c647f0 Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-bc0f2b80cc31b45be45ee54ec4094238d01c9bb2 Merge pull request #39 from lakshaysethi/try-to-get-reciever-to-work-
-f54f89f78c3421ba5b6b43d36de7a95dfbc97b7d Merge branch 'master' into try-to-get-reciever-to-work-
-dd628b4619f056f0714828f6828dff4c52a427db Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-f37703ada825ad5e1f93c81af0ab6f3f251d6c48 Create README.md
-f63615daf8656d3e13bfb486b39913baec5b1f26 Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-f4b553dcc5233b6124ff8b5ade35b74ec5c91c0f added code for drievr getiing delivery jobs from the firestore
-017796e0433be3cec0e81269bc281d17396f6aed Merge pull request #38 from lakshaysethi/master
-65784b151ed4a8c0216a92c32da80bf1cb187d5c added dialog layout + class
-03f2f60f43cf04c8589db678d7b13f2a6221b016 working now driver has parcels
-decc78f3a7467db3cff71e1871be9544ee351bef Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-0680bb7220abcb7794e3ed353fe0b92639eff09a update
-41e2d1fc61447e1e88a1f1990a3cc57b3f36e7bc Merge pull request #37 from lakshaysethi/assign
-02e84906a59360872a1c5972da4f850b30cd9412 Merge branch 'master' into assign
-0e01b0d5104398f03f6dc96a8d8203ccdd7bb78a Merge pull request #36 from lakshaysethi/master
-c7a3eb1edf1cf78b2c5e75751de603e35dcfa868 Update AdminMainActivity.java
-b72cde7a40fa1c13627173b6f46bf308ad9123f0 Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-86878a6631d990a42ee1529ec872cb422c12147c need to save work - almost there
-0be9049e6cd3c5190c32243263da43439744c70d Added login page logo
-55eaa9a6f1c316350f24f5ab76f6da72808e4833 update
-f7897fcb45edfaa9c9f6d6c9cc786afb702c444b update signup UI
-a19adb5bb2563be802ca72723a717d8ab10211a6 update signup UI
-d048ac4fecc1bf4e535e9916f8fdd425b8aee50f Adjusted signup page element positions
-81168d312deb78115098c711602641533dcba536 Merge pull request #31 from lakshaysethi/master-copy-for-test-code-lakshay
-840bb2b50c6a1372a7f70ded8500441690d98dcb Merge branch 'master' into master-copy-for-test-code-lakshay
-3591a5f832e648b9e9dc3ce327cdac0db1d69f3e Merge pull request #30 from lakshaysethi/google-sign-in-
-ec33f5a20eb4aa3dc8b7f67c65fc484349c155d6 added code for reciever signup
-5fe2bb836316691867c4cf79847fcb74c5c55731 UI changes
-8a5b9394570ba51a05177f5ccebaafe8b8f10ef8 fixing classes
-16dd2aca332f904a48581aff468ed64337f93baa save work signin
-29ac9cfe36e5027f58e4c1b269568f37843358a2 update TODO
-d88993801c1bf50256ccec9f13f740384280d4f0 added google sign in
-c1685bb23abd587a75f21899662f5cdc41ddecf0 Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-21aca5a3d8e37ccbcff089287333c2ca70b8c0e1 update dev journal
-d9cb975f41beda09b4f75da1bfcb467835e70e17 initial code for google sign in
-81c2c8036165e1316978acf69970240bb023d8c2 Merge pull request #24 from lakshaysethi/update-firebase-fix
-60b71fed5dfcd2e2a8dcb5f0ca9fa236bce8abea Merge branch 'master' into update-firebase-fix
-551c82978dba07eb6d9644ced5352e2d6995aab3 Cleaned up code
-a6a8f67c288ff1b5fafa460ca1e99b7a3782b2da update profile layout
-9c458c2bd3e9c297006776c6848a07bc7aa21a93 Changed write to overwrite existing array in firestore
-74a8c7f60d281c2c71c7a8f78512a783b0ce8506 issue logout and click back button
-0594a46a658b5f0017e5fa3cb9ee1e7145cfda69 Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-32ab7c8ed3f7309e51f50e4e48e2cec1b8459e58 update journal
-d0e39a27cc4b21d1eee5d7ccc8ef50ec085b728b Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-b059b9e738e6ca9998db7b5bfa85312a330f4bb9 added code for logging out
-2fe3100afa85c7383c9dee1140d31cc98acff07c Merge pull request #19 from lakshaysethi/firebase---auth-work-
-4606b469898069a673c3df6f2de90033350ba036 added signup Intent to login screen and other error toasts
-b31ec644bbf7eb4989d18714afb5861ce087305f Added a random package generator
-5ddec1edfc4e9e7fab4a7ec9e87f77c219a03d61 Merge pull request #17 from lakshaysethi/firebase---auth-work-
-2bd5b29bcd5794030dd23b343177b53dcdd93548 Added some comments to Firebase Controller
-c3bb07efc318302d9db3e5446f45f27e5ed04a37 added login with firebase code
-18e028e495d0f065d043ef5fb5fed6cca5c38543 made controller to handel the login in login activity
-143bdb3dcc1fa773f4b5f1a63e74f487be7d9059 added login lougout fucntions
-01e94d0eaf5373bbdc59b6a69bc3542853e2e404 added try catch to signup button
-c559f8d20ffe40f76b2510cf98afbd4dd6fa1aee Update FirebaseController.java
-99dca6682ddf3ecf3f8da2d47c979de37a9dfac1 made the code better at signup activity to work with the user input
-631e5955834ebc76bd2196183464572861f8135e Merge pull request #15 from lakshaysethi/master-copy-for-testing-rename-merge
-6e900fd5a3bf88ecd5df57a02079e070b64fbfa3 Merge pull request #14 from lakshaysethi/Signup-layout-edit
-4da591e608a72f83a4f3c99ab9e519516b1b63da firebase test code - dont worry low prio
-2fac83309cf8bf98a02a012da330d476212f9b18 Update FirebaseController.java
-fd9237f4d827b322a166b2d8aecab52d5c233e33 renamed buttons
-38eb0e675986955b1b9254b4b566b52c956c0ecf fragments moved so xms needs to be updated
-f61c5153d8cbce4b9dc38138b9b58340a1d7d492 moved fragments to where they belong
-a0776961e34e6c6a9c1e8e245b64776cd55ba215 commented the fragment code for button
-5c5579050a3e22fd300d5507704fcc7719991657 moved the signup button out of the fragments
-0c1e01b16625c2058ba44ec187a852e1d46707ea Merge pull request #12 from lakshaysethi/TODOs
-654ed5725d63c3623bc92c6c6f795032ee6a32a5 un doing signup activity rename as it causes many complex merge
-a6022da6177c05c871abb270aab5c8f407a1b78b added TODO
-07ad0b16e266a905a15d32608bca1e71b5f2729d Update FirebaseController.java
-5b474bf8e0098a3e889308e08696755a3cf997e6 Update FirebaseController.java
-319d45bde0a1e380a22de2fd031494dc0d3b7b30 rename in FBC
-2b554d56aa690c168175fb7a23c08ebe10b2505c renaming and organisisng packages
-02b70cff7b588b4289e78b4bb573e84832316a10 organised activities into packages
-ce7f48c4c1e59f0a0841458080d441d6b479cd47 removed password vulnerability
-a086c2aad5b763a6ac8703fbbf458edc08444ff9 added auth dependency
-f7b8c296d93b9be16035c01d67061865edd82b70 Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-0ab6a2a1bac19b51bb2d3c6f5db76bd70231584d renamed main activity to admin main activity
-e0fb4dbfdb0639820f337a69cb0acc1137e210c4 firebase code
-a0a02210a3dc8ee78a588569ac9c849239640d9a Update DeveloperJournalLakshay.md
-3ce25443ac1b94b7fdc5b242f1fdace3b0849651 Merge pull request #8 from lakshaysethi/master-copy-24-june-4am
-14e7a586c3e01dffc28496f3ea5223c3ae53a51b small fixes also needed to merge into master
-d7baa62b5c3230802ce367533ef16121e24a6000 Merge pull request #7 from lakshaysethi/firebase-for-receiver-testing
-4934636c943d61b3872fcee776f0296c83daef12 Merge branch 'master-copy-24-june-4am' into firebase-for-receiver-testing
-079a8a55b93324f51491e90041c20c8548c3605c Update ReceiverMainActivity.java
-51639a1d94188eb10bc3746dcfc165f1cc0b9d06 temp fix CHECK
-6997227fdc5fc1aa7a46e8399769a518620f56d4 Update FirebaseController.java
-f7977845a45eaffb69a90069527c81b0d14d36a3 Update DeliveryJob.java
-71caa4f2bf3042463fc3f796a690aa53569cfb65 new better function updated for deliveries
-21485cc2472221de5591e7db9134c98388a0e153 added firebase code test
-0e0051ea2386bd0cfaf23c96f65118ba24c31976 Create FirebaseController.java
-b302e94ebfaa4aa5bfd524323980533a56f09a94 made code easir to read
-89236f4d2426799a5af44a6936e9c8c43d65a750 Merge pull request #6 from lakshaysethi/firebase-code
-35a347a2a277abd0759883d5ba9efd45fc4facdb temp code for testing before firebase
-264805e76aabc7fb03ccd0bc2d2fd7f86f67c76c Update Parcel.java
-04ff615895ce71b22325d462c22559dd90057e65 update todo
-257603a403c83f05e0f8147aae629209edf81cd6 changed the reciever class to be better and easy to read code
-eced909c711aac0e300800c1cfe30e4620285adb small updates to better code
-bd551f72c861e8ec32e2dfd7786375a55cfb3f4b mistake rename - but need this -
-b8be4f64761c6b001ab6b0a45b53e55ca14798c7 change to array list
-500e4e93e9878cbbbe0691f915dbdad1c3bb0b9e class parcel
-f73cc36f009cb8b5c903b539f8657082cd61084f Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-81e8c92d42aa9a179b8ba93dc7555d44e85f7ac2 1_MyTask_onClick_2_My_Parcel_onClick_3_Permission
-73d36c673f9ff152f7f3ef20e04819c3d8c5fca4 change from [] to arraylist because there arent many functions for []
-fb4b8041115f5d9b9833c03d4bacde576440406c prep for firestore
-a73026926871672f4fd7f02b18bdc7568d4f8bd3 replaced my task class with parcel class
-8b4947316c85b297e2d33673597ed33c1a658ada updated the parcel class
-6c042eac30ad46233ac1b755d8e0400605e461f6 Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
-f0b06eadb11344fb7f1bb8d1c33d60d6677c490b Updated admin and customer class
-b063c6e2ad032fad293db2855178cc3f945b77ba driver alert dialog
-adafdb032af705a283c84570cccc0b4281e9ae36 pull classes
-e0906697b11f2b4a598f6986be5145ccca76c868 update
-b534ecf3b0348d09030240919427a8f91cdd4a1c added files for setting up firebase with our app
-562d9bbaa265bc54a1cd17639f9d113bdfb510c3 initial commit
-26620018348bca45a786a702987c79540b21f923 added code for classes - and fixed login for administrator
-45d89320ce1295727ec865a2ad551cd933eccf2a update dev journal
-ac23a5e96f51a5fc328784291f9058bec871307a logo
-9e5aa315e92b5fd0539a55fe3df6b97aaaa34370 update dev journal
-32bd9c8ca5529a5772c1b5374a1349b67a6c8b92 update dev journal
-719c5d993b8d8d78118599011ac0fb4383ecdf78 update dev journal
-0ea9da9b23b1e8dc2b41299976e5e8de5f20386f update dev journal
-6fe66fbb18758fe43f7860cc843bbaf0a9d08065 notification ui
-5e0e009bb242966e49b63ee0db0c1a3cbacaa2da my account ui
-3739c27821e2cacc5a1fb659c6d1028433b531c6 click action bar to profile activity
-818640f5787c6b8eff9bec35886a94a917f2cd1f add _profile
-f43480895f67b452f93b2843485317e7e5a3cc79 notification back to last page
-c4a535afa69e8c227fe387299d33817e340b1797 notification menu item
-3b8e98dc51164fbe537636e50a3f9fcacb119515 change actionbar title and icon
-fb24931d671cb455c3f4bd1f951d2fdd60f8d587 administrator_recyclerview_cardview
-a92022432a312451f7f24e7465163b62981fa307 update layout
-3e61c962ab15c4b57365fe787ffbb1ab18601435 receiver_my_parcel_recyclerview_cardview
-61658ff82ec12e184c7beb8f781fd365f91c99ad driver_my_task_recyclerview_cardview
-a543b1477fd00efa58f0ac1efac5e7cf0091d5d1 update dev journal
-d1695219d92af64d87785ee6bab1c977bd149f3e all_main_activities_main_ui
-2af09e6732197f0e8e3c3a319773dd7a2a3f5a3f admin_main_activity
-63e642fd09d216e22ce185e431d15c639ee0dc13 login_signup_page_change
-2e49cbd43db3714539530ac34b4bf58723f6a810 signup ui
-f40dadf759782dfed6bc091ba6b7ecb389ef6650 sigup tab
-828dd4a91153513bbfc6ca2b4074c964bfb3d642 login
-e72b80d402189ed57f1c9764c0753549f44a23e5 login
-30dc00f343963e33d5ebe81ae9a82ce21a998d63 theme color
-f15272813fbe28bb1bbc044424f1f589d7ed5931 splash activity
-695b6c59e38eb869e5bcdd6aeaade83711b4c54e Merge pull request #1 from lakshaysethi/initial-empty-activity-code
-b0be85157a344c7cf4080cb6a892fef9bf9da569 Update .gitignore
-6abe86dc3f1b36bbdcf43d196a30fe2e10a24862 initial commit of empty activity
-23ae2760b4fbc10e7f4d411c5ead3aabf1f4ba27 Create Abdullah_Developer_journal.md
-964a8f2c1343ac5ce98a4ea34f4220ad7a39fe39 Rename DeveloperJournalDanica.md to Danica_Developer_Journal.md
-4540d95315acab50b7a12b34e839d28119c061ed Create DeveloperJournalDanica.md
-c90497978b02920c7c6ce2ae190a1c772f7dd3df Create DeveloperJournalLakshay.md
+363b55b - AlmostEfficient, 2 minutes ago : Added basic commit log file
+e02d262 - AlmostEfficient, 7 minutes ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+ccbc502 - AlmostEfficient, 8 minutes ago : Added timesheets PDf
+e687f99 - lakshaysethi, 13 minutes ago : Update .project and org.eclipse.buildship.core.prefs
+99f7663 - AlmostEfficient, 54 minutes ago : Workaround for manual refresh issue on assign
+2713d7e - Abdullah Raza, 66 minutes ago : Merge pull request #71 from lakshaysethi/assign-fix
+a1da9f3 - AlmostEfficient, 68 minutes ago : Adjusted position of refresh button so its not blocking anything
+f7744a1 - AlmostEfficient, 82 minutes ago : Optimised assign function, fixed multiple job assing bug #70
+c2b1e9c - AlmostEfficient, 2 hours ago : Overwrite issue persists, backing up before overhaul
+4049383 - AlmostEfficient, 6 hours ago : Resetting Firebase data every launch for testing purposes
+3367989 - danica, 17 hours ago : update dev journal
+77e6e7c - AlmostEfficient, 18 hours ago : Broken fix
+6fc6801 - danica, 19 hours ago : Merge remote-tracking branch 'origin/master-test'
+be0ab2c - danica, 19 hours ago : update notification ui
+07f12e3 - danica, 19 hours ago : driver: change card background color after message send
+4fc9b55 - AlmostEfficient, 23 hours ago : Added a refresh button on admin activity to get rid of assigned packages
+15751bf - Midlanr, 23 hours ago : Checking if driver is null before adding to recyclerview #62
+45094f1 - Midlanr, 24 hours ago : Merge branch 'master' into master-test
+f2c440e - Midlanr, 24 hours ago : Moved getSelectedJobs to assign button on admin activity from dialog
+1a3da70 - Midlanr, 24 hours ago : Compelted iterating over selected jobs
+bfd533f - Midlanr, 25 hours ago : Merge branch 'assign2' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev into assign2
+67b3eec - Midlanr, 25 hours ago : Push to merge
+86ef23c - danica, 25 hours ago : Merge branch 'assign2' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev into assign2
+e848679 - danica, 25 hours ago : add get job in list
+941cf99 - Midlanr, 26 hours ago : Broken get index of recyclerview item clicked
+619f08e - danica, 26 hours ago : Fix receiver not show list issue
+c8849cb - danica, 27 hours ago : update dev journal
+368c659 - Midlanr, 27 hours ago : Tested assigning driver to static tracking number package
+c87a57d - Midlanr, 27 hours ago : Completed first iteration of update parcel list
+6360707 - danica, 29 hours ago : Delivery message, fix crash in background
+4ad8dfa - danica, 2 days ago : upload presentation slide
+b5a0657 - danica, 2 days ago : Merge branch 'firebase-message'
+8606928 - danica, 2 days ago : Added delivery message, can show dialog
+0435b45 - lakshaysethi, 2 days ago : Merge pull request #59 from lakshaysethi/parcel-view-work-on--#5
+1ab932a - lakshaysethi, 2 days ago : Merge pull request #58 from lakshaysethi/#5-backup--lakshay
+016f478 - lakshaysethi, 2 days ago : new code for setting up user in data base
+aa7c003 - lakshaysethi, 2 days ago : new activity main activityfor all
+68af96f - lakshaysethi, 2 days ago : do oonce
+6d4f32a - lakshaysethi, 2 days ago : updates to firebase controller
+8ba0c45 - lakshaysethi, 2 days ago : Revert "Merge branch 'assign2' into parcel-view-work-on--#5"
+1977fb0 - Abdullah Raza, 2 days ago : Merge pull request #57 from lakshaysethi/parcel-view-work-on--#5
+55aac51 - Abdullah Raza, 2 days ago : Merge branch 'assign2' into parcel-view-work-on--#5
+ad08afc - lakshaysethi, 2 days ago : Update User.java
+84a3592 - lakshaysethi, 2 days ago : new functions
+9beecef - lakshaysethi, 2 days ago : just class changes
+bfff55e - Midlanr, 2 days ago : Commented out code
+ce1628a - Midlanr, 2 days ago : Added allUsers call in Admin activity
+ce5430a - Midlanr, 2 days ago : Finished getAllUsers function
+6bc8967 - Midlanr, 2 days ago : Broken code stash
+7e88a88 - lakshaysethi, 2 days ago : new code made for update recycler view
+1166458 - lakshaysethi, 2 days ago : commented old code 2
+bbf72ef - lakshaysethi, 2 days ago : commented old code
+edc16c4 - lakshaysethi, 2 days ago : Update ReceiverMainActivity.java
+8d16a8b - lakshaysethi, 2 days ago : Update ReceiverMainActivity.java
+73ad030 - lakshaysethi, 2 days ago : imports fix
+14d888e - lakshaysethi, 2 days ago : updated getcurrent Parcel user function
+76da998 - lakshaysethi, 2 days ago : added todo
+57a277b - lakshaysethi, 2 days ago : added main function for #5
+65f27e5 - lakshaysethi, 2 days ago : rewrote the fucntion
+ec7ac25 - lakshaysethi, 2 days ago : Update Admin.java
+ff18c47 - lakshaysethi, 2 days ago : added good get current user function
+a76f3e0 - lakshaysethi, 2 days ago : updated name
+d28d93a - danica, 2 days ago : fix my account ui
+5c82513 - danica, 2 days ago : fix my account ui
+fa340fc - lakshaysethi, 2 days ago : added to with issue #5
+f268296 - lakshaysethi, 2 days ago : views also needed to be moved
+3721729 - lakshaysethi, 2 days ago : fix master bug crash on start
+24403a5 - lakshaysethi, 2 days ago : Update FirebaseController.java
+285ab9d - lakshaysethi, 2 days ago : added old code back temporarily
+0957413 - lakshaysethi, 2 days ago : Merge branch 'master' into Latest-code---1348-pm-26-june--all-mergerd-
+538551b - danica, 2 days ago : text in login only email for login
+d238ce2 - danica, 2 days ago : fix bug 47 master branch crash
+1292bbf - danica, 2 days ago : add doc
+580bbfd - lakshaysethi, 2 days ago : Merge remote-tracking branch 'origin/assign' into myreciever-work-backup
+b04672b - lakshaysethi, 2 days ago : Merge branch 'master-backup-2--lakshay---please-stay-calm-' into myreciever-work-backup
+8586e4a - lakshaysethi, 2 days ago : Merge branch 'master' into myreciever-work-backup
+9ea962b - lakshaysethi, 2 days ago : added whitespace
+c6c31ec - lakshaysethi, 2 days ago : added more googe signin code
+c2b07cc - lakshaysethi, 2 days ago : added googleSignin()
+4516a85 - lakshaysethi, 2 days ago : paused set delivery jobs for all users
+8614e56 - lakshaysethi, 2 days ago : added login with email function
+d7b1191 - lakshaysethi, 2 days ago : deleted some fucntions
+e47d257 - lakshaysethi, 2 days ago : added doOnce () function
+92386c2 - lakshaysethi, 2 days ago : moved views
+0b929b1 - lakshaysethi, 2 days ago : moved set content
+fc58bac - lakshaysethi, 2 days ago : moved  class views
+3e24eb8 - lakshaysethi, 2 days ago : customer class updated + setDeliveryJobsforAllUsersOnce, getListOfCustomers()
+e85bab1 - danica, 3 days ago : show the username
+b1edb55 - danica, 3 days ago : Added login unit test case and passed.
+e469d6d - danica, 3 days ago : text size
+207b60d - danica, 3 days ago : text size
+b85f806 - Midlanr, 3 days ago : Added partial assign code, needs two TODOs to complete
+7a9334d - danica, 3 days ago : login and signup UI
+f942616 - danica, 3 days ago : change the launcher png
+ba131cf - Midlanr, 3 days ago : dead code
+404bb81 - danica, 3 days ago : not need to loging again and back not go back to login
+62a8329 - Midlanr, 3 days ago : Stable build backup
+7b22e27 - Midlanr, 3 days ago : Getting users' input and showing it in a toast in the admin main activity
+659aa27 - danica, 3 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+bc0f2b8 - lakshaysethi, 3 days ago : Merge pull request #39 from lakshaysethi/try-to-get-reciever-to-work-
+f54f89f - lakshaysethi, 3 days ago : Merge branch 'master' into try-to-get-reciever-to-work-
+dd628b4 - danica, 3 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+f37703a - Danica, 3 days ago : Create README.md
+f63615d - danica, 3 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+f4b553d - lakshaysethi, 3 days ago : added code for drievr getiing delivery jobs from the firestore
+017796e - Abdullah Raza, 3 days ago : Merge pull request #38 from lakshaysethi/master
+65784b1 - Midlanr, 3 days ago : added dialog layout + class
+03f2f60 - lakshaysethi, 3 days ago : working now driver has parcels
+decc78f - danica, 3 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+0680bb7 - danica, 3 days ago : update
+41e2d1f - Abdullah Raza, 3 days ago : Merge pull request #37 from lakshaysethi/assign
+02e8490 - Midlanr, 3 days ago : Merge branch 'master' into assign
+0e01b0d - lakshaysethi, 3 days ago : Merge pull request #36 from lakshaysethi/master
+c7a3eb1 - lakshaysethi, 3 days ago : Update AdminMainActivity.java
+b72cde7 - lakshaysethi, 3 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+86878a6 - lakshaysethi, 3 days ago : need to save work - almost there
+0be9049 - Midlanr, 3 days ago : Added login page logo
+55eaa9a - danica, 3 days ago : update
+f7897fc - danica, 3 days ago : update signup UI
+a19adb5 - danica, 3 days ago : update signup UI
+d048ac4 - Midlanr, 3 days ago : Adjusted signup page element positions
+81168d3 - lakshaysethi, 3 days ago : Merge pull request #31 from lakshaysethi/master-copy-for-test-code-lakshay
+840bb2b - lakshaysethi, 3 days ago : Merge branch 'master' into master-copy-for-test-code-lakshay
+3591a5f - lakshaysethi, 3 days ago : Merge pull request #30 from lakshaysethi/google-sign-in-
+ec33f5a - lakshaysethi, 3 days ago : added code for reciever signup
+5fe2bb8 - lakshaysethi, 3 days ago : UI changes
+8a5b939 - lakshaysethi, 3 days ago : fixing classes
+16dd2ac - lakshaysethi, 3 days ago : save work signin
+29ac9cf - danica, 3 days ago : update TODO
+d889938 - lakshaysethi, 3 days ago : added google sign in
+c1685bb - danica, 3 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+21aca5a - danica, 3 days ago : update dev journal
+d9cb975 - lakshaysethi, 3 days ago : initial code for google sign in
+81c2c80 - Abdullah Raza, 4 days ago : Merge pull request #24 from lakshaysethi/update-firebase-fix
+60b71fe - Midlanr, 4 days ago : Merge branch 'master' into update-firebase-fix
+551c829 - Midlanr, 4 days ago : Cleaned up code
+a6a8f67 - danica, 4 days ago : update profile layout
+9c458c2 - Midlanr, 4 days ago : Changed write to overwrite existing array in firestore
+74a8c7f - danica, 4 days ago : issue logout and click back button
+0594a46 - danica, 4 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+32ab7c8 - danica, 4 days ago : update journal
+d0e39a2 - lakshaysethi, 4 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+b059b9e - lakshaysethi, 4 days ago : added code for logging out
+2fe3100 - lakshaysethi, 4 days ago : Merge pull request #19 from lakshaysethi/firebase---auth-work-
+4606b46 - lakshaysethi, 4 days ago : added signup Intent to login screen and other error toasts
+b31ec64 - Midlanr, 4 days ago : Added a random package generator
+5ddec1e - lakshaysethi, 4 days ago : Merge pull request #17 from lakshaysethi/firebase---auth-work-
+2bd5b29 - Midlanr, 4 days ago : Added some comments to Firebase Controller
+c3bb07e - lakshaysethi, 4 days ago : added login with firebase code
+18e028e - lakshaysethi, 4 days ago : made controller to handel the login in login activity
+143bdb3 - lakshaysethi, 4 days ago : added login lougout fucntions
+01e94d0 - lakshaysethi, 4 days ago : added try catch to signup button
+c559f8d - lakshaysethi, 4 days ago : Update FirebaseController.java
+99dca66 - lakshaysethi, 4 days ago : made the code better at signup activity to work with the user input
+631e595 - lakshaysethi, 4 days ago : Merge pull request #15 from lakshaysethi/master-copy-for-testing-rename-merge
+6e900fd - lakshaysethi, 4 days ago : Merge pull request #14 from lakshaysethi/Signup-layout-edit
+4da591e - lakshaysethi, 4 days ago : firebase test code - dont worry low prio
+2fac833 - lakshaysethi, 4 days ago : Update FirebaseController.java
+fd9237f - lakshaysethi, 4 days ago : renamed buttons
+38eb0e6 - lakshaysethi, 4 days ago : fragments moved so xms needs to be updated
+f61c515 - lakshaysethi, 4 days ago : moved fragments to where they belong
+a077696 - lakshaysethi, 4 days ago : commented the fragment code for button
+5c55790 - lakshaysethi, 4 days ago : moved the signup button out of the fragments
+0c1e01b - lakshaysethi, 4 days ago : Merge pull request #12 from lakshaysethi/TODOs
+654ed57 - lakshaysethi, 4 days ago : un doing signup activity rename as it causes many complex merge
+a6022da - lakshaysethi, 4 days ago : added TODO
+07ad0b1 - lakshaysethi, 4 days ago : Update FirebaseController.java
+5b474bf - lakshaysethi, 4 days ago : Update FirebaseController.java
+319d45b - lakshaysethi, 4 days ago : rename in FBC
+2b554d5 - lakshaysethi, 4 days ago : renaming and organisisng packages
+02b70cf - lakshaysethi, 4 days ago : organised activities into packages
+ce7f48c - lakshaysethi, 4 days ago : removed password vulnerability
+a086c2a - lakshaysethi, 4 days ago : added auth dependency
+f7b8c29 - lakshaysethi, 5 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+0ab6a2a - lakshaysethi, 5 days ago : renamed main activity to admin main activity
+e0fb4db - lakshaysethi, 5 days ago : firebase code
+a0a0221 - lakshaysethi, 5 days ago : Update DeveloperJournalLakshay.md
+3ce2544 - lakshaysethi, 5 days ago : Merge pull request #8 from lakshaysethi/master-copy-24-june-4am
+14e7a58 - lakshaysethi, 5 days ago : small fixes also needed to merge into master
+d7baa62 - lakshaysethi, 5 days ago : Merge pull request #7 from lakshaysethi/firebase-for-receiver-testing
+4934636 - lakshaysethi, 5 days ago : Merge branch 'master-copy-24-june-4am' into firebase-for-receiver-testing
+079a8a5 - lakshaysethi, 5 days ago : Update ReceiverMainActivity.java
+51639a1 - lakshaysethi, 5 days ago : temp fix CHECK
+6997227 - lakshaysethi, 5 days ago : Update FirebaseController.java
+f797784 - lakshaysethi, 5 days ago : Update DeliveryJob.java
+71caa4f - lakshaysethi, 5 days ago : new better function updated for deliveries
+21485cc - lakshaysethi, 5 days ago : added firebase code test
+0e0051e - lakshaysethi, 5 days ago : Create FirebaseController.java
+b302e94 - lakshaysethi, 5 days ago : made code easir to read
+89236f4 - lakshaysethi, 5 days ago : Merge pull request #6 from lakshaysethi/firebase-code
+35a347a - lakshaysethi, 5 days ago : temp code for testing before firebase
+264805e - lakshaysethi, 5 days ago : Update Parcel.java
+04ff615 - danica, 5 days ago : update todo
+257603a - lakshaysethi, 5 days ago : changed the reciever class to be better and easy to read code
+eced909 - lakshaysethi, 5 days ago : small updates to better code
+bd551f7 - lakshaysethi, 5 days ago : mistake rename - but need this -
+b8be4f6 - lakshaysethi, 5 days ago : change to array list
+500e4e9 - lakshaysethi, 5 days ago : class parcel
+f73cc36 - danica, 5 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+81e8c92 - danica, 5 days ago : 1_MyTask_onClick_2_My_Parcel_onClick_3_Permission
+73d36c6 - lakshaysethi, 5 days ago : change from [] to arraylist because there arent many functions for []
+fb4b804 - lakshaysethi, 5 days ago : prep for firestore
+a730269 - lakshaysethi, 5 days ago : replaced my task class with parcel class
+8b49473 - lakshaysethi, 5 days ago : updated the parcel class
+6c042ea - Midlanr, 5 days ago : Merge branch 'master' of https://github.com/lakshaysethi/Assignment_3_Mobile_Dev
+f0b06ea - Midlanr, 5 days ago : Updated admin and customer class
+b063c6e - danica, 5 days ago : driver alert dialog
+adafdb0 - danica, 5 days ago : pull classes
+e090669 - danica, 5 days ago : update
+b534ecf - lakshaysethi, 5 days ago : added files for setting up firebase with our app
+562d9bb - lakshaysethi, 6 days ago : initial commit
+2662001 - lakshaysethi, 8 days ago : added code for classes - and fixed login for administrator
+45d8932 - danica, 9 days ago : update dev journal
+ac23a5e - danica, 10 days ago : logo
+9e5aa31 - danica, 10 days ago : update dev journal
+32bd9c8 - danica, 10 days ago : update dev journal
+719c5d9 - danica, 10 days ago : update dev journal
+0ea9da9 - danica, 10 days ago : update dev journal
+6fe66fb - danica, 10 days ago : notification ui
+5e0e009 - danica, 10 days ago : my account ui
+3739c27 - danica, 10 days ago : click action bar to profile activity
+818640f - danica, 10 days ago : add _profile
+f434808 - danica, 10 days ago : notification back to last page
+c4a535a - danica, 11 days ago : notification menu item
+3b8e98d - danica, 11 days ago : change actionbar title and icon
+fb24931 - danica, 11 days ago : administrator_recyclerview_cardview
+a920224 - danica, 11 days ago : update layout
+3e61c96 - danica, 11 days ago : receiver_my_parcel_recyclerview_cardview
+61658ff - danica, 11 days ago : driver_my_task_recyclerview_cardview
+a543b14 - danica, 11 days ago : update dev journal
+d169521 - danica, 12 days ago : all_main_activities_main_ui
+2af09e6 - danica, 12 days ago : admin_main_activity
+63e642f - danica, 12 days ago : login_signup_page_change
+2e49cbd - danica, 12 days ago : signup ui
+f40dadf - danica, 12 days ago : sigup tab
+828dd4a - danica, 12 days ago : login
+e72b80d - danica, 12 days ago : login
+30dc00f - danica, 13 days ago : theme color
+f152728 - danica, 13 days ago : splash activity
+695b6c5 - Danica, 13 days ago : Merge pull request #1 from lakshaysethi/initial-empty-activity-code
+b0be851 - Lakshay Sethi, 2 weeks ago : Update .gitignore
+6abe86d - Lakshay Sethi, 2 weeks ago : initial commit of empty activity
+23ae276 - lakshaysethi, 4 weeks ago : Create Abdullah_Developer_journal.md
+964a8f2 - lakshaysethi, 4 weeks ago : Rename DeveloperJournalDanica.md to Danica_Developer_Journal.md
+4540d95 - lakshaysethi, 4 weeks ago : Create DeveloperJournalDanica.md
+c904979 - lakshaysethi, 4 weeks ago : Create DeveloperJournalLakshay.md
