@@ -12,6 +12,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -55,7 +56,7 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
-
+        //mainFirebase.writeMasterDeliveryJobsToFirestore();
         setActionBarStuff();
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
         getDeliveryJobsListfromFirestore();
@@ -125,6 +126,13 @@ public class AdminMainActivity extends MainActivityForAllUsers implements Assign
          Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
          Log.d("JOBS", "AssignDriver: "+jobs.toString());
          mainFirebase.assignParcelToDriver(driverUsername, jobs);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getDeliveryJobsListfromFirestore();
+            }
+        }, 1000);
     }
 
 

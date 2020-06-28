@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
        // new FirebaseController().createNewUser(this,"receiver2@receiver.com","12345678", User.RECIEVER,"JDoeReceiver");
         //new FirebaseController().createNewUser(this,"driver2@driver.com","12345678",User.DRIVER,"lakshayDriver");
 
-        // new FirebaseController().writeMasterDeliveryJobsToFirestore();
+         //new FirebaseController().writeMasterDeliveryJobsToFirestore();
          //new FirebaseController().setDeliveryJobsforAllUsersOnce();
 
 
