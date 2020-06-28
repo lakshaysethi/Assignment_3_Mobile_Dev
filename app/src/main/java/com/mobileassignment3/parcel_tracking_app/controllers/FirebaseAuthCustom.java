@@ -61,8 +61,21 @@ public class FirebaseAuthCustom extends FirebaseController {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.d("ERROR","firebase error can not make new user");
-                            if(task.getException().toString().contains("already"))
-                                Toast.makeText(activity, "That Email is already in use please try another email", Toast.LENGTH_LONG).show();
+                            if(task.getException().toString().contains("already")){
+                                try{
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    if(user!=null){
+                                        Toast.makeText(activity, "SUCCESS! you can log in now", Toast.LENGTH_LONG).show();
+                                        setupUserInDatabase(username,user,type);
+                                    }else {
+                                        Toast.makeText(activity, "That Email is already in use please try another email", Toast.LENGTH_LONG).show();
+                                    }
+
+                                }catch (Exception e){
+                                    Toast.makeText(activity," in Firebassecustomauth-createnew user "+ e.toString(), Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
                             else Toast.makeText(activity, "Could not sign you up :  "+task.getException(), Toast.LENGTH_LONG).show();
                         }
 
@@ -246,20 +259,13 @@ public class FirebaseAuthCustom extends FirebaseController {
                         parcelAppUserOnCreate(activity);
 
                     }catch(NullPointerException e){
-                       try{
-                           openSignUpActivity(activity);
-                       }
-                            catch (ActivityNotFoundException e2){
 
-                            Toast.makeText(new SignupActivity(),"in setParcelAppUser in firebaseauthcustom \n"+ e.toString(), Toast.LENGTH_LONG).show();
-                     /* }catch (Exception e2){
-                          Toast.makeText(activity,"in setParcelAppUser in firebaseauthcustom \n"+ e2.toString(), Toast.LENGTH_LONG).show();
+                        openSignUpActivity(activity);
 
-                      }*/
+                    } catch (Exception e2){
+                        Toast.makeText(activity,"in setParcelAppUser in firebaseAuthCustom \n"+ e2.toString(), Toast.LENGTH_LONG).show();
+
                         }
-                    }
-
-
                 }else{
                     Log.d("Firestore Error","reading userdata Failed");
                 }
@@ -268,9 +274,12 @@ public class FirebaseAuthCustom extends FirebaseController {
     }
 
     private void openSignUpActivity(Activity activity) {
-       Intent signup = new Intent();
-        activity.startActivity(signup);
+
         Toast.makeText(activity, "Your DATA was DELETED please Signup Again", Toast.LENGTH_SHORT).show();
+        Intent signup = new Intent(activity, SignupActivity.class);
+
+        activity.startActivity(signup);
+//      activity.finishAffinity();
     }
 
     private void parcelAppUserOnCreate(Activity activity) {

@@ -1,6 +1,7 @@
 package com.mobileassignment3.parcel_tracking_app.controllers;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -13,6 +14,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
 import com.mobileassignment3.parcel_tracking_app.OldFirebaseController;
+import com.mobileassignment3.parcel_tracking_app.SplashActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ public class ReadFromFireStore extends FirebaseAuthCustom {
 
 
         }catch (Exception e){
+            Toast.makeText(new SplashActivity(), "", Toast.LENGTH_SHORT).show();
+
             Log.w("Firebase error", "Error getting documents."+e.toString());
 
         }
