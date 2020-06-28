@@ -3,6 +3,7 @@ package com.mobileassignment3.parcel_tracking_app;
 import android.app.Activity;
 import android.content.Intent;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -164,9 +165,15 @@ public class FirebaseController {
     public void assignParcelToDriver(final String driverUserName, final ArrayList<DeliveryJob> jobsSelected){
         //Find the driver object the admin wants using the username they input
         for (User thisUser : allUsers) {
-            if (thisUser.getUsername().equals(driverUserName)){                //Find the driver object you want to assign to the job
+            if (TextUtils.equals(thisUser.getUsername(), driverUserName)){                //Find the driver object you want to assign to the job
                 driverToAssign = (Driver)thisUser;
+                break;
             }
+        }
+
+        if (driverToAssign == null) {
+            Log.w("Firebase error", "Driver not find!!!!");
+            return;
         }
 
         //Get the latest list of delivery jobs from Firestore
