@@ -1,6 +1,7 @@
 package com.mobileassignment3.parcel_tracking_app.controllers;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.mobileassignment3.parcel_tracking_app.SignupActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
@@ -244,11 +246,19 @@ public class FirebaseAuthCustom extends FirebaseController {
                         parcelAppUserOnCreate(activity);
 
                     }catch(NullPointerException e){
-                        openSignUpActivity(activity);
+                       try{
+                           openSignUpActivity(activity);
+                       }
+                            catch (ActivityNotFoundException e2){
+
+                            Toast.makeText(new SignupActivity(),"in setParcelAppUser in firebaseauthcustom \n"+ e.toString(), Toast.LENGTH_LONG).show();
+                     /* }catch (Exception e2){
+                          Toast.makeText(activity,"in setParcelAppUser in firebaseauthcustom \n"+ e2.toString(), Toast.LENGTH_LONG).show();
+
+                      }*/
+                        }
                     }
-                    catch (Exception e){
-                        Toast.makeText(activity,"in setParcelAppUser in firebaseauthcustom \n"+ e.toString(), Toast.LENGTH_LONG).show();
-                    }
+
 
                 }else{
                     Log.d("Firestore Error","reading userdata Failed");
