@@ -38,23 +38,25 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mobileassignment3.parcel_tracking_app.OldFirebaseController;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.mobileassignment3.parcel_tracking_app.AssignDialog;
 import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
+import com.mobileassignment3.parcel_tracking_app.controllers.ReadFromFireStore;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mobileassignment3.parcel_tracking_app.MyStaticClass.myStaticObjectsList;
+
 public class AdminMainActivity extends MainActivityForAllUsers {
 
     Button btnAssign;
     FloatingActionButton btnRefresh;
-    OldFirebaseController mainFirebase = new OldFirebaseController();
-    RecyclerView rvAssignOrder;
+    static OldFirebaseController mainFirebase = new OldFirebaseController();
+    static RecyclerView rvAssignOrder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +65,11 @@ public class AdminMainActivity extends MainActivityForAllUsers {
 
 
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
-        getLatestDeliveryJobsListfromFirestore();
+
         adminlistviewUpdate();
         setActionBarStuff();
 
     }
-
-
 
     private void adminlistviewUpdate() {
 
@@ -85,48 +85,22 @@ public class AdminMainActivity extends MainActivityForAllUsers {
 
         btnRefresh = findViewById(R.id.btnRefresh);
         btnRefresh.setOnClickListener(new View.OnClickListener() {
+        MasterListDocument mlObj = new MasterListDocument();
+
             @Override
             public void onClick(View v) {
-                getLatestDeliveryJobsListfromFirestore();
-                Toast.makeText(AdminMainActivity.this, "Refreshing", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminMainActivity.this, "Refresing...", Toast.LENGTH_SHORT).show();
+                 if(mlObj.updateMasterList(AdminMainActivity.this,mlObj)){
+                     setRecyclerViewStuff(mlObj.getMasterList());
+
+                 }else{
+                     setRecyclerViewStuff(((MasterListDocument)(myStaticObjectsList.get(0))).getMasterList());
+                 }
+
             }
         });
     }
 
-    private void getLatestDeliveryJobsListfromFirestore() {
-        try{
-            new OldFirebaseController().db.collection("masterDeliveryJobs")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    //Log.d("FIREBASE", document.getId() + " => " + document.getData());
-                                    if(document.contains("masterList")){
-                                        document.get("masterList");
-                                        List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
-                                        List<DeliveryJob> jobsWithNoDriver = new ArrayList();
-                                        for (DeliveryJob jobIterator : Djal){
-                                            if (jobIterator.getAssignedDriver() == null){
-                                                jobsWithNoDriver.add(jobIterator);
-                                            }
-                                        }
-                                        setRecyclerViewStuff(jobsWithNoDriver);
-                                    }
-                                }
-                            } else {
-                                Log.w("Firebase error", "Error getting documents.", task.getException());
-                            }
-                        }
-                    });
-
-        }catch (Exception e){
-            Log.w("Firebase error", "Error getting documents.");
-
-        }
-
-    }
 
     public void openAssignDialog() {
         AssignDialog dialog = new AssignDialog();
@@ -135,23 +109,54 @@ public class AdminMainActivity extends MainActivityForAllUsers {
 
     }
     
-    public static void assignDriver(String driverUsername) {
-         Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
-         Log.d("JOBS", "AssignDriver: "+ getSelectedJobs().toString());
-         mainFirebase.assignParcelToDriver(driverUsername, getSelectedJobs());
+
+
+    public static ArrayList<DeliveryJob> getSelectedJobs() {
+
+        OrderAdapter adapter = (OrderAdapter) rvAssignOrder.getAdapter();
+        ArrayList<DeliveryJob> jobs = new ArrayList<>();
+        for (int x = 0; x<rvAssignOrder.getChildCount();x++){
+            CheckBox cb = (CheckBox)rvAssignOrder.getChildAt(x).findViewById(R.id.cbAssignOrder);
+            if(cb.isChecked()){
+                jobs.add(adapter.getJobAt(x));
+                Log.d("JOBS", "getSelectedJobs: " + jobs.toString());
+            }
+        }
+        return jobs;
     }
 
 
-    // implemented the menu item
+
+
+    void setRecyclerViewStuff(List<DeliveryJob> Djal){
+
+         rvAssignOrder = findViewById(R.id.rvAssignOrder);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        rvAssignOrder.setHasFixedSize(true);
+
+        // use a linear layout manager
+        RecyclerView.LayoutManager layoutManagerAssignOrder = new LinearLayoutManager(this);
+        rvAssignOrder.setLayoutManager(layoutManagerAssignOrder);
+
+        // specify an adapter
+
+        //updateDeliveryJobArrayList(deliveryJobArrayListDataset);
+        RecyclerView.Adapter adapterAssignOrder = new OrderAdapter(Djal);
+        rvAssignOrder.setAdapter(adapterAssignOrder);
+
+    }
+
     @Override
+    // Inflate the menu; this adds items to the action bar if it is present.
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    // implemented the menu item
+
     @Override
+    // implemented the menu item  STARTS - notification activity :
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.notification:
             Intent myIntent = new Intent(AdminMainActivity.this, NotificationActivity.class);
@@ -179,41 +184,6 @@ public class AdminMainActivity extends MainActivityForAllUsers {
         });
 
     }
-
-    void setRecyclerViewStuff(List<DeliveryJob> Djal){
-
-        RecyclerView rvAssignOrder = findViewById(R.id.rvAssignOrder);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        rvAssignOrder.setHasFixedSize(true);
-
-        // use a linear layout manager
-        RecyclerView.LayoutManager layoutManagerAssignOrder = new LinearLayoutManager(this);
-        rvAssignOrder.setLayoutManager(layoutManagerAssignOrder);
-
-        // specify an adapter
-
-        //updateDeliveryJobArrayList(deliveryJobArrayListDataset);
-        RecyclerView.Adapter adapterAssignOrder = new OrderAdapter(Djal);
-        rvAssignOrder.setAdapter(adapterAssignOrder);
-
-    }
-
-    // Get selected DeliveryJob in the RecyclerView
-    ArrayList<DeliveryJob> getSelectedJobs() {
-        RecyclerView rvAssignOrder = findViewById(R.id.rvAssignOrder);
-        OrderAdapter adapter = (OrderAdapter) rvAssignOrder.getAdapter();
-        ArrayList<DeliveryJob> jobs = new ArrayList<>();
-        for (int x = 0; x<rvAssignOrder.getChildCount();x++){
-            CheckBox cb = (CheckBox)rvAssignOrder.getChildAt(x).findViewById(R.id.cbAssignOrder);
-            if(cb.isChecked()){
-                jobs.add(adapter.getJobAt(x));
-                Log.d("JOBS", "getSelectedJobs: " + jobs.toString());
-            }
-        }
-        return jobs;
-    }
-
     public static class AssignDialog extends AppCompatDialogFragment {
         private EditText editDriverUsername;
 
@@ -237,8 +207,11 @@ public class AdminMainActivity extends MainActivityForAllUsers {
                     .setPositiveButton("Assign", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            String username = editDriverUsername.getText().toString();
-                            assignDriver(username);
+                            String driverUsername = editDriverUsername.getText().toString();
+
+                            Log.d("JOBS", "AssignDriver: "+ getSelectedJobs().toString());
+                            mainFirebase.assignParcelToDriver(driverUsername, getSelectedJobs());
+
                         }
                     });
 
@@ -247,15 +220,7 @@ public class AdminMainActivity extends MainActivityForAllUsers {
             return builder.create();
         }
 
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        try {
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+
 
 
     }
@@ -264,11 +229,9 @@ public class AdminMainActivity extends MainActivityForAllUsers {
 
 class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
     private List<DeliveryJob> deliveryJobArray;
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
+
         public CardView cardView;
         public TextView textViewTitle;
         public TextView textViewDetail;

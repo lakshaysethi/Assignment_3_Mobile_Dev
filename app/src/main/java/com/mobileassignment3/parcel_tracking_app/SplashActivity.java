@@ -10,7 +10,10 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
+import com.mobileassignment3.parcel_tracking_app.controllers.ReadFromFireStore;
 import com.mobileassignment3.parcel_tracking_app.controllers.WriteToFireStore;
+
+import static com.mobileassignment3.parcel_tracking_app.MyStaticClass.addStaticObject;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -45,9 +48,14 @@ public class SplashActivity extends AppCompatActivity {
 
     private void doEverytime() {
         FirebaseAuthCustom controller = new FirebaseAuthCustom();
+
         if(controller.getCurrentFirebaseUserObject()!=null){
             controller.setParcelAppUser(this);
         }
+        MasterListDocument mlObj = new MasterListDocument();
+        new ReadFromFireStore().getAndSetLatestDeliveryMasterJobsListfromFirestore(mlObj);
+        addStaticObject(mlObj);
+
     }
 
     public void doOnce(){
@@ -56,7 +64,7 @@ public class SplashActivity extends AppCompatActivity {
 
             /* write functions here that you want to happen just once */
             
-            //new WriteToFireStore().writeMasterDeliveryJobsToFirestore();
+            new WriteToFireStore().writeMasterDeliveryJobsToFirestore();
 
 
 

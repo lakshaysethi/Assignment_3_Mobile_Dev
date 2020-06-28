@@ -23,6 +23,18 @@ public class User {
         this.deliveryJobList = deliveryJobList;
     }
 
+    public static int getDRIVER() {
+        return DRIVER;
+    }
+
+    public static int getRECIEVER() {
+        return RECIEVER;
+    }
+
+    public static int getADMIN() {
+        return ADMIN;
+    }
+
     String email;
     String username;
 

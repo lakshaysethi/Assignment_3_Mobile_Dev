@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
 import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseAuthCustom;
 import com.mobileassignment3.parcel_tracking_app.controllers.FirebaseController;
@@ -18,7 +20,9 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class WriteToFireStore extends FirebaseController {
@@ -26,11 +30,11 @@ public class WriteToFireStore extends FirebaseController {
         //TODO make this function redundent - we should not create random delivery jobs in production
         MasterListDocument masterlist = new MasterListDocument();
         masterlist.setMasterList(returnrandomDeliveryJobs());
-        db.collection("masterDeliveryJobs").document("lakshay_test_deliveryJobsDoc").set(masterlist);
+        db.collection("masterDeliveryJobs").document("deliveryJobsDocument").set(masterlist);
     }
 
-    private List<DeliveryJob> returnrandomDeliveryJobs() {
-        List<DeliveryJob> djal  = new ArrayList<DeliveryJob>();
+    private ArrayList<DeliveryJob> returnrandomDeliveryJobs() {
+        ArrayList<DeliveryJob> djal  = new ArrayList<DeliveryJob>();
         String[]  senders = {"Danica", "Lakhsay", "John Casey", "Raza", "Obama", "Paul Bartlett", "Dila"};
         String[]  packages = {"Letter", "Laptop", "Jacket", "Certificate", "Backpack", "Payslip", "Vaccine" };
         for(int i=0;i<7;i++) {
@@ -42,6 +46,24 @@ public class WriteToFireStore extends FirebaseController {
         return djal;
     }
 
+//    public void assignParcelToDriver(final String driverUserName, ArrayList<DeliveryJob> alOfSelectedDjs){
+//
+//        for (DeliveryJob deliveryJob : Djal) {
+//            if (deliveryJob.getTrackingNumber().equals(trackingNumber)){                    //Find the delivery job you want to update
+//                for (User thisUser : allUsers) {
+//                    if (thisUser.getUsername().equals(driverUserName)){                     //Find the driver object you want to assign to the job
+//                        Driver driverToAssign = (Driver)thisUser;
+//                        deliveryJob.setAssignedDriver(driverToAssign);                      //and assign the entered driver to it
+//                        updateMasterDeliveryJobList(Djal);                                  //update the masterDeliveryJobList
+//                    }
+//                }
+//            }
+//            else{
+//                Log.d("Firebase error", "Entered driver not found");
+//            }
+//        }
+//
+//    }
 
 
     public void writedeliveryJobsToUser(ArrayList<DeliveryJob> deliveryJobArrayList, final String uuid, final int userType){
