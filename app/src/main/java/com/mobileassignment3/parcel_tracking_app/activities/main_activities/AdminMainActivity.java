@@ -112,19 +112,6 @@ public class AdminMainActivity extends MainActivityForAllUsers {
     
 
 
-    // public static ArrayList<DeliveryJob> getSelectedJobs() {
-
-    //     OrderAdapter adapter = (OrderAdapter) rvAssignOrder.getAdapter();
-    //     ArrayList<DeliveryJob> jobs = new ArrayList<>();
-    //     for (int x = 0; x<rvAssignOrder.getChildCount();x++){
-    //         CheckBox cb = (CheckBox)rvAssignOrder.getChildAt(x).findViewById(R.id.cbAssignOrder);
-    //         if(cb.isChecked()){
-    //             jobs.add(adapter.getJobAt(x));
-    //             Log.d("JOBS", "getSelectedJobs: " + jobs.toString());
-    //         }
-    //     }
-    //     return jobs;
-    // }
     // public void assignDriver(String driverUsername) {
     //      Toast.makeText(AdminMainActivity.this, "Assigned to " + driverUsername, Toast.LENGTH_SHORT).show();
     //      Log.d("JOBS", "AssignDriver: "+jobs.toString());
