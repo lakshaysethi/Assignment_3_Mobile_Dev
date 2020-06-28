@@ -58,7 +58,7 @@ public class FirebaseController {
     ArrayList <User> allUsers = new ArrayList<User>();
     private Object userData;
     private List<DeliveryJob> Djal;
-
+    private Driver driverToAssign;
     // Initialize Firebase Auth
     public FirebaseController() {
         mAuth = FirebaseAuth.getInstance();
@@ -161,11 +161,20 @@ public class FirebaseController {
 
     }
 
-    public void assignParcelToDriver(final String driverUserName, ArrayList<DeliveryJob> trackingNumbers){
+    public void assignParcelToDriver(final String driverUserName, ArrayList<DeliveryJob> jobsToUpdate){
         //TODO Get which parcels the admin has selected, and use their tracking numbers
-        Log.d("JOBS","assignParcelToDriver: "+ trackingNumbers.toString());
+        Log.d("JOBS","assignParcelToDriver: "+ jobsToUpdate.toString());
+
+        //Find the driver object the admin wants using the username they input
+        for (User thisUser : allUsers) {
+            if (thisUser.getUsername().equals(driverUserName)){                //Find the driver object you want to assign to the job
+                driverToAssign = (Driver)thisUser;
+            }
+        }
+        final int jobCount = jobsToUpdate.size();
+
         //For each tracking number, assign driver.
-        for (DeliveryJob jobIterator : trackingNumbers){
+        for (DeliveryJob jobIterator : jobsToUpdate){
             //Set the tracking number for the job we want to update
             final String trackingNumber = jobIterator.getTrackingNumber();
             //Get the current list of delivery jobs
@@ -178,22 +187,15 @@ public class FirebaseController {
                                 if (task.isSuccessful()) {
                                     new Thread(new Runnable() {
                                         public void run() {
-                                            //Do whatever
-                                            //                                    for (QueryDocumentSnapshot document : task.getResult()) {
                                             DocumentSnapshot document  = task.getResult().getDocuments().get(0);
-        //                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
                                             if(document.contains("masterList")){
                                                 document.get("masterList");
-
                                                 Djal = document.toObject(MasterListDocument.class).masterList;
-                                                for (DeliveryJob deliveryJob : Djal) {
-                                                    if (deliveryJob.getTrackingNumber().equals(trackingNumber)){                    //Find the delivery job you want to update
-                                                        for (User thisUser : allUsers) {
-                                                            if (thisUser.getUsername().equals(driverUserName)){                     //Find the driver object you want to assign to the job
-                                                                Driver driverToAssign = (Driver)thisUser;
-                                                                deliveryJob.setAssignedDriver(driverToAssign);                      //and assign the entered driver to it
-                                                            }
-                                                        }
+                                                for (DeliveryJob deliveryJob : Djal) {                                         //For all jobs in list of delivery jobs
+                                                    if (deliveryJob.getTrackingNumber().equals(trackingNumber)){               //Check if this is the job the user use selected by comparing tracking numbers
+                                                            deliveryJob.setAssignedDriver(driverToAssign);                     //Assign the entered driver to this job
+                                                           // assignMultipleJobs(jobCount, deliveryJob);
+                                                        break;                                                                 //Break out of parent for loop because the package has been found
                                                     }
                                                     else{
                                                         Log.d("Firebase error", "Entered driver not found");
@@ -202,8 +204,6 @@ public class FirebaseController {
                                             }
                                         }
                                     }).start();
-
-
                                 } else {
                                     Log.w("Firebase error", "Error getting documents.", task.getException());
                                 }
@@ -213,7 +213,11 @@ public class FirebaseController {
                 Log.w("Firebase error", "Error getting documents.");
             }
         }
-        updateMasterDeliveryJobList(Djal);                                                                                  //update the masterDeliveryJobList
+       //                                                                                   //update the masterDeliveryJobList
+    }
+
+    private void assignMultipleJobs(int jobCount, List<DeliveryJob> updatedDeliveryJobList){
+
     }
 
     private void updateMasterDeliveryJobList(List<DeliveryJob> updatedDeliveryJobList) {
@@ -339,9 +343,7 @@ public class FirebaseController {
                             Intent gotoLoginScreen = new Intent(activity, LoginActivity.class);
                             activity.startActivity(gotoLoginScreen);
                            //TODO remove this
-                                writedeliveryJobsToUser((ArrayList<DeliveryJob>)writeMasterDeliveryJobsToFirestore(),getCurrentFirebaseUserObject().getUid(),User.RECIEVER);
-
-
+                                //writedeliveryJobsToUser((ArrayList<DeliveryJob>)writeMasterDeliveryJobsToFirestore(),getCurrentFirebaseUserObject().getUid(),User.RECIEVER);
 
                         } else {
                             // If sign in fails, display a message to the user.
